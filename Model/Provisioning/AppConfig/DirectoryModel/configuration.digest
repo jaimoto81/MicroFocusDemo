@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<item cn="cn=configuration" filename="configuration.configuration"
+    hasContainment="false" modstamp="1499820861443" protected="true"
+    readonly="false" type="srvprvDirectoryModelConfig"
+        visible="true">
+    <guid>OSYHXY65</guid>
+    <display
+        xml:lang="de">Konfiguration</display>
+    <display
+        xml:lang="pt">Configuração</display>
+    <display
+        xml:lang="zh-TW">組態</display>
+    <display
+        xml:lang="ja">環境設定</display>
+    <display
+        xml:lang="en">Configuration</display>
+    <display
+        xml:lang="it">Configurazione</display>
+    <display
+        xml:lang="fr">Configuration</display>
+    <display
+        xml:lang="zh-CN">配置</display>
+    <display
+        xml:lang="es">Configuración</display>
+    <display
+        xml:lang="nl">Configuratie</display>
+    <descr xml:lang="en">Abstract Directory Model Configuration</descr>
+    <package-id>B5PAGQ5E_201005261601510810</package-id>
+    <pkg-assoc-id>47MM80ZG_201112271032220875</pkg-assoc-id>
+    <pkg-checksum>3254750763</pkg-checksum></item>

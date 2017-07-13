@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?><configuration-values>
+	<definitions display-name="SQL Script Info Pmpt">
+		<header display-name="xlfid(NOVLJDBCCOMM.idmresource.NOVLJDBCCOMMUpgradeSettings.gcv.header.ImportantNotice)Important Notice "/>
+		<header display-name="xlfid(NOVLJDBCCOMM.idmresource.NOVLJDBCCOMMUpgradeSettings.gcv.header.JDBCSampleCommonPackagehasbeendeprecatedinIDM4.5.)      JDBC Sample Common Package has been deprecated in IDM 4.5. "/>
+		<header display-name="xlfid(NOVLJDBCCOMM.idmresource.NOVLJDBCCOMMUpgradeSettings.gcv.header.ThepoliciesinJDBCSampleCommonpackagehavebeenmovedtothenewJDBCCommonPackage.)      The policies in JDBC Sample Common package have been moved to the new JDBC Common Package."/>
+		<header display-name="xlfid(NOVLJDBCCOMM.idmresource.NOVLJDBCCOMMUpgradeSettings.gcv.header.So,afterupgradingtolatestJDBCCommonpackagepleaseuninstallJDBCSampleCommonifinstalled.)      So, after upgrading to latest JDBC Common package please uninstall JDBC Sample Common (if installed)."/>
+	</definitions>
+	<definition display-name="test1" hide="true" name="test11" type="string">
+		<description>Dummy Text</description>
+		<value>Dummy</value>
+	</definition>
+</configuration-values>

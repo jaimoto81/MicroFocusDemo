@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><entitlement conflict-resolution="union" description="The Group Entitlement grants or denies membership in a group in Active Directory.  When revoked, the user is removed from the group. The group membership entitlement is not enforced on the publisher channel: If a user is added to a controlled group in Active Directory by some external tool, the user is not removed by the driver. Further, if the entitlement is removed from the user object instead of being simply revoked, the driver takes no action." display-name="Group Membership Entitlement">
+	<values multi-valued="true">
+		<query-app>
+			<query-xml>
+				<nds dtdversion="2.0">
+					<input>
+						<query class-name="Group" scope="subtree">
+							<search-class class-name="Group"/>
+							<read-attr attr-name="Description"/>
+						</query>
+					</input>
+				</nds>
+			</query-xml>
+			<result-set>
+				<display-name>
+					<token-src-dn/>
+				</display-name>
+				<description>
+					<token-attr attr-name="Description"/>
+				</description>
+				<ent-value>
+					<token-association/>
+				</ent-value>
+			</result-set>
+		</query-app>
+	</values>
+</entitlement>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><ds-object ds-object-class="notfMergeTemplate" ds-object-name="Password Set Fail_zh-TW" name="Password Set Fail_zh-TW">
+	<ds-attributes>
+		<ds-attribute ds-attr-name="XmlData">
+			<ds-value>
+				<html xmlns:form="http://www.novell.com/dirxml/workflow/form">
+					<form:token-descriptions>
+						<form:token-description description="使用者的全名" item-name="UserFullName"/>
+						<form:token-description description="使用者的名" item-name="UserGivenName"/>
+						<form:token-description description="使用者的姓" item-name="UserLastName"/>
+						<form:token-description description="外部應用程式名稱" item-name="ConnectedSystemName"/>
+						<form:token-description description="失敗原因" item-name="FailureReason"/>
+					</form:token-descriptions>
+					<head>
+						<title>密碼設定失敗的通知</title>
+						<style>
+							<!-- body { font-family: Trebuchet MS } -->
+						</style>
+					</head>
+					<body BGCOLOR="#FFFFFF">
+						<p>尊敬的 $UserFullName$︰</p>
+						<p>這是一則關於您無法在 $ConnectedSystemName$ 系統中設定密碼的通知。失敗的原因如下︰</p>
+						<p>原因︰$FailureReason$</p>
+						<p>若有任何其他疑問，
+     請致電 (012) 345-6789 或傳送電子郵件至
+      <a href="mailto:help.desk@mycompany.com">
+     help.desk@mycompany.com </a> 聯絡服務台</p>
+						<p> - 自動化安全性</p>
+						<p>
+							<img ALT="由 Novell 提供技術" SRC="cid:powered_by_novell.gif" height="29" width="80"/>
+						</p>
+					</body>
+				</html>
+			</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="notfMergeTemplateSubject">
+			<ds-value>密碼設定失敗的通知</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-installationdirective">
+			<ds-value>PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48aW5zdGFsbGF0aW9uLWRpcmVjdGl2ZT4KCTxwbGFjZW1lbnQgbG9jYXRpb249Im5vdGYtY29sbGVjdGlvbiIvPgoJPGRzLWF0dHJpYnV0ZXMvPgo8L2luc3RhbGxhdGlvbi1kaXJlY3RpdmU+</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-directivechecksum">
+			<ds-value>2483156663</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-packageassocguid">
+			<ds-value>I8SG7451_201007271209080301</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-packageguid">
+			<ds-value>FWSFLGUH_201007271204040551</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-contentchecksum">
+			<ds-value>1000281078</ds-value>
+		</ds-attribute>
+	</ds-attributes>
+</ds-object>

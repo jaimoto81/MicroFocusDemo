@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><ds-object ds-object-class="DirXML-GlobalConfigDef" ds-object-name="NOVLCOMSET-GCVs" name="NOVLCOMSET-GCVs">
+	<ds-attributes>
+		<ds-attribute ds-attr-name="idm-installationdirective">
+			<ds-value>PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48aW5zdGFsbGF0aW9uLWRpcmVjdGl2ZSBtb2RlPSJhbGwiPgoJPHBsYWNlbWVudCBsb2NhdGlvbj0iZGVmYXVsdCIvPgoJPGRzLWF0dHJpYnV0ZXMvPgoJPGNvbmZpZ3VyYXRpb24tdmFsdWVzPgoJCTxkZWZpbml0aW9ucyBkaXNwbGF5LW5hbWU9IkNvbW1vbiBTZXR0aW5ncyI+CgkJCTxoZWFkZXIgZGlzcGxheS1uYW1lPSJ4bGZpZChOT1ZMQ09NU0VULmdsb2JhbGNvbmZpZy5OT1ZMQ09NU0VUR0NWcy5nY3YuaGVhZGVyLkNvbW1vblNldHRpbmdzKUNvbW1vbiBTZXR0aW5ncyIvPgoJCQk8ZGVmaW5pdGlvbiBkaXNwbGF5LW5hbWU9InhsZmlkKE5PVkxDT01TRVQuZ2xvYmFsY29uZmlnLk5PVkxDT01TRVRHQ1ZzLmdjdi5pZHYuZGl0LmRhdGEudXNlcnMpVXNlciBDb250YWluZXIiIGRuLXNwYWNlPSJkaXJ4bWwiIGRuLXR5cGU9InNsYXNoIiBuYW1lPSJpZHYuZGl0LmRhdGEudXNlcnMiIHR5cGU9ImRuIj4KCQkJCTx2YWx1ZT5kYXRhXHVzZXJzPC92YWx1ZT4KCQkJPC9kZWZpbml0aW9uPgoJCQk8ZGVmaW5pdGlvbiBkaXNwbGF5LW5hbWU9InhsZmlkKE5PVkxDT01TRVQuZ2xvYmFsY29uZmlnLk5PVkxDT01TRVRHQ1ZzLmdjdi5pZHYuZGl0LmRhdGEuZ3JvdXBzKUdyb3VwIENvbnRhaW5lciIgZG4tc3BhY2U9ImRpcnhtbCIgZG4tdHlwZT0ic2xhc2giIG5hbWU9Imlkdi5kaXQuZGF0YS5ncm91cHMiIHR5cGU9ImRuIj4KCQkJCTx2YWx1ZT5kYXRhXGdyb3VwczwvdmFsdWU+CgkJCTwvZGVmaW5pdGlvbj4KCQk8L2RlZmluaXRpb25zPgoJPC9jb25maWd1cmF0aW9uLXZhbHVlcz4KCTxwb2xpY3ktbGlua2FnZT4KCQk8cG9saWN5LXNldCBuYW1lPSJnY3YiIG9yZGVyPSJsYXN0Ii8+Cgk8L3BvbGljeS1saW5rYWdlPgo8L2luc3RhbGxhdGlvbi1kaXJlY3RpdmU+</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-directivechecksum">
+			<ds-value>847387981</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-packageassocguid">
+			<ds-value>SCSW22E9_201006021538100215</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-packageguid">
+			<ds-value>4YGKJX0U_201006021536040516</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-contentchecksum">
+			<ds-value>3678764875</ds-value>
+		</ds-attribute>
+	</ds-attributes>
+</ds-object>

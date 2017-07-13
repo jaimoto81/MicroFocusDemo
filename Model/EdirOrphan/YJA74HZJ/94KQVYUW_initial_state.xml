@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><ds-object ds-object-class="notfMergeTemplate" ds-object-name="Password Reset Fail_pt" name="Password Reset Fail_pt">
+	<ds-attributes>
+		<ds-attribute ds-attr-name="XmlData">
+			<ds-value>
+				<html xmlns:form="http://www.novell.com/dirxml/workflow/form">
+					<form:token-descriptions>
+						<form:token-description description="Nome completo do usuário" item-name="UserFullName"/>
+						<form:token-description description="Nome do usuário" item-name="UserGivenName"/>
+						<form:token-description description="Sobrenome do usuário" item-name="UserLastName"/>
+						<form:token-description description="Nome do aplicativo externo" item-name="ConnectedSystemName"/>
+						<form:token-description description="Motivo da falha" item-name="FailureReason"/>
+					</form:token-descriptions>
+					<head>
+						<title>Aviso de Falha de Redefinição de Senha</title>
+						<style>
+							<!-- body { font-family: Trebuchet MS } -->
+						</style>
+					</head>
+					<body BGCOLOR="#FFFFFF">
+						<p>Caro(a) $UserFullName$,</p>
+						<p>Este é um aviso de que não foi possível redefinir a sua senha no sistema $ConnectedSystemName$. O motivo da falha é indicado abaixo:</p>
+						<p>Motivo: $FailureReason$</p>
+						<p>Se você tiver alguma dúvida,
+     contate o suporte técnico pelo telefone (012) 345-6789 ou envie um
+     e-mail para <a href="mailto:help.desk@mycompany.com">
+     help.desk@mycompany.com </a>
+						</p>
+						<p> - Segurança Automatizada</p>
+						<p>
+							<img ALT="Powered by Novell" SRC="cid:powered_by_novell.gif" height="29" width="80"/>
+						</p>
+					</body>
+				</html>
+			</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="notfMergeTemplateSubject">
+			<ds-value>Aviso de Falha de Redefinição de Senha</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-installationdirective">
+			<ds-value>PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48aW5zdGFsbGF0aW9uLWRpcmVjdGl2ZT4KCTxwbGFjZW1lbnQgbG9jYXRpb249Im5vdGYtY29sbGVjdGlvbiIvPgoJPGRzLWF0dHJpYnV0ZXMvPgo8L2luc3RhbGxhdGlvbi1kaXJlY3RpdmU+</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-directivechecksum">
+			<ds-value>2483156663</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-packageassocguid">
+			<ds-value>X57H182S_201007271209080157</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-packageguid">
+			<ds-value>FWSFLGUH_201007271204040551</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-contentchecksum">
+			<ds-value>3012289854</ds-value>
+		</ds-attribute>
+	</ds-attributes>
+</ds-object>

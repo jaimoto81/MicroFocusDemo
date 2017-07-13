@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.novell.designer.model:CObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:com.novell.designer.model="http://com.novell.designer.model" name="NOVLRSERVB-sub-etp" type="ScriptPolicy">
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="contents"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:InstalledLinkages" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&lt;policy-linkage>&#xA;&#x9;&lt;policy-set Driver=&quot;BVPNF84S&quot; channel=&quot;subscriber&quot; name=&quot;event&quot; order=&quot;Weight&quot; package-id=&quot;4SM8N2A0_201006281026220281&quot; value=&quot;500&quot;/>&#xA;&lt;/policy-linkage>"/>
+  <relations name="Idm:EventPolicyRefs" type="BackReference" key="#THA5BJTQ.Subscriber_"/>
+</com.novell.designer.model:CObject>

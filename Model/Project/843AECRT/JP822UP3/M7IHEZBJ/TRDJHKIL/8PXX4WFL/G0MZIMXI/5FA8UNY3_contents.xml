@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?><mapping-table>
+	<col-def name="entitlementName" type="nocase"/>
+	<col-def name="entitlementValue" type="nocase"/>
+	<col-def name="staticResource" type="nocase"/>
+</mapping-table>

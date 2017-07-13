@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><mapping-table>
+	<col-def name="key" type="nocase"/>
+	<row>
+		<col>entUserAccountDisplayName</col>
+		<col>User</col>
+	</row>
+	<col-def name="value" type="nocase"/>
+	<row>
+		<col>entGroupDisplayName</col>
+		<col>Group</col>
+	</row>
+	<row>
+		<col>entExchangeMailboxDisplayName</col>
+		<col>Mailbox</col>
+	</row>
+</mapping-table>

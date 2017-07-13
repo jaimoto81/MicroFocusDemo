@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?><html xmlns:form="http://www.novell.com/dirxml/workflow/form">
+	<form:token-descriptions>
+		<form:token-description description="Nome completo dell'utente" item-name="UserFullName"/>
+		<form:token-description description="Nome assegnato all'utente" item-name="UserGivenName"/>
+		<form:token-description description="Cognome dell'utente" item-name="UserLastName"/>
+		<form:token-description description="Nome dell'applicazione esterna" item-name="ConnectedSystemName"/>
+		<form:token-description description="Motivo dell'errore" item-name="FailureReason"/>
+	</form:token-descriptions>
+	<head>
+		<title>Notifica di errore di sincronizzazione della password</title>
+		<style>
+			<!-- body { font-family: Trebuchet MS } -->
+		</style>
+	</head>
+	<body BGCOLOR="#FFFFFF">
+		<p>Gentile $UserFullName$,</p>
+		<p>Con la presente, le notifichiamo che non è stato possibile sincronizzare la password da lei impostata sul sistema $ConnectedSystemName$ con gli altri sistemi collegati. Il motivo dell'errore è indicato di seguito:</p>
+		<p>Motivo: $FailureReason$</p>
+		<p>Per eventuali domande, può contattare l'help desk al numero (012)
+     345-6789 oppure inviare un messaggio e-mail all'indirizzo <a href="mailto:help.desk@mycompany.com">
+     help.desk@mycompany.com </a>
+		</p>
+		<p> - Automated Security</p>
+		<p>
+			<img ALT="Powered by Novell" SRC="cid:powered_by_novell.gif" height="29" width="80"/>
+		</p>
+	</body>
+</html>

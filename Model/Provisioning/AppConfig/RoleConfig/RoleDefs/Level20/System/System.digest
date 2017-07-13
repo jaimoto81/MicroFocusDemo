@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<container cn="cn=System" protected="false" readonly="false"
+    sub-container="true" type="nrfRoleDefsLevel20-System" visible="true">
+    <guid>8VIK490S</guid>
+    <modstamp>0</modstamp></container>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.novell.designer.model:CObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:com.novell.designer.model="http://com.novell.designer.model" name="system" type="DriverSet">
+  <associatedAttrSets objectURI="EdirOrphan/VEV1C4KW.Server_">
+    <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="DirXML-ConfigValues"/>
+    <attributes xsi:type="com.novell.designer.model:CStructure" attrName="JavaEnvParameters"/>
+    <attributes xsi:type="com.novell.designer.model:CStructure" attrName="NamedPasswords"/>
+  </associatedAttrSets>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="DSetContext" value="o=services"/>
+  <attributes xsi:type="com.novell.designer.model:CBoolean" attrName="DSetCreatePartition" value="true"/>
+  <attributes xsi:type="com.novell.designer.model:CStructure" attrName="DirXML-LogEvents"/>
+  <relations name="Idm:ConfigExtensions" type="Reference" key="#8LJZM285.GlobalConfig_"/>
+  <relations name="Idm:ConfigExtensions" type="Reference" key="#KVUJ0PUC.GlobalConfig_"/>
+  <relations name="Idm:Drivers" type="Child" key="#02HR14U1.Driver_"/>
+  <relations name="Idm:Drivers" type="Child" key="#0N2CCC1H.Driver_"/>
+  <relations name="Idm:Drivers" type="Child" key="#LY7QR5GR.Driver_"/>
+  <relations name="Idm:GlobalConfigs" type="Child" key="#8LJZM285.GlobalConfig_"/>
+  <relations name="Idm:GlobalConfigs" type="Child" key="#KVUJ0PUC.GlobalConfig_"/>
+  <relations name="Idm:IdentityVaults" type="BackReference" key="#V19T1CN7.IdentityVault_"/>
+  <relations name="Idm:InstalledPackages" type="Reference" key="#40TC4OI2.IdmPackage_"/>
+  <relations name="Idm:InstalledPackages" type="Reference" key="#MP1RLOFI.IdmPackage_"/>
+  <relations name="Idm:InstalledPackages" type="Reference" key="#QMTTQEFI.IdmPackage_"/>
+  <relations name="Idm:Jobs" type="Child" key="#IM662UIR.Job_"/>
+  <relations name="Idm:Libraries" type="Child" key="#BGGEC2VU.Library_"/>
+  <relations name="Idm:Servers" type="Reference" key="#VEV1C4KW.Server_"/>
+</com.novell.designer.model:CObject>

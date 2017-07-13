@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><ds-object ds-object-class="DirXML-Rule" ds-object-name="NOVLJDBCPGBS-sub-ctp-CheckObjectPassword" name="NOVLJDBCPGBS-sub-ctp-CheckObjectPassword">
+	<ds-attributes>
+		<ds-attribute ds-attr-name="XmlData">
+			<ds-value>
+				<policy>
+					<rule>
+						<description>adding Dest-Dn attribute</description>
+						<conditions>
+							<and>
+								<if-operation op="equal">check-object-password</if-operation>
+							</and>
+						</conditions>
+						<actions>
+							<do-set-local-variable name="destDN">
+								<arg-node-set>
+									<token-query class-name="User" scope="entry">
+										<arg-association>
+											<token-association/>
+										</arg-association>
+										<arg-string>
+											<token-global-variable name="column.username"/>
+										</arg-string>
+									</token-query>
+								</arg-node-set>
+							</do-set-local-variable>
+							<do-set-local-variable name="username">
+								<arg-string>
+									<token-global-variable name="column.username"/>
+								</arg-string>
+							</do-set-local-variable>
+							<do-set-op-dest-dn>
+								<arg-dn>
+									<token-xpath expression="$destDN/attr[@attr-name=$username]/value/text()"/>
+								</arg-dn>
+							</do-set-op-dest-dn>
+						</actions>
+					</rule>
+				</policy>
+			</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-installationdirective">
+			<ds-value>PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48aW5zdGFsbGF0aW9uLWRpcmVjdGl2ZT4KCTxwbGFjZW1lbnQgbG9jYXRpb249InN1YnNjcmliZXIiLz4KCTxkcy1hdHRyaWJ1dGVzLz4KCTxwb2xpY3ktbGlua2FnZT4KCQk8cG9saWN5LXNldCBjaGFubmVsPSJzdWJzY3JpYmVyIiBuYW1lPSJjb21tYW5kIiBvcmRlcj0iV2VpZ2h0IiB2YWx1ZT0iNTAwIi8+Cgk8L3BvbGljeS1saW5rYWdlPgo8L2luc3RhbGxhdGlvbi1kaXJlY3RpdmU+</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-directivechecksum">
+			<ds-value>3491948463</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-packageassocguid">
+			<ds-value>31QCVIVK_201209211750180686</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-packageguid">
+			<ds-value>8UMZJFVS_201109091540440796</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-contentchecksum">
+			<ds-value>1730169863</ds-value>
+		</ds-attribute>
+	</ds-attributes>
+</ds-object>

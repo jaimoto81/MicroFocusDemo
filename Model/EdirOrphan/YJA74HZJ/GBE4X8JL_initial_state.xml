@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><ds-object ds-object-class="notfMergeTemplate" ds-object-name="Password Set Fail_nl" name="Password Set Fail_nl">
+	<ds-attributes>
+		<ds-attribute ds-attr-name="XmlData">
+			<ds-value>
+				<html xmlns:form="http://www.novell.com/dirxml/workflow/form">
+					<form:token-descriptions>
+						<form:token-description description="The user's full name" item-name="UserFullName"/>
+						<form:token-description description="The user's given name" item-name="UserGivenName"/>
+						<form:token-description description="The user's last name" item-name="UserLastName"/>
+						<form:token-description description="The external applicaton name" item-name="ConnectedSystemName"/>
+						<form:token-description description="The failure reason" item-name="FailureReason"/>
+					</form:token-descriptions>
+					<head>
+						<title>Wachtwoord instellen mislukt</title>
+						<style>
+							<!-- body { font-family: Trebuchet MS } -->
+						</style>
+					</head>
+					<body BGCOLOR="#FFFFFF">
+						<p>Beste $UserFullName$,</p>
+						<p>Dit is een melding dat uw wachtwoord niet kon worden ingesteld in het systeem $ConnectedSystemName$. De reden voor het mislukken wordt hieronder vermeld:</p>
+						<p>Reden: $FailureReason$</p>
+						<p>Mocht u nog vragen hebben, neem dan contact op met de helpdesk op (012) 345-6789 of stuur een e-mail
+     naar <a href="mailto:help.desk@mycompany.com">
+     help.desk@mycompany.com </a>
+						</p>
+						<p> - Geautomatiseerde beveiliging</p>
+						<p>
+							<img ALT="Powered by Novell" SRC="cid:powered_by_novell.gif" height="29" width="80"/>
+						</p>
+					</body>
+				</html>
+			</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="notfMergeTemplateSubject">
+			<ds-value>Wachtwoord instellen mislukt</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-installationdirective">
+			<ds-value>PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48aW5zdGFsbGF0aW9uLWRpcmVjdGl2ZT4KCTxwbGFjZW1lbnQgbG9jYXRpb249Im5vdGYtY29sbGVjdGlvbiIvPgoJPGRzLWF0dHJpYnV0ZXMvPgo8L2luc3RhbGxhdGlvbi1kaXJlY3RpdmU+</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-directivechecksum">
+			<ds-value>2483156663</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-packageassocguid">
+			<ds-value>P58MQUFN_201007271209080259</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-packageguid">
+			<ds-value>FWSFLGUH_201007271204040551</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-contentchecksum">
+			<ds-value>2481232122</ds-value>
+		</ds-attribute>
+	</ds-attributes>
+</ds-object>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><ds-object ds-object-class="DirXML-Rule" ds-object-name="NOVLJDBCCOMM-pub-pp" name="NOVLJDBCCOMM-pub-pp">
+	<ds-attributes>
+		<ds-attribute ds-attr-name="XmlData">
+			<ds-value>
+				<policy>
+					<rule>
+						<description>Default User Placement</description>
+						<conditions>
+							<and>
+								<if-class-name mode="nocase" op="equal">User</if-class-name>
+							</and>
+						</conditions>
+						<actions>
+							<do-set-op-dest-dn>
+								<arg-dn>
+									<token-text>\</token-text>
+									<token-global-variable name="dirxml.auto.treename"/>
+									<token-text>\</token-text>
+									<token-global-variable name="idv.dit.data.users"/>
+									<token-text>\User</token-text>
+									<token-src-name/>
+								</arg-dn>
+							</do-set-op-dest-dn>
+							<do-break/>
+						</actions>
+					</rule>
+					<rule>
+						<description>Default Group Placement</description>
+						<conditions>
+							<and>
+								<if-class-name mode="nocase" op="equal">Group</if-class-name>
+							</and>
+						</conditions>
+						<actions>
+							<do-set-op-dest-dn>
+								<arg-dn>
+									<token-text>\</token-text>
+									<token-global-variable name="dirxml.auto.treename"/>
+									<token-text>\</token-text>
+									<token-global-variable name="idv.dit.data.groups"/>
+									<token-text>\Group</token-text>
+									<token-src-name/>
+								</arg-dn>
+							</do-set-op-dest-dn>
+							<do-break/>
+						</actions>
+					</rule>
+				</policy>
+			</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-installationdirective">
+			<ds-value>PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48aW5zdGFsbGF0aW9uLWRpcmVjdGl2ZT4KCTxwbGFjZW1lbnQgbG9jYXRpb249InB1Ymxpc2hlciIvPgoJPGRzLWF0dHJpYnV0ZXMvPgoJPHBvbGljeS1saW5rYWdlPgoJCTxwb2xpY3ktc2V0IGNoYW5uZWw9InB1Ymxpc2hlciIgbmFtZT0icGxhY2VtZW50IiBvcmRlcj0iV2VpZ2h0IiB2YWx1ZT0iNTAwIi8+Cgk8L3BvbGljeS1saW5rYWdlPgo8L2luc3RhbGxhdGlvbi1kaXJlY3RpdmU+</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-directivechecksum">
+			<ds-value>141364481</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-packageassocguid">
+			<ds-value>LTXO440Z_201408131158460687</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-packageguid">
+			<ds-value>OUSAWV9O_201109241840310281</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-contentchecksum">
+			<ds-value>2901058012</ds-value>
+		</ds-attribute>
+	</ds-attributes>
+</ds-object>

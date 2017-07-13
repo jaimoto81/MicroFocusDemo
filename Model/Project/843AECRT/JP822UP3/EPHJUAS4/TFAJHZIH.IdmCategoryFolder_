@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.novell.designer.model:CObject xmlns:com.novell.designer.model="http://com.novell.designer.model" name="JDBC">
+  <relations name="Idm:Packages" type="Child" key="#ZA85F0O7.IdmPackage_"/>
+  <relations name="Idm:Packages" type="Child" key="#1RDGLHNY.IdmPackage_"/>
+  <relations name="Idm:Packages" type="Child" key="#9V8ITPLL.IdmPackage_"/>
+  <relations name="Idm:Packages" type="Child" key="#B94IOFGA.IdmPackage_"/>
+  <relations name="Idm:Packages" type="Child" key="#5T6DV0KS.IdmPackage_"/>
+  <relations name="Idm:Packages" type="Child" key="#I8HCUBRW.IdmPackage_"/>
+  <relations name="Idm:Packages" type="Child" key="#EIF1EXSS.IdmPackage_"/>
+  <relations name="Idm:Packages" type="Child" key="#0CLIJAWP.IdmPackage_"/>
+  <relations name="Idm:Packages" type="Child" key="#VEAMJY5R.IdmPackage_"/>
+  <relations name="Idm:Packages" type="Child" key="#XXPQICZC.IdmPackage_"/>
+</com.novell.designer.model:CObject>

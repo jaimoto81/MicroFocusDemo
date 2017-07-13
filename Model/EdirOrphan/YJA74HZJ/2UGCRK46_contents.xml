@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?><html xmlns:form="http://www.novell.com/dirxml/workflow/form">
+	<form:token-descriptions>
+		<form:token-description description="The user's full name" item-name="UserFullName"/>
+		<form:token-description description="The user's given name" item-name="UserGivenName"/>
+		<form:token-description description="The user's last name" item-name="UserLastName"/>
+		<form:token-description description="The external applicaton name" item-name="ConnectedSystemName"/>
+		<form:token-description description="The failure reason" item-name="FailureReason"/>
+	</form:token-descriptions>
+	<head>
+		<title>Wachtwoord opnieuw instellen mislukt</title>
+		<style>
+			<!-- body { font-family: Trebuchet MS } -->
+		</style>
+	</head>
+	<body BGCOLOR="#FFFFFF">
+		<p>Beste $UserFullName$,</p>
+		<p>Dit is een melding dat uw wachtwoord niet opnieuw kon worden ingesteld in het systeem$ConnectedSystemName$. De reden voor het mislukken wordt hieronder vermeld:</p>
+		<p>Reden: $FailureReason$</p>
+		<p>Mocht u nog vragen hebben, neem dan contact op met de helpdesk op (012) 345-6789 of stuur een e-mail
+     naar <a href="mailto:help.desk@mycompany.com">
+     help.desk@mycompany.com </a>
+		</p>
+		<p> - Geautomatiseerde beveiliging</p>
+		<p>
+			<img ALT="Powered by Novell" SRC="cid:powered_by_novell.gif" height="29" width="80"/>
+		</p>
+	</body>
+</html>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?><entitlement conflict-resolution="union" description="The Exchange Mailbox Entitlement grants or denies an Exchange mailbox for the user in Microsoft Exchange." display-name="Exchange Mailbox Entitlement">
+	<values multi-valued="true">
+		<query-app>
+			<query-xml>
+				<nds dtdversion="2.0">
+					<input>
+						<query class-name="msExchPrivateMDB" scope="subtree">
+							<search-class class-name="msExchPrivateMDB"/>
+							<read-attr attr-name="msExchOwningServer"/>
+							<read-attr attr-name="CN"/>
+						</query>
+					</input>
+				</nds>
+			</query-xml>
+			<result-set>
+				<display-name>
+					<token-attr attr-name="CN"/>
+				</display-name>
+				<description>
+					<token-attr attr-name="msExchOwningServer"/>
+				</description>
+				<ent-value>
+					<token-src-dn/>
+				</ent-value>
+			</result-set>
+		</query-app>
+	</values>
+</entitlement>

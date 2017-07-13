@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?><policy xmlns:jadutil="http://www.novell.com/nxsl/java/com.novell.nds.dirxml.driver.ad.util.Utilities">
+	<description>Convert selected attributes to a form most commonly used in the Identity Vault.</description>
+	<rule>
+		<description>Intercept ADDomain (tagged identity query) query response</description>
+		<conditions>
+			<and>
+				<if-operation mode="case" op="equal">instance</if-operation>
+				<if-class-name mode="nocase" op="equal">__driver_identification_class__</if-class-name>
+				<if-xpath op="true">//status[@event-id='query-driver-ident']/operation-data/@UserAccountEntitlementQuery</if-xpath>
+			</and>
+		</conditions>
+		<actions>
+			<do-strip-xpath expression="."/>
+		</actions>
+	</rule>
+	<rule>
+		<description>Intercept ADDomain (tagged identity query) query status</description>
+		<conditions>
+			<and>
+				<if-xpath op="true">../status[@event-id='query-driver-ident']/operation-data/@UserAccountEntitlementQuery</if-xpath>
+			</and>
+		</conditions>
+		<actions>
+			<do-set-local-variable name="domainName" scope="policy">
+				<arg-string>
+					<token-global-variable name="drv.domain.dns.name"/>
+				</arg-string>
+			</do-set-local-variable>
+			<do-trace-message>
+				<arg-string>
+					<token-text xml:space="preserve">found domain name: </token-text>
+					<token-local-variable name="domainName"/>
+				</arg-string>
+			</do-trace-message>
+			<do-append-xml-element expression=".." name="instance"/>
+			<do-set-xml-attr expression="../instance[last()]" name="class-name">
+				<arg-string>
+					<token-text xml:space="preserve">ADDomain</token-text>
+				</arg-string>
+			</do-set-xml-attr>
+			<do-set-xml-attr expression="../instance[last()]" name="src-dn">
+				<arg-string>
+					<token-local-variable name="domainName"/>
+				</arg-string>
+			</do-set-xml-attr>
+			<do-append-xml-element expression="../instance[last()]" name="attr"/>
+			<do-set-xml-attr expression="../instance[last()]/attr[last()]" name="attr-name">
+				<arg-string>
+					<token-text xml:space="preserve">ADDomainDisplayName</token-text>
+				</arg-string>
+			</do-set-xml-attr>
+			<do-append-xml-element expression="../instance[last()]/attr[last()]" name="value"/>
+			<do-append-xml-text expression="../instance[last()]/attr[last()]/value[last()]">
+				<arg-string>
+					<token-text xml:space="preserve">Account for domain: </token-text>
+					<token-local-variable name="domainName"/>
+				</arg-string>
+			</do-append-xml-text>
+			<do-append-xml-element expression="../instance[last()]" name="attr"/>
+			<do-set-xml-attr expression="../instance[last()]/attr[last()]" name="attr-name">
+				<arg-string>
+					<token-text xml:space="preserve">ADDomainDescription</token-text>
+				</arg-string>
+			</do-set-xml-attr>
+			<do-append-xml-element expression="../instance[last()]/attr[last()]" name="value"/>
+			<do-append-xml-text expression="../instance[last()]/attr[last()]/value[last()]">
+				<arg-string>
+					<token-text xml:space="preserve">User account in Active Directory domain </token-text>
+					<token-local-variable name="domainName"/>
+				</arg-string>
+			</do-append-xml-text>
+			<do-append-xml-element expression="../instance[last()]" name="attr"/>
+			<do-set-xml-attr expression="../instance[last()]/attr[last()]" name="attr-name">
+				<arg-string>
+					<token-text xml:space="preserve">ADDomainValue</token-text>
+				</arg-string>
+			</do-set-xml-attr>
+			<do-append-xml-element expression="../instance[last()]/attr[last()]" name="value"/>
+			<do-append-xml-text expression="../instance[last()]/attr[last()]/value[last()]">
+				<arg-string>
+					<token-local-variable name="domainName"/>
+				</arg-string>
+			</do-append-xml-text>
+			<do-strip-xpath expression=".[count(attr)=0]"/>
+		</actions>
+	</rule>
+	<rule>
+		<description>Check target of add-association for group membership entitlements</description>
+		<comment>Group membership entitlements assigned to users being created in Active Directory cannot be processed until the user is successfully created. The add-association signals that an object has been created by the driver in Active Directory. If the object is also tagged for group entitlement processing, do the work now.</comment>
+		<conditions>
+			<and>
+				<if-global-variable mode="nocase" name="drv.entitlement.Group" op="equal">true</if-global-variable>
+				<if-operation op="equal">add-association</if-operation>
+				<if-op-property name="check-group-entitlements" op="equal">true</if-op-property>
+				<if-entitlement name="Group" op="available"/>
+			</and>
+		</conditions>
+		<actions>
+			<do-for-each>
+				<arg-node-set>
+					<token-entitlement name="Group"/>
+				</arg-node-set>
+				<arg-actions>
+					<do-set-local-variable name="group-assoc" scope="policy">
+						<arg-string>
+							<token-xpath expression="es:getEntParamField($current-node,&apos;ID&apos;)&#xa;"/>
+						</arg-string>
+					</do-set-local-variable>
+					<do-add-src-attr-value class-name="group" name="member">
+						<arg-association>
+							<token-local-variable name="group-assoc"/>
+						</arg-association>
+						<arg-value type="dn">
+							<token-dest-dn/>
+						</arg-value>
+					</do-add-src-attr-value>
+					<do-set-xml-attr expression="../modify[last()]/modify-attr[last()]/add-value[last()]/value[last()]" name="association-ref">
+						<arg-string>
+							<token-xpath expression="./text()"/>
+						</arg-string>
+					</do-set-xml-attr>
+				</arg-actions>
+			</do-for-each>
+		</actions>
+	</rule>
+	<rule>
+		<description>Check target of add-association for Exchange mailbox entitlements</description>
+		<comment xml:space="preserve">Exchange mailbox entitlements assigned to users being created in Active Directory cannot be processed until the user is successfully created. The add-association signals that an object has been created by the driver in Active Directory. If the object is also tagged for mailbox entitlement processing, do the work now.</comment>
+		<conditions>
+			<and>
+				<if-global-variable mode="nocase" name="drv.exchMailboxMethod" op="equal">entitlement</if-global-variable>
+				<if-operation op="equal">add-association</if-operation>
+				<if-op-property mode="nocase" name="check-exch-mailbox-entitlements" op="equal">true</if-op-property>
+				<if-entitlement name="ExchangeMailbox" op="available"/>
+			</and>
+		</conditions>
+		<actions>
+			<do-for-each>
+				<arg-node-set>
+					<token-entitlement name="ExchangeMailbox"/>
+				</arg-node-set>
+				<arg-actions>
+					<do-set-local-variable name="homeMDB" scope="policy">
+						<arg-string>
+							<token-xpath expression="es:getEntParamField($current-node,'ID')"/>
+						</arg-string>
+					</do-set-local-variable>
+					<do-set-src-attr-value name="homeMDB">
+						<arg-association>
+							<token-xpath expression="./text()"/>
+						</arg-association>
+						<arg-value type="string">
+							<token-local-variable name="homeMDB"/>
+						</arg-value>
+					</do-set-src-attr-value>
+					<do-set-src-attr-value name="mailNickname">
+						<arg-association>
+							<token-xpath expression="./text()"/>
+						</arg-association>
+						<arg-value type="string">
+							<token-substring length="20">
+								<token-replace-all regex="[^a-zA-Z0-9\x21\x23-\x29\x2d\x2e\x40\x5e-\x60\x7b\x7d\x7e\xc0-\xf6\xf8-\xff\u0410-\u044f]" replace-with="">
+									<token-src-name/>
+								</token-replace-all>
+							</token-substring>
+						</arg-value>
+					</do-set-src-attr-value>
+				</arg-actions>
+			</do-for-each>
+		</actions>
+	</rule>
+</policy>

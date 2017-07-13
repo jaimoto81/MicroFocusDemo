@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.novell.designer.model:CObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:com.novell.designer.model="http://com.novell.designer.model" name="NOVLCOMSET-GCVs">
+  <associatedAttrSets objectURI="EdirOrphan/VEV1C4KW.Server_">
+    <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="DirXML-ConfigValues"/>
+  </associatedAttrSets>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="initial_state"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:InstallationDirective" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&lt;installation-directive mode=&quot;all&quot;>&#xA;&#x9;&lt;placement location=&quot;default&quot;/>&#xA;&#x9;&lt;ds-attributes/>&#xA;&#x9;&lt;configuration-values>&#xA;&#x9;&#x9;&lt;definitions display-name=&quot;Common Settings&quot;>&#xA;&#x9;&#x9;&#x9;&lt;header display-name=&quot;xlfid(NOVLCOMSET.globalconfig.NOVLCOMSETGCVs.gcv.header.CommonSettings)Common Settings&quot;/>&#xA;&#x9;&#x9;&#x9;&lt;definition display-name=&quot;xlfid(NOVLCOMSET.globalconfig.NOVLCOMSETGCVs.gcv.idv.dit.data.users)User Container&quot; dn-space=&quot;dirxml&quot; dn-type=&quot;slash&quot; name=&quot;idv.dit.data.users&quot; type=&quot;dn&quot;>&#xA;&#x9;&#x9;&#x9;&#x9;&lt;value>data\users&lt;/value>&#xA;&#x9;&#x9;&#x9;&lt;/definition>&#xA;&#x9;&#x9;&#x9;&lt;definition display-name=&quot;xlfid(NOVLCOMSET.globalconfig.NOVLCOMSETGCVs.gcv.idv.dit.data.groups)Group Container&quot; dn-space=&quot;dirxml&quot; dn-type=&quot;slash&quot; name=&quot;idv.dit.data.groups&quot; type=&quot;dn&quot;>&#xA;&#x9;&#x9;&#x9;&#x9;&lt;value>data\groups&lt;/value>&#xA;&#x9;&#x9;&#x9;&lt;/definition>&#xA;&#x9;&#x9;&lt;/definitions>&#xA;&#x9;&lt;/configuration-values>&#xA;&#x9;&lt;policy-linkage>&#xA;&#x9;&#x9;&lt;policy-set name=&quot;gcv&quot; order=&quot;last&quot;/>&#xA;&#x9;&lt;/policy-linkage>&#xA;&lt;/installation-directive>"/>
+  <attributes xsi:type="com.novell.designer.model:CLong" attrName="Idm:DirectiveChecksum" value="847387981"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:PackageAssocGuid" value="SCSW22E9_201006021538100215"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:PackageGuid" value="4YGKJX0U_201006021536040516"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="IdmParameter:Modeler.NameInited" value="true"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:InstalledLinkages" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&lt;policy-linkage>&#xA;&#x9;&lt;policy-set name=&quot;gcv&quot; order=&quot;Weight&quot; package-id=&quot;4YGKJX0U_201006021536040516&quot; value=&quot;9223372036854775807&quot;/>&#xA;&lt;/policy-linkage>"/>
+  <attributes xsi:type="com.novell.designer.model:CLong" attrName="Idm:ContentChecksum" value="3678764875"/>
+  <relations name="Idm:ConfigExtensionDSetRefs" type="BackReference" key="#ULWFK3Y1.DriverSet_"/>
+</com.novell.designer.model:CObject>

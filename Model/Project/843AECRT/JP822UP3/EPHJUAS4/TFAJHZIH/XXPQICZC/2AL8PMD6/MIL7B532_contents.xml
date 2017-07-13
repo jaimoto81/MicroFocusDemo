@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?><configuration-values>
+	<definitions display-name="Managed System">
+		<header display-name="xlfid(NOVLJDBCMNSI.idmresource.NTQJDBCMSISystemOwnershipPrompts.gcv.header.SystemOwnership)System Ownership"/>
+		<definition display-name="xlfid(NOVLJDBCMNSI.idmresource.NTQJDBCMSISystemOwnershipPrompts.gcv.msysinfo.drv.ms.businessOwner)Business Owner" dn-space="dirxml" dn-type="ldap" name="msysinfo.drv.ms.businessOwner" type="dn">
+			<description>xlfid(NOVLJDBCMNSI.idmresource.NTQJDBCMSISystemOwnershipPrompts.gcv.dscr.msysinfo.drv.ms.businessOwner)Specify the business owner of the managed system. Select a user object (not a role, group, or container).</description>
+			<value/>
+		</definition>
+		<definition display-name="xlfid(NOVLJDBCMNSI.idmresource.NTQJDBCMSISystemOwnershipPrompts.gcv.msysinfo.drv.ms.applicationOwner)Application Owner" dn-space="dirxml" dn-type="ldap" name="msysinfo.drv.ms.applicationOwner" type="dn">
+			<description>xlfid(NOVLJDBCMNSI.idmresource.NTQJDBCMSISystemOwnershipPrompts.gcv.dscr.msysinfo.drv.ms.applicationOwner)Specify the application owner of the managed system. Select a user object (not a role, group, or container).</description>
+			<value/>
+		</definition>
+	</definitions>
+</configuration-values>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?><configuration-values>
+	<definitions>
+		<header display-name="xlfid(NOVLPGSDISYN.idmresource.NOVLPGSDISYNPubModeGCVPrompt.gcv.header.PublicationOption)Publication Option"/>
+		<group>
+			<definition display-name="xlfid(NOVLPGSDISYN.idmresource.NOVLPGSDISYNPubModeGCVPrompt.gcv.publication-mode)Publication mode:" name="publication-mode" type="enum">
+				<description>xlfid(NOVLPGSDISYN.idmresource.NOVLPGSDISYNPubModeGCVPrompt.gcv.dscr.publication-mode)Select whether you want to use triggered or triggerless publication.  Triggered publication uses database triggers to capture events and log them in a table.  Triggerless publication derives events by inspecting database tables or views.  Triggered publication is more efficient, but requires substantial database-side configuration.  Triggerless publication is less efficient, but requires minimal database-side configuration.</description>
+				<enum-choice display-name="xlfid(NOVLPGSDISYN.idmresource.NOVLPGSDISYNPubModeGCVPrompt.gcv.choice.publication-mode.triggered)triggered">_</enum-choice>
+				<enum-choice display-name="xlfid(NOVLPGSDISYN.idmresource.NOVLPGSDISYNPubModeGCVPrompt.gcv.choice.publication-mode.triggerless)triggerless">2</enum-choice>
+				<value>_</value>
+			</definition>
+			<subordinates active-value="_">
+				<definition display-name="xlfid(NOVLPGSDISYN.idmresource.NOVLPGSDISYNPubModeGCVPrompt.gcv.post-poll-stmt1)Post polling statements:" name="post-poll-stmt1" type="string">
+					<description>xlfid(NOVLPGSDISYN.idmresource.NOVLPGSDISYNPubModeGCVPrompt.gcv.dscr.post-poll-stmt1)Specify the statements, if any, that are executed after an active polling cycle.  This parameter is useful for calling a stored procedure or function that moves processed rows from the event log table into a history table and rebuilds indexes on the event log table.  Use semicolon as the delimiter for multiple values.</description>
+					<value>SELECT direct.proc_directlog();DELETE FROM indirect.indirect_process</value>
+				</definition>
+			</subordinates>
+			<subordinates active-value="2">
+				<definition display-name="xlfid(NOVLPGSDISYN.idmresource.NOVLPGSDISYNPubModeGCVPrompt.gcv.post-poll-stmt2)Post polling statements:" name="post-poll-stmt2" type="string">
+					<description>xlfid(NOVLPGSDISYN.idmresource.NOVLPGSDISYNPubModeGCVPrompt.gcv.dscr.post-poll-stmt2)Specify the statements, if any, that are executed after an active polling cycle.  This parameter is useful for calling a stored procedure or function that moves processed rows from the event log table into a history table and rebuilds indexes on the event log table.  Use semicolon as the delimiter for multiple values.</description>
+					<value>DELETE FROM direct.direct_process; DELETE FROM indirect.indirect_process</value>
+				</definition>
+			</subordinates>
+		</group>
+	</definitions>
+</configuration-values>

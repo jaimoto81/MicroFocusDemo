@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?><configuration-values>
+	<definitions>
+		<header display-name="xlfid(NOVLADBASE.idmresource.NOVLADBASEDriverNamePrompt.gcv.header.DriverInformation)Driver Information" driver-name="true"/>
+		<definition display-name="xlfid(NOVLADBASE.idmresource.NOVLADBASEDriverNamePrompt.gcv.name)Driver Name" driver-name="true" mandatory="true" name="name" type="string">
+			<description>xlfid(NOVLADBASE.idmresource.NOVLADBASEDriverNamePrompt.gcv.dscr.name)Enter the driver name.</description>
+			<value>Active Directory Driver</value>
+		</definition>
+	</definitions>
+</configuration-values>

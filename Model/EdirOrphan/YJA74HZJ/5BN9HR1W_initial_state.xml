@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><ds-object ds-object-class="notfMergeTemplate" ds-object-name="Password Reset Fail_fr" name="Password Reset Fail_fr">
+	<ds-attributes>
+		<ds-attribute ds-attr-name="XmlData">
+			<ds-value>
+				<html xmlns:form="http://www.novell.com/dirxml/workflow/form">
+					<form:token-descriptions>
+						<form:token-description description="Nom complet de l'utilisateur" item-name="UserFullName"/>
+						<form:token-description description="Prénom de l'utilisateur" item-name="UserGivenName"/>
+						<form:token-description description="Nom de l'utilisateur" item-name="UserLastName"/>
+						<form:token-description description="Nom de l'applicaton externe" item-name="ConnectedSystemName"/>
+						<form:token-description description="Motif de l'échec" item-name="FailureReason"/>
+					</form:token-descriptions>
+					<head>
+						<title>Notification d'échec de la réinitialisation du mot de passe</title>
+						<style>
+							<!-- body { font-family: Trebuchet MS } -->
+						</style>
+					</head>
+					<body BGCOLOR="#FFFFFF">
+						<p>Cher/Chère $UserFullName$,</p>
+						<p>Par la présente, nous vous informons que votre mot de passe n'a pas pu être réinitialisé dans le système $ConnectedSystemName$. Le motif de cet échec est indiqué ci-après :</p>
+						<p>Motif : $FailureReason$</p>
+						<p>Pour toute question,
+     veuillez contacter le service d'assistance par téléphone au (012) 345-6789 ou envoyer un message électronique
+     à l'adresse suivante : <a href="mailto:help.desk@mycompany.com">
+     help.desk@mycompany.com </a>
+						</p>
+						<p> - Sécurité automatisée</p>
+						<p>
+							<img ALT="Powered by Novell" SRC="cid:powered_by_novell.gif" height="29" width="80"/>
+						</p>
+					</body>
+				</html>
+			</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="notfMergeTemplateSubject">
+			<ds-value>Notification d'échec de la réinitialisation du mot de passe</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-installationdirective">
+			<ds-value>PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48aW5zdGFsbGF0aW9uLWRpcmVjdGl2ZT4KCTxwbGFjZW1lbnQgbG9jYXRpb249Im5vdGYtY29sbGVjdGlvbiIvPgoJPGRzLWF0dHJpYnV0ZXMvPgo8L2luc3RhbGxhdGlvbi1kaXJlY3RpdmU+</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-directivechecksum">
+			<ds-value>2483156663</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-packageassocguid">
+			<ds-value>8CIKO9N0_201007271209080126</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-packageguid">
+			<ds-value>FWSFLGUH_201007271204040551</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-contentchecksum">
+			<ds-value>2716890040</ds-value>
+		</ds-attribute>
+	</ds-attributes>
+</ds-object>

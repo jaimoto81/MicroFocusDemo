@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?><html xmlns:form="http://www.novell.com/dirxml/workflow/form">
+	<form:token-descriptions>
+		<form:token-description description="Nom complet de l'utilisateur" item-name="UserFullName"/>
+		<form:token-description description="Prénom de l'utilisateur" item-name="UserGivenName"/>
+		<form:token-description description="Nom de l'utilisateur" item-name="UserLastName"/>
+		<form:token-description description="Nom de l'applicaton externe" item-name="ConnectedSystemName"/>
+		<form:token-description description="Motif de l'échec" item-name="FailureReason"/>
+	</form:token-descriptions>
+	<head>
+		<title>Notification d'échec de la synchronisation du mot de passe</title>
+		<style>
+			<!-- body { font-family: Trebuchet MS } -->
+		</style>
+	</head>
+	<body BGCOLOR="#FFFFFF">
+		<p>Cher/Chère $UserFullName$,</p>
+		<p>Par la présente, nous vous informons que votre mot de passe du système $ConnectedSystemName$ n'a pas pu être synchronisé avec les autres systèmes connectés. Le motif de cet échec est indiqué ci-après :</p>
+		<p>Motif : $FailureReason$</p>
+		<p>Pour toute questions, veuillez contacter le service d'assistance par téléphone au (012)
+     345-6789 ou envoyer un message électronique à l'adresse suivante : <a href="mailto:help.desk@mycompany.com">
+     help.desk@mycompany.com </a>
+		</p>
+		<p> - Sécurité automatisée</p>
+		<p>
+			<img ALT="Powered by Novell" SRC="cid:powered_by_novell.gif" height="29" width="80"/>
+		</p>
+	</body>
+</html>

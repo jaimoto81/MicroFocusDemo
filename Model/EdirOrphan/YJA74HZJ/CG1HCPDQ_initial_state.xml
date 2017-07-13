@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><ds-object ds-object-class="notfMergeTemplate" ds-object-name="Password Reset Fail_zh-CN" name="Password Reset Fail_zh-CN">
+	<ds-attributes>
+		<ds-attribute ds-attr-name="XmlData">
+			<ds-value>
+				<html xmlns:form="http://www.novell.com/dirxml/workflow/form">
+					<form:token-descriptions>
+						<form:token-description description="用户全名" item-name="UserFullName"/>
+						<form:token-description description="用户的名字" item-name="UserGivenName"/>
+						<form:token-description description="用户的姓" item-name="UserLastName"/>
+						<form:token-description description="外部应用程序名称" item-name="ConnectedSystemName"/>
+						<form:token-description description="失败原因" item-name="FailureReason"/>
+					</form:token-descriptions>
+					<head>
+						<title>口令重设置失败通知</title>
+						<style>
+							<!-- body { font-family: Trebuchet MS } -->
+						</style>
+					</head>
+					<body BGCOLOR="#FFFFFF">
+						<p>亲爱的 $UserFullName$：</p>
+						<p>本通知是告诉您，您在 $ConnectedSystemName$ 系统中的口令无法重设置..  失败原因指示如下：</p>
+						<p>原因：$FailureReason$</p>
+						<p>如果您还有问题，
+     请致电咨询台 (012) 345-6789 或发送电子邮件到 <a href="mailto:help.desk@mycompany.com">
+     help.desk@mycompany.com </a>
+						</p>
+						<p> - 自动化安全</p>
+						<p>
+							<img ALT="Powered by Novell" SRC="cid:powered_by_novell.gif" height="29" width="80"/>
+						</p>
+					</body>
+				</html>
+			</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="notfMergeTemplateSubject">
+			<ds-value>口令重设置失败通知</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-installationdirective">
+			<ds-value>PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48aW5zdGFsbGF0aW9uLWRpcmVjdGl2ZT4KCTxwbGFjZW1lbnQgbG9jYXRpb249Im5vdGYtY29sbGVjdGlvbiIvPgoJPGRzLWF0dHJpYnV0ZXMvPgo8L2luc3RhbGxhdGlvbi1kaXJlY3RpdmU+</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-directivechecksum">
+			<ds-value>2483156663</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-packageassocguid">
+			<ds-value>GZEQRWS2_201007271209080182</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-packageguid">
+			<ds-value>FWSFLGUH_201007271204040551</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-contentchecksum">
+			<ds-value>734928892</ds-value>
+		</ds-attribute>
+	</ds-attributes>
+</ds-object>

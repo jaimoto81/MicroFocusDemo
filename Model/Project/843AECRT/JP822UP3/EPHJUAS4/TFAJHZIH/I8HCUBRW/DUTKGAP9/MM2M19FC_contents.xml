@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?><entitlement conflict-resolution="priority" description="Account Entitlement." display-name="Account">
+	<values multi-valued="false">
+		<query-app>
+			<query-xml>
+				<nds dtdversion="2.0">
+					<input>
+						<query class-name="User" scope="">
+							<search-class class-name="User"/>
+							<read-attr attr-name="Description"/>
+							<read-attr attr-name="idu"/>
+						</query>
+					</input>
+				</nds>
+			</query-xml>
+			<result-set>
+				<display-name>
+					<token-attr attr-name="idu"/>
+				</display-name>
+				<description>
+					<token-attr attr-name="Description"/>
+				</description>
+				<ent-value>
+					<token-attr attr-name="idu"/>
+				</ent-value>
+			</result-set>
+		</query-app>
+	</values>
+</entitlement>

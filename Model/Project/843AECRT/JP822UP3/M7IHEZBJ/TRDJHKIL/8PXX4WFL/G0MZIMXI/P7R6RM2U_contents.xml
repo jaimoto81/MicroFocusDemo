@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?><filter>
+	<filter-class class-name="User" publisher="ignore" publisher-create-homedir="true" publisher-track-template-member="true" subscriber="sync">
+		<filter-attr attr-name="DirXML-EntitlementRef" merge-authority="edir" publisher="ignore" publisher-optimize-modify="true" subscriber="notify"/>
+		<filter-attr attr-name="Group Membership" merge-authority="app" publisher="notify" publisher-optimize-modify="true" subscriber="ignore"/>
+		<filter-attr attr-name="Mailbox ID" merge-authority="default" publisher="notify" publisher-optimize-modify="true" subscriber="ignore"/>
+	</filter-class>
+</filter>

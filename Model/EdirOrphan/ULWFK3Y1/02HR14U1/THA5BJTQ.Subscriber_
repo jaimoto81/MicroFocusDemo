@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.novell.designer.model:CObject xmlns:com.novell.designer.model="http://com.novell.designer.model" name="Subscriber" type="Subscriber">
+  <relations name="Idm:EventPolicies" type="Reference" key="#ZJ5YI8KN.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#ZJ5YI8KN.ScriptPolicy_"/>
+  <relations name="Idm:Resources" type="Child" key="#EYTVNM7N.MappingTableResource_"/>
+</com.novell.designer.model:CObject>

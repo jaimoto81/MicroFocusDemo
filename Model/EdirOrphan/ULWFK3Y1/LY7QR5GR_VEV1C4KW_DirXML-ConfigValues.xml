@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><configuration-values>
+	<header display-name="PostgreSQL Base GCV" hide="true"/>
+	<definitions>
+		<definition display-name="Synchronization model:" name="jdbc.SyncModel" type="enum">
+			<description>Select a Direct or Indirect synchronization model.  Direct synchronization uses views to synchronize directly to existing tables of arbitrary structure.  Indirect synchronization synchronizes to intermediate staging tables with a particular structure.</description>
+			<enum-choice display-name="Indirect">indirect</enum-choice>
+			<enum-choice display-name="Direct">direct</enum-choice>
+			<value>direct</value>
+		</definition>
+		<definition display-name="Third-party JDBC driver class name:" hide="true" name="driver.class.jdbc" type="string">
+			<description>Specify the class name of your third-party JDBC driver.  Verify that the jar or zip file containing this class is version compatible with the target database.</description>
+			<value>org.postgresql.Driver</value>
+		</definition>
+		<definition display-name="Driver Name:" hide="true" name="drv.name" type="string">
+			<value xml:space="preserve"/>
+		</definition>
+		<header display-name="Driver Options:" hide="true"/>
+		<definition display-name="Synchronization filter:" hide="true" name="sync-filter" type="enum">
+			<description>On start-up, the driver caches database metadata on a limited number of tables or views to facilitate data synchronization.  You can cache no table or view metadata (exclude all tables or views), cache metadata on all tables or views owned by a single database user (include by schema membership) or cache metadata on an explicit list of table or view names (include by table or view name).  If no table or view metadata is cached, the driver acts as a pass-through agent for embedded SQL.  In this state, standard XDS events (add, modify, delete) are ignored.</description>
+			<enum-choice display-name="exclude all tables/views">empty</enum-choice>
+			<enum-choice display-name="include by schema membership">schema</enum-choice>
+			<enum-choice display-name="include by table/view name">list</enum-choice>
+			<value>list</value>
+		</definition>
+		<definition display-name="Disable subscriber?" hide="true" id="213" name="subscriber.disable" type="enum">
+			<description>Select whether you want to ignore events flowing from Identity Manager to the database.</description>
+			<enum-choice display-name="no (default)">_</enum-choice>
+			<enum-choice display-name="yes">1</enum-choice>
+			<value>_</value>
+		</definition>
+		<definition display-name="Disable Publisher?" hide="true" id="214" name="publisher.disable" type="enum">
+			<description>Select whether you want to ignore events flowing to Identity Manager from the database.</description>
+			<enum-choice display-name="no (default)">_</enum-choice>
+			<enum-choice display-name="yes">1</enum-choice>
+			<value>_</value>
+		</definition>
+		<definition display-name="Data flow:" hide="true" name="jdbc.DataFlow" type="enum">
+			<description>Select the data flow that you desire. Bi-directional means that both the database and Identity Manager are authoritative sources of the data synchronized between them.  Database to Identity Manager means that the database is the authoritative source.  Identity Manager to database means that Identity Manager is the authoritative source.</description>
+			<enum-choice display-name="bi-directional">both</enum-choice>
+			<value>both</value>
+		</definition>
+		<definition display-name="Use manual transactions?" hide="true" name="use-manual-transactions" type="enum">
+			<description>Select whether this driver uses transactions.  Are transactions supported by the target database or table implementation you are using?</description>
+			<enum-choice display-name="dynamic default">_</enum-choice>
+			<enum-choice display-name="yes">1</enum-choice>
+			<enum-choice display-name="no">0</enum-choice>
+			<value>_</value>
+		</definition>
+		<definition display-name="Force username case:" hide="true" name="force-username-case" type="enum">
+			<description>Select the case of the authentication username.</description>
+			<enum-choice display-name="don't force (default)">_</enum-choice>
+			<enum-choice display-name="to upper case">upper</enum-choice>
+			<enum-choice display-name="to mixed case">mixed</enum-choice>
+			<enum-choice display-name="to lower case">lower</enum-choice>
+			<value>_</value>
+		</definition>
+		<definition display-name="Supports schemas in metadata retrieval?" hide="true" name="supports-schemas-in-metadata-retrieval" type="enum">
+			<description>Select whether schema names are used to retrieve database metadata.</description>
+			<enum-choice display-name="dynamic default">_</enum-choice>
+			<enum-choice display-name="yes">1</enum-choice>
+			<enum-choice display-name="no">0</enum-choice>
+			<value>_</value>
+		</definition>
+		<definition display-name="Generation/retrieval method (table-global):" hide="true" id="216" name="key-gen-method" type="enum">
+			<description>Select how the primary key values are being generated or retrieved.  This setting is global for all tables or views.</description>
+			<enum-choice display-name="subscription event (default)">_</enum-choice>
+			<enum-choice display-name="subscriber-generated">driver</enum-choice>
+			<enum-choice display-name="auto-generated/identity column">auto</enum-choice>
+			<value>_</value>
+		</definition>
+		<definition display-name="Retrieval timing (table-global):" hide="true" id="215" name="key-gen-timing" type="enum">
+			<description>Select when the primary key values are retrieved.  Select whether the key values are retrieved before or after the row insertion.  This setting is global for all tables or views.</description>
+			<enum-choice display-name="before row insertion (default)">_</enum-choice>
+			<enum-choice display-name="after row insertion">after</enum-choice>
+			<value>after</value>
+		</definition>
+		<definition display-name="Check update counts?" hide="true" id="213" name="check-update-count" type="enum">
+			<description>Select whether the Subscriber channel checks to see if rows are updated after insert, update, or delete statements are exectued against the tables.  This parameter is desirable in cases where you want to ensure the statements are actually making changes in the database.  It is undesirable in the event that statements are intercepted by triggers that fire before a statement is executed because they might redefine or ignore the statement.  This parameter has no effect on views.</description>
+			<enum-choice display-name="yes (default)">_</enum-choice>
+			<enum-choice display-name="no">0</enum-choice>
+			<value>_</value>
+		</definition>
+		<definition display-name="Add default values on view insert?" hide="true" id="213" name="add-default-values-on-view-insert" type="enum">
+			<description>Add default values on view insert?</description>
+			<enum-choice display-name="dynamic default">_</enum-choice>
+			<enum-choice display-name="yes">1</enum-choice>
+			<enum-choice display-name="no">0</enum-choice>
+			<value>_</value>
+		</definition>
+	</definitions>
+</configuration-values>

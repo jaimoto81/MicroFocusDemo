@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?><policy>
+	<description>A set of rules that implement the user name mapping options</description>
+	<rule>
+		<description>consider user objects when name mapping is enabled</description>
+		<comment xml:space="preserve">Skip processing if event is not of interest to name mapping policy.</comment>
+		<conditions>
+			<and>
+				<if-class-name mode="case" op="not-equal">User</if-class-name>
+			</and>
+			<and>
+				<if-global-variable mode="case" name="FullNameMap" op="equal">false</if-global-variable>
+				<if-global-variable mode="case" name="LogonNameMap" op="equal">false</if-global-variable>
+				<if-global-variable mode="case" name="UpnMap" op="equal">none</if-global-variable>
+			</and>
+		</conditions>
+		<actions>
+			<do-break/>
+		</actions>
+	</rule>
+	<rule>
+		<description>full name mapping: discard unwanted renames</description>
+		<comment xml:space="preserve">When mapping Full Name, renames are vetoed.</comment>
+		<conditions>
+			<and>
+				<if-global-variable mode="case" name="FullNameMap" op="equal">true</if-global-variable>
+				<if-operation op="equal">rename</if-operation>
+			</and>
+		</conditions>
+		<actions>
+			<do-veto/>
+		</actions>
+	</rule>
+	<rule>
+		<description>logon name mapping: map NT logon name to Identity Vault object name</description>
+		<comment xml:space="preserve">Logon name policy: Keep destination object name in sync when logon name (sAMAccountName) changes.</comment>
+		<conditions>
+			<and>
+				<if-global-variable mode="case" name="LogonNameMap" op="equal">true</if-global-variable>
+				<if-operation op="equal">modify</if-operation>
+				<if-op-attr name="CN" op="available"/>
+			</and>
+		</conditions>
+		<actions>
+			<do-rename-dest-object when="after">
+				<arg-string>
+					<token-text>CN=</token-text>
+					<token-escape-for-dest-dn>
+						<token-op-attr name="CN"/>
+					</token-escape-for-dest-dn>
+				</arg-string>
+			</do-rename-dest-object>
+		</actions>
+	</rule>
+	<rule>
+		<description>map e-mail address to Active Directory logon name</description>
+		<comment>Update Active Directory logon name (userPrincipalName) when logon name is configured to follow Active Directory e-mail address and e-mail address is being added.</comment>
+		<conditions>
+			<and>
+				<if-global-variable mode="nocase" name="UpnMap" op="equal">ad-mail-auth</if-global-variable>
+				<if-op-attr name="Internet EMail Address" op="available"/>
+			</and>
+		</conditions>
+		<actions>
+			<do-set-src-attr-value name="DirXML-ADAliasName">
+				<arg-value>
+					<token-op-attr name="Internet EMail Address"/>
+				</arg-value>
+			</do-set-src-attr-value>
+			<do-set-dest-attr-value name="DirXML-ADAliasName">
+				<arg-value>
+					<token-op-attr name="Internet EMail Address"/>
+				</arg-value>
+			</do-set-dest-attr-value>
+		</actions>
+	</rule>
+	<rule>
+		<description>unmap e-mail address from Active Directory logon name</description>
+		<comment>Update Active Directory logon name (userPrincipalName) when logon name is configured to follow Active Directory e-mail address and e-mail address is being removed.</comment>
+		<conditions>
+			<and>
+				<if-global-variable mode="case" name="UpnMap" op="equal">ad-mail-auth</if-global-variable>
+				<if-op-attr mode="regex" name="Internet EMail Address" op="changing-from">.+</if-op-attr>
+			</and>
+		</conditions>
+		<actions>
+			<do-remove-src-attr-value name="DirXML-ADAliasName">
+				<arg-value>
+					<token-op-attr name="Internet EMail Address"/>
+				</arg-value>
+			</do-remove-src-attr-value>
+			<do-remove-dest-attr-value name="DirXML-ADAliasName">
+				<arg-value>
+					<token-op-attr name="Internet EMail Address"/>
+				</arg-value>
+			</do-remove-dest-attr-value>
+		</actions>
+	</rule>
+</policy>

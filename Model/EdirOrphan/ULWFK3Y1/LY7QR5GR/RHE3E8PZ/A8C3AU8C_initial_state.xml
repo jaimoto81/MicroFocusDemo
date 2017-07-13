@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><ds-object ds-object-class="DirXML-StyleSheet" ds-object-name="NOVLJDBCCOMM-sub-cts-ReplicaValue" name="NOVLJDBCCOMM-sub-cts-ReplicaValue">
+	<ds-attributes>
+		<ds-attribute ds-attr-name="XmlData">
+			<ds-value>
+				<xsl:stylesheet exclude-result-prefixes="query cmd dncv" version="1.0" xmlns:cmd="http://www.novell.com/nxsl/java/com.novell.nds.dirxml.driver.XdsCommandProcessor" xmlns:dncv="http://www.novell.com/nxsl/java/com.novell.nds.dirxml.driver.DNConverter" xmlns:mapping="http://www.novell.com/nxsl/java/com.novell.nds.dirxml.driver.jdbc.util.MappingPolicy" xmlns:query="http://www.novell.com/nxsl/java/com.novell.nds.dirxml.driver.XdsQueryProcessor" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+					<!-- parameters passed in from the DirXML engine -->
+					<xsl:param name="srcQueryProcessor"/>
+					<xsl:param name="destQueryProcessor"/>
+					<xsl:param name="srcCommandProcessor"/>
+					<xsl:param name="destCommandProcessor"/>
+					<xsl:param name="dnConverter"/>
+					<xsl:param name="fromNds"/>
+					<!-- identity transformation template -->
+					<!-- in the absence of any other templates this will cause -->
+					<!-- the stylesheet to copy the input through unchanged to the output -->
+					<xsl:template match="node()|@*">
+						<xsl:copy>
+							<xsl:apply-templates select="@*|node()"/>
+						</xsl:copy>
+					</xsl:template>
+					<!-- Always sync first replica value of Surname and Given Name. -->
+					<xsl:template match="input/*[(name() = 'add' or name() = 'modify') and @class-name='User']">
+						<xsl:copy>
+							<xsl:apply-templates select="@*"/>
+							<xsl:variable name="attrs" select="*[@attr-name='Surname' or @attr-name='Given Name']"/>
+							<xsl:apply-templates select="*[not(@attr-name=$attrs/@attr-name)]"/>
+							<xsl:choose>
+								<xsl:when test="'~replica-value~' = 'first'">
+									<xsl:copy-of select="mapping:FirstPerReplica(., $attrs, $srcQueryProcessor)"/>
+								</xsl:when>
+								<xsl:when test="'~replica-value~' = 'last'">
+									<xsl:copy-of select="mapping:LastPerReplica(., $attrs, $srcQueryProcessor)"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:message>
+										<status level="error">
+											<xsl:text>Global variable 'replica-value' is undefined or is set to an illegal value '~replica-value~'.</xsl:text>
+										</status>
+									</xsl:message>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:copy>
+					</xsl:template>
+				</xsl:stylesheet>
+			</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-installationdirective">
+			<ds-value>PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48aW5zdGFsbGF0aW9uLWRpcmVjdGl2ZT4KCTxwbGFjZW1lbnQgbG9jYXRpb249InN1YnNjcmliZXIiLz4KCTxkcy1hdHRyaWJ1dGVzLz4KCTxwb2xpY3ktbGlua2FnZT4KCQk8cG9saWN5LXNldCBjaGFubmVsPSJzdWJzY3JpYmVyIiBuYW1lPSJjb21tYW5kIiBvcmRlcj0id2VpZ2h0IiB2YWx1ZT0iNTUwIi8+Cgk8L3BvbGljeS1saW5rYWdlPgo8L2luc3RhbGxhdGlvbi1kaXJlY3RpdmU+</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-directivechecksum">
+			<ds-value>2721913781</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-packageassocguid">
+			<ds-value>2WCAJ64W_201408131157580328</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-packageguid">
+			<ds-value>OUSAWV9O_201109241840310281</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-contentchecksum">
+			<ds-value>4042848792</ds-value>
+		</ds-attribute>
+	</ds-attributes>
+</ds-object>

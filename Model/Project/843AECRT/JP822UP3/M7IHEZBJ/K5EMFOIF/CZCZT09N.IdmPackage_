@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.novell.designer.model:CObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:com.novell.designer.model="http://com.novell.designer.model" name="eDirectory Managed System Information">
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="license"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="change" extension="log"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="readme" extension="txt"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="zh_TW" extension="properties"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="ja" extension="properties"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="fr" extension="properties"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="zh_CN" extension="properties"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="de" extension="properties"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="en" extension="properties"/>
+  <attributes xsi:type="com.novell.designer.model:CBoolean" attrName="Idm:PackageImported" value="true"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:PackageGuid" value="U3JUDBXL_201007011354430837"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:PackageVersion" value="2.1.0.20140822112439"/>
+  <attributes xsi:type="com.novell.designer.model:CInteger" attrName="Idm:PackageType" value="2"/>
+  <attributes xsi:type="com.novell.designer.model:CBoolean" attrName="Idm:BasePackage" value="false"/>
+  <attributes xsi:type="com.novell.designer.model:CBoolean" attrName="Idm:Released" value="true"/>
+  <attributes xsi:type="com.novell.designer.model:CLong" attrName="Idm:ContentChecksum" value="3531697423"/>
+  <attributes xsi:type="com.novell.designer.model:CLong" attrName="Idm:DirectiveChecksum" value="1423359114"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:description" value="Prompts for and auto-generates the MSysInfo object which is required for Data Collection."/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:shortName" value="NOVLEDIRMSYS"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:BuildTime" value="20140822112439"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:BuildHost" value="linux-sles-64bit"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:BuildUser" value="root"/>
+  <attributes xsi:type="com.novell.designer.model:CBoolean" attrName="Idm:Protected" value="false"/>
+  <attributes xsi:type="com.novell.designer.model:CBoolean" attrName="Idm:newVersion" value="true"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:CreationTime" value="201408211249430778"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:vendorName" value="NetIQ, Inc."/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:minIdmVersion" value="4.0.0"/>
+  <attributes xsi:type="com.novell.designer.model:CLong" attrName="Idm:InternalVersion" value="16"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:InstallationDirective" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&lt;installation-directive>&#xA;&#x9;&lt;ds-attributes/>&#xA;&#x9;&lt;policy-linkage>&#xA;&#x9;&#x9;&lt;policy-set channel=&quot;publisher&quot; name=&quot;ecma-script&quot; order=&quot;last&quot; package-id=&quot;L24GR3S2_201004011133330053&quot; pkg-assoc-id=&quot;AG7O65ME_201004011133540084&quot;/>&#xA;&#x9;&lt;/policy-linkage>&#xA;&#x9;&lt;dependencies>&#xA;&#x9;&#x9;&lt;dependency name=&quot;Advanced Java Class&quot; package-id=&quot;L24GR3S2_201004011133330053&quot; type=&quot;3&quot;/>&#xA;&#x9;&lt;/dependencies>&#xA;&#x9;&lt;supported-drivers>&#xA;&#x9;&#x9;&lt;definition display-name=&quot;Driver for eDirectory&quot; driver-id=&quot;EDIR-Driver&quot; id=&quot;EDIR&quot;/>&#xA;&#x9;&lt;/supported-drivers>&#xA;&lt;/installation-directive>"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#VEDXZJLR.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#LYXP2IKQ.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#AKMXM3Y3.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#O7VFXI4Y.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#KG7BMZBT.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#08L0KLWP.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#XHU7UV1Q.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#U3AJUJPA.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#0MAPDN8I.IdmPackageFolder_"/>
+</com.novell.designer.model:CObject>

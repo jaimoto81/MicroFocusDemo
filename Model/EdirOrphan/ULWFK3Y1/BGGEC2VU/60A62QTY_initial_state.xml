@@ -1,0 +1,2944 @@
+<?xml version="1.0" encoding="UTF-8"?><ds-object DirXML-ContentType="text/ecmascript;charset=UTF-8" ds-object-class="DirXML-Resource" ds-object-name="NOVLLIBAJC-JS" name="NOVLLIBAJC-JS">
+	<ds-attributes>
+		<ds-attribute ds-attr-name="XmlData">
+			<ds-value>/**
+ * @fileoverview AJC.js contains extension functions for use with Novell Identity Manager.
+ *				It was ported from the Advanced Java Class from Novell Consulting. Except where otherwise
+ *				noted, functions should be compatible with the original Advanced Java Class.
+ * @author 		Volker Scheuber, Holger Dopp, Nicolas Barcet, Raymon Epping, Juergen Orschiedt, Stephen Holmes, Bivin Baby, et al. Ported to ECMAScript by Shon Vella.
+*/
+
+importPackage(java.io);
+importPackage(Packages.org.w3c.dom);
+importClass(Packages.com.novell.xml.util.Base64Codec);
+importClass(Packages.com.novell.nds.dirxml.driver.XmlDocument);
+importClass(Packages.com.novell.xml.dom.DOMWriter);
+importClass(java.util.GregorianCalendar); 
+importClass(java.text.DateFormat);
+importClass(java.text.SimpleDateFormat);
+importClass(java.lang.System);
+importClass(java.lang.Integer);
+
+// these function like import on single classes under a different name so as not to conflict with
+// built-in ECMAScript classes
+
+var JDate = java.util.Date; 	// don't hide the built in Date object
+var JString = java.lang.String; // don't hide the built in String object
+
+
+var daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+var lastTime = 0;
+var sdf = new SimpleDateFormat("yyyy.MM.dd kk:mm:ss.SSS");
+var pwdExceptionMessage = "Invalid parameters. Password Lengh is less than the sum of min. num of digits and alphabets.";
+
+/** 
+ * print the argument
+ *
+ * @private
+ *
+ * @param arg the argument
+ *
+ * @type void
+ */
+function print(arg)
+{
+	System.out.print(String(arg));
+}
+
+/** 
+ * print the argument followed by a newline
+ *
+ * @private
+ *
+ * @param arg the argument
+ *
+ * @type void
+ */
+function println(arg)
+{
+	System.out.println(String(arg));
+}
+
+/**
+ * Get a unique timestring.
+ *
+ * @type String
+ * @return unique timestring in the format YYYY.MM.DD hh:mm:ss.msec
+ */
+function getUniqueTimeString()
+{
+	var currentTime = System.currentTimeMillis();
+	if ( currentTime &lt;= lastTime )
+	{
+		currentTime = lastTime + 1;
+	}
+	lastTime = currentTime;
+	return sdf.format(new JDate(currentTime));
+}
+
+/**
+ * Append to a log string. This method has been introduced to handle appending to large strings.
+ * It minimizes the need to work on huge strings in XSLT/XPath.
+ *
+ * @param  {String}	log			existing large string where another string "append" should be
+ * 								appended to. This string might be Base64 encoded.
+ * @param  {String}	append		the string to be appended to "log". This string should not be
+ * 								Base64-encoded.
+ * @param  {String}	delimiter	if appending to a log file you can use this parameter to specify
+ * 								the line break. This helps the shrinking mechanism not to cut off
+ * 								in the middle of a line.
+ * @param  {boolean}	b64		Specifies if the "log" input parameter and the result of the method should be
+ *		 						Base64 decoded and encoded.
+ *								&lt;i>Note that in the original AJC, this argument was a String that with a value of "true" or "false"&lt;/i>
+ * @param  {Number}	maxsize		Specifies the maximum length of the methods result in numbers of
+ *	 							characters or bytes.
+ *
+ * @type String
+ * @return The appended log.
+ */
+
+ // Note(sv): Removed debug parameter that was in AJC
+ 
+function appendLog(log, append, delimiter, b64, maxsize)
+{
+	var appended = "";
+	
+	// decode before append
+	if (b64)
+	{
+		try
+		{
+			appended = new JString(Base64Codec.decode(log)) + append;
+		} catch (e)
+		{
+			appended = append;
+		}
+	}
+	// append
+	else
+	{
+		appended = log + append;
+	}
+	// free input variables
+	log = null;
+	append = null;
+	// shrink
+	var size = appended.length;
+	var shrinked = "";
+	if (size > maxsize)
+	{
+		var shrinkby = appended.indexOf(delimiter, size - maxsize) + delimiter.length;
+		if (shrinkby &lt; size - maxsize) shrinkby = size - maxsize;
+		shrinked = appended.substring(shrinkby);
+	}
+	else
+	{
+		shrinked = appended;
+	}
+	// free appended
+	appended = null;
+	// encode and return appended
+	if (b64)
+	{
+		var encoded = new String(Base64Codec.encode(shrinked.getBytes()));
+		return encoded;
+	}
+	// return appended
+	else
+	{
+		return shrinked;
+	}
+}
+
+/**
+ * Return a String value in dependency of the incoming parameters. 
+ * 
+ * @param  {String}	oldValue
+ * @param  {String}	newValue
+ * @param  {String}	orgValue
+ * @param  {String}	gcvValue
+ *
+ * @type	String
+ * @return 'old-new-org:org', '    -new-org:org', 'old-   -org:org', '   -new-   :new', 'old-   -   :old', 'old-new-old:new', 'old-   -old:old'
+ */
+function checkStringDiff(oldValue, newValue, orgValue, gcvValue) {
+	if (orgValue.length == 0)
+	{
+		if ((oldValue.length == 0) &amp;&amp; (newValue.length > 0))
+			return newValue;
+		if ((oldValue.length > 0) &amp;&amp; (newValue.length == 0))
+		{
+			if (gcvValue.length == 0)
+			{
+				return oldValue;
+			}
+			else
+			{
+				return gcvValue;
+			}
+		}
+		else
+		{
+			return "";
+		}
+	}
+	else
+	{
+		if ((oldValue.length == 0) &amp;&amp; (newValue.length > 0) )
+		{
+			if(gcvValue.length == 0)
+			{
+				return orgValue;
+			}
+			else
+			{
+				if(orgValue.equalsIgnoreCase(gcvValue))
+				{
+					return newValue;
+				}
+				else
+				{
+					return orgValue;
+				}
+			}
+		}
+		if ((oldValue.length > 0) &amp;&amp; (newValue.length == 0))
+		{
+//	old-   -org-   :old			
+			if (!orgValue.equalsIgnoreCase(oldValue))
+			{
+//					return orgValue;
+				return oldValue;
+			}
+			else
+			{
+				if (gcvValue.length == 0)
+				{
+					return oldValue;
+				}
+				else
+				{
+					return gcvValue;
+				}
+			}
+		} else {
+			if (!orgValue.equalsIgnoreCase(oldValue))
+			{
+				return orgValue;
+			}
+			else
+			{
+				return newValue;
+			}
+		}
+	}
+}
+
+/** 
+ * Strip out characters which are not allowed.
+ *
+ * @param {String}	input		String to strip out characters from.
+ * @param {String}	validChars	not implemented, yet.
+ *
+ * @type String
+ * @return Clean string.
+ */
+function stripChars(input , validChars )
+{
+	var output = "";
+	for(var i = 0; i &lt; input.length; i++)
+	{
+		var aChar = input.charCodeAt(i);
+		if ( aChar == 32 ||
+		aChar == 45 ||
+		aChar == 39 ||
+		(aChar >= 65 &amp;&amp; aChar &lt;= 90) ||
+		(aChar >= 97 &amp;&amp; aChar &lt;= 122) ||
+		(aChar >= 192 &amp;&amp; aChar &lt;= 214) ||
+		(aChar >= 216 &amp;&amp; aChar &lt;= 246)||
+		(aChar >= 248 &amp;&amp; aChar &lt;= 255))
+		{
+			output = output + input.charAt(i);
+		}
+	}
+	return output;
+}
+
+/** 
+ * Create an DOM document from a serialized XML stream.
+ *
+ * @param {String}	xml		Serialized XML stream
+ *
+ * @type Document
+ * @return DOM document
+ */
+function getDocumentFromString(xml)
+{
+	var xmlDoc = new XmlDocument("&lt;root>" + xml + "&lt;/root>");
+	return xmlDoc.getDocument();
+}
+
+
+/**
+ * Serialize a DOM node.
+ *
+ * @private
+ * @param {Node}	node	DOM node to serialize
+ * @param {boolean} 			indent	indent the serialized xml
+ *
+ * @type String
+ * @return XML stream
+ *
+ */
+function serialize(node, indent)
+{
+	var sw = new StringWriter();
+	var dw = new DOMWriter(node, sw);
+	dw.setIndent(Boolean(indent));
+	dw.write();
+	var str = sw.toString();
+	sw.close();
+	return str;
+}
+
+/** 
+ * Serialize a DOM NodeSet into an XML stream.
+ *
+ * @param {Node} 	nodeset		DOM NodeSet to be serialized.
+ * @param {boolean} indent		indent the serialized xml
+ *
+ * @type String
+ * @return XML stream
+ */
+function getStringFromNodeSet(nodeset, indent)
+{
+	var str = "";
+	try
+	{
+		for(var node = nodeset.first(); node != null; node = nodeset.next()) 
+		{
+			str += serialize(node, indent);
+			if (indent)
+			{
+				str += '\n';
+			}
+		}
+	}
+	catch (e)
+	{
+		println(e);
+	}
+	return str;
+}
+
+/** 
+ * Read an image from a file and return the content as Base64 encoded string.
+ *
+ * @param {String}	imageFileName	name of the image (or other binary) file
+ * @param {boolean}	wrap			wrap the result &lt;i>optional: defaults to false&lt;/i>
+ *
+ * @type String
+ * @return Base64 encoded content of the image file
+ */
+function readImage(imageFileName, wrap) {
+	var picBase64 = "";
+	var fis;
+	try {
+		fis = new FileInputStream(imageFileName);
+		var bis = new BufferedInputStream(fis);
+		var baos = new ByteArrayOutputStream() ;
+		for(var buf = -1; (buf = bis.read()) != -1;)
+			baos.write(buf);
+		fis.close();		
+		baos.flush();
+		picBase64 = new JString(Base64Codec.encode(baos.toByteArray(), Boolean(wrap)));
+	}
+	catch (ioe)
+	{
+		println(ioe);
+	}
+	finally
+	{
+		if (fis)
+		{
+			fis.close();
+		}
+	}
+	return picBase64;
+}
+
+/**
+ * Helper function for the roll* functions
+ *
+ * @private
+ *
+ * @param {Number} time base date/time
+ * @param {Number} units number to advance
+ * @param {Number} unitID identifier for unit type
+ *
+ * @type Number
+ * @return adjusted date/time
+ */
+function rollTime(time, units, unitID)
+{
+	try
+	{
+		var calendar = new GregorianCalendar();
+		calendar.setTime(new JDate(time * 1000));
+		calendar.add(unitID, units);
+		return "" + Math.round(calendar.getTime().getTime()/1000);
+		// Note(sv): Math.abs() was used in the original AJC code, but that can't be right because the result wouldn't be useful for a negative number
+	}
+	catch (e)
+	{
+		println(e);
+	}
+	return "0";
+}
+
+/** 
+ * Roll forward or backward the amount of days on the given date.
+ *
+ * @param {Number}	time	time in eDirectory format: seconds since 1.1.1970
+ * @param {Number}	days	number of days to roll.
+ *							use positive numbers to roll forward,
+ * 							negative numbers to roll backward.
+ *
+ * @type Number
+ * @return new time
+ */
+function rollDays(time, days)
+{
+	return rollTime(time, days, GregorianCalendar.DAY_OF_YEAR);
+}
+
+/** 
+ * Roll forward or backward the amount of hours on the given date.
+ *
+ * @param {Number}	time	time in eDirectory format: seconds since 1.1.1970
+ * @param {Number}	hours	number of hours to roll.
+ *							use positive numbers to roll forward,
+ *							negative numbers to roll backward.
+ *
+ * @type Number
+ * @return new time
+ */
+function rollHours(time, hours)
+{
+	return rollTime(time, hours, GregorianCalendar.HOUR_OF_DAY);
+}
+
+/** 
+ * Roll forward or backward the amount of seconds on the given date.
+ *
+ * @param {Number}	time	time in eDirectory format: seconds since 1.1.1970
+ * @param {Number}	seconds	number of seconds to roll.
+ *							use positive numbers to roll forward,
+ *							negative numbers to roll backward.
+ *
+ * @type Number
+ * @return new time
+ */
+function rollSeconds(time, seconds)
+{
+	return rollTime(time, seconds, GregorianCalendar.SECOND);
+}
+
+/** 
+ * Get the day name of a given date using the System locale. If called with no arguments, then uses todays date.
+ *
+ * @param {String}	yyyy	year
+ * @param {String}	mm		month
+ * @param {String}	dd		day
+ *
+ * @type String
+ * @return the day name
+ */
+function dayOfWeek(yyyy, mm, dd)
+{	
+	var todaysDate;
+	if (yyyy)
+	{
+		todaysDate = new GregorianCalendar(Number(yyyy), mm-1, Number(dd));
+	}
+	else
+	{
+		todaysDate = new GregorianCalendar();
+	}
+	return daysOfWeek[todaysDate.get(todaysDate.DAY_OF_WEEK)-1];
+}
+
+/**
+ * Return an XMLheader
+ *
+ * @type String
+ * @return The string &lt;?xml version=\"1.0\"?>
+ */
+ function getXmlHeader()
+ {
+	 return "&lt;?xml version=\"1.0\"?>";
+ }
+ 
+ /**
+  * Replaces character reference for less than (&amp;amp;lt;) with less than (&amp;lt;).
+  * @param {String} name input string &amp;amp;lt;hallo&amp;gt;
+  * @type String
+  * @return string like &amp;lt;hallo&amp;gt;
+  */
+ function replaceLeft(name)
+ {
+	 return name.replace(/&amp;lt;/g, "&lt;"); 
+ }
+ 
+
+/** 
+ * Convert a time string of a custom format into the number of seconds
+ * (UTC time: 0 = 1970-01-01 00:00:00). You may specify the format of the input time string
+ * by constructing your own pattern. Use the following letters to specify the desired format:
+ *
+ *  &lt;blockquote>
+ *  &lt;table border=0 cellspacing=3 cellpadding=0>
+ *      &lt;tr bgcolor="#ccccff">
+ *          &lt;th align=left>Letter
+ *          &lt;th align=left>Date or Time Component
+ *          &lt;th align=left>Presentation
+ *          &lt;th align=left>Examples
+ *      &lt;tr>
+ *          &lt;td>&lt;code>G&lt;/code>
+ *          &lt;td>Era designator
+ *          &lt;td>&lt;a href="#text">Text&lt;/a>
+ *          &lt;td>&lt;code>AD&lt;/code>
+ *      &lt;tr bgcolor="#eeeeff">
+ *          &lt;td>&lt;code>y&lt;/code>
+ *          &lt;td>Year
+ *          &lt;td>&lt;a href="#year">Year&lt;/a>
+ *          &lt;td>&lt;code>1996&lt;/code>; &lt;code>96&lt;/code>
+ *      &lt;tr>
+ *          &lt;td>&lt;code>M&lt;/code>
+ *          &lt;td>Month in year
+ *          &lt;td>&lt;a href="#month">Month&lt;/a>
+ *          &lt;td>&lt;code>July&lt;/code>; &lt;code>Jul&lt;/code>; &lt;code>07&lt;/code>
+ *      &lt;tr bgcolor="#eeeeff">
+ *          &lt;td>&lt;code>w&lt;/code>
+ *          &lt;td>Week in year
+ *          &lt;td>&lt;a href="#number">Number&lt;/a>
+ *          &lt;td>&lt;code>27&lt;/code>
+ *      &lt;tr>
+ *          &lt;td>&lt;code>W&lt;/code>
+ *          &lt;td>Week in month
+ *          &lt;td>&lt;a href="#number">Number&lt;/a>
+ *          &lt;td>&lt;code>2&lt;/code>
+ *      &lt;tr bgcolor="#eeeeff">
+ *          &lt;td>&lt;code>D&lt;/code>
+ *          &lt;td>Day in year
+ *          &lt;td>&lt;a href="#number">Number&lt;/a>
+ *          &lt;td>&lt;code>189&lt;/code>
+ *      &lt;tr>
+ *          &lt;td>&lt;code>d&lt;/code>
+ *          &lt;td>Day in month
+ *          &lt;td>&lt;a href="#number">Number&lt;/a>
+ *          &lt;td>&lt;code>10&lt;/code>
+ *      &lt;tr bgcolor="#eeeeff">
+ *          &lt;td>&lt;code>F&lt;/code>
+ *          &lt;td>Day of week in month
+ *          &lt;td>&lt;a href="#number">Number&lt;/a>
+ *          &lt;td>&lt;code>2&lt;/code>
+ *      &lt;tr>
+ *          &lt;td>&lt;code>E&lt;/code>
+ *          &lt;td>Day in week
+ *          &lt;td>&lt;a href="#text">Text&lt;/a>
+ *          &lt;td>&lt;code>Tuesday&lt;/code>; &lt;code>Tue&lt;/code>
+ *      &lt;tr bgcolor="#eeeeff">
+ *          &lt;td>&lt;code>a&lt;/code>
+ *          &lt;td>Am/pm marker
+ *          &lt;td>&lt;a href="#text">Text&lt;/a>
+ *          &lt;td>&lt;code>PM&lt;/code>
+ *      &lt;tr>
+ *          &lt;td>&lt;code>H&lt;/code>
+ *          &lt;td>Hour in day (0-23)
+ *          &lt;td>&lt;a href="#number">Number&lt;/a>
+ *          &lt;td>&lt;code>0&lt;/code>
+ *      &lt;tr bgcolor="#eeeeff">
+ *          &lt;td>&lt;code>k&lt;/code>
+ *          &lt;td>Hour in day (1-24)
+ *          &lt;td>&lt;a href="#number">Number&lt;/a>
+ *          &lt;td>&lt;code>24&lt;/code>
+ *      &lt;tr>
+ *          &lt;td>&lt;code>K&lt;/code>
+ *          &lt;td>Hour in am/pm (0-11)
+ *          &lt;td>&lt;a href="#number">Number&lt;/a>
+ *          &lt;td>&lt;code>0&lt;/code>
+ *      &lt;tr bgcolor="#eeeeff">
+ *          &lt;td>&lt;code>h&lt;/code>
+ *          &lt;td>Hour in am/pm (1-12)
+ *          &lt;td>&lt;a href="#number">Number&lt;/a>
+ *          &lt;td>&lt;code>12&lt;/code>
+ *      &lt;tr>
+ *          &lt;td>&lt;code>m&lt;/code>
+ *          &lt;td>Minute in hour
+ *          &lt;td>&lt;a href="#number">Number&lt;/a>
+ *          &lt;td>&lt;code>30&lt;/code>
+ *      &lt;tr bgcolor="#eeeeff">
+ *          &lt;td>&lt;code>s&lt;/code>
+ *          &lt;td>Second in minute
+ *          &lt;td>&lt;a href="#number">Number&lt;/a>
+ *          &lt;td>&lt;code>55&lt;/code>
+ *      &lt;tr>
+ *          &lt;td>&lt;code>S&lt;/code>
+ *          &lt;td>Millisecond
+ *          &lt;td>&lt;a href="#number">Number&lt;/a>
+ *          &lt;td>&lt;code>978&lt;/code>
+ *      &lt;tr bgcolor="#eeeeff">
+ *          &lt;td>&lt;code>z&lt;/code>
+ *          &lt;td>Time zone
+ *          &lt;td>&lt;a href="#timezone">General time zone&lt;/a>
+ *          &lt;td>&lt;code>Pacific Standard Time&lt;/code>; &lt;code>PST&lt;/code>; &lt;code>GMT-08:00&lt;/code>
+ *      &lt;tr>
+ *          &lt;td>&lt;code>Z&lt;/code>
+ *          &lt;td>Time zone
+ *          &lt;td>&lt;a href="#rfc822timezone">RFC 822 time zone&lt;/a>
+ *          &lt;td>&lt;code>-0800&lt;/code>
+ *  &lt;/table>
+ *  &lt;/blockquote>
+ *
+ * &lt;p>The pattern: "yyyy-MM-dd kk:mm:ss.SSS" requires a time string like "1973-09-26 01:00:00.000"
+ * and will return something like "117849600".&lt;/p>
+ *
+ * @param {String}	time		time string in the format specified by "pattern". (optional: default = current time)
+ * @param {String}	pattern		defines how the time string has to look like. (optional: default = "yyyy-MM-dd kk:mm:ss.SSS")
+ *
+ * @type Number
+ * @return number of seconds since UTC 1970-01-01 00:00:00.0 for the defined incoming timestring and pattern
+ */
+function getSeconds(time, pattern)
+{
+	if (!time)
+	{
+		return Math.round(System.currentTimeMillis() / 1000);
+	}
+	if (!pattern)
+	{
+		pattern = "yyyy-MM-dd kk:mm:ss.SSS";
+	}
+	try
+	{
+		var sdf = new SimpleDateFormat(pattern);
+		var date = sdf.parse(time);
+		return Math.round(date.getTime()/1000);
+	} catch (e)
+	{
+		println(e);
+	}
+	return "0";
+}
+
+
+/** 
+ * Convert a number of seconds (UTC time: 0 = 1970-01-01 00:00:00)
+ * to a formatted time string. You may specify the format by constructing your own
+ * pattern. Use the following letters to specify the desired format:
+ *
+ *  &lt;blockquote>
+ *  &lt;table border=0 cellspacing=3 cellpadding=0>
+ *      &lt;tr bgcolor="#ccccff">
+ *          &lt;th align=left>Letter
+ *          &lt;th align=left>Date or Time Component
+ *          &lt;th align=left>Presentation
+ *          &lt;th align=left>Examples
+ *      &lt;tr>
+ *          &lt;td>&lt;code>G&lt;/code>
+ *          &lt;td>Era designator
+ *          &lt;td>&lt;a href="#text">Text&lt;/a>
+ *          &lt;td>&lt;code>AD&lt;/code>
+ *      &lt;tr bgcolor="#eeeeff">
+ *          &lt;td>&lt;code>y&lt;/code>
+ *          &lt;td>Year
+ *          &lt;td>&lt;a href="#year">Year&lt;/a>
+ *          &lt;td>&lt;code>1996&lt;/code>; &lt;code>96&lt;/code>
+ *      &lt;tr>
+ *          &lt;td>&lt;code>M&lt;/code>
+ *          &lt;td>Month in year
+ *          &lt;td>&lt;a href="#month">Month&lt;/a>
+ *          &lt;td>&lt;code>July&lt;/code>; &lt;code>Jul&lt;/code>; &lt;code>07&lt;/code>
+ *      &lt;tr bgcolor="#eeeeff">
+ *          &lt;td>&lt;code>w&lt;/code>
+ *          &lt;td>Week in year
+ *          &lt;td>&lt;a href="#number">Number&lt;/a>
+ *          &lt;td>&lt;code>27&lt;/code>
+ *      &lt;tr>
+ *          &lt;td>&lt;code>W&lt;/code>
+ *          &lt;td>Week in month
+ *          &lt;td>&lt;a href="#number">Number&lt;/a>
+ *          &lt;td>&lt;code>2&lt;/code>
+ *      &lt;tr bgcolor="#eeeeff">
+ *          &lt;td>&lt;code>D&lt;/code>
+ *          &lt;td>Day in year
+ *          &lt;td>&lt;a href="#number">Number&lt;/a>
+ *          &lt;td>&lt;code>189&lt;/code>
+ *      &lt;tr>
+ *          &lt;td>&lt;code>d&lt;/code>
+ *          &lt;td>Day in month
+ *          &lt;td>&lt;a href="#number">Number&lt;/a>
+ *          &lt;td>&lt;code>10&lt;/code>
+ *      &lt;tr bgcolor="#eeeeff">
+ *          &lt;td>&lt;code>F&lt;/code>
+ *          &lt;td>Day of week in month
+ *          &lt;td>&lt;a href="#number">Number&lt;/a>
+ *          &lt;td>&lt;code>2&lt;/code>
+ *      &lt;tr>
+ *          &lt;td>&lt;code>E&lt;/code>
+ *          &lt;td>Day in week
+ *          &lt;td>&lt;a href="#text">Text&lt;/a>
+ *          &lt;td>&lt;code>Tuesday&lt;/code>; &lt;code>Tue&lt;/code>
+ *      &lt;tr bgcolor="#eeeeff">
+ *          &lt;td>&lt;code>a&lt;/code>
+ *          &lt;td>Am/pm marker
+ *          &lt;td>&lt;a href="#text">Text&lt;/a>
+ *          &lt;td>&lt;code>PM&lt;/code>
+ *      &lt;tr>
+ *          &lt;td>&lt;code>H&lt;/code>
+ *          &lt;td>Hour in day (0-23)
+ *          &lt;td>&lt;a href="#number">Number&lt;/a>
+ *          &lt;td>&lt;code>0&lt;/code>
+ *      &lt;tr bgcolor="#eeeeff">
+ *          &lt;td>&lt;code>k&lt;/code>
+ *          &lt;td>Hour in day (1-24)
+ *          &lt;td>&lt;a href="#number">Number&lt;/a>
+ *          &lt;td>&lt;code>24&lt;/code>
+ *      &lt;tr>
+ *          &lt;td>&lt;code>K&lt;/code>
+ *          &lt;td>Hour in am/pm (0-11)
+ *          &lt;td>&lt;a href="#number">Number&lt;/a>
+ *          &lt;td>&lt;code>0&lt;/code>
+ *      &lt;tr bgcolor="#eeeeff">
+ *          &lt;td>&lt;code>h&lt;/code>
+ *          &lt;td>Hour in am/pm (1-12)
+ *          &lt;td>&lt;a href="#number">Number&lt;/a>
+ *          &lt;td>&lt;code>12&lt;/code>
+ *      &lt;tr>
+ *          &lt;td>&lt;code>m&lt;/code>
+ *          &lt;td>Minute in hour
+ *          &lt;td>&lt;a href="#number">Number&lt;/a>
+ *          &lt;td>&lt;code>30&lt;/code>
+ *      &lt;tr bgcolor="#eeeeff">
+ *          &lt;td>&lt;code>s&lt;/code>
+ *          &lt;td>Second in minute
+ *          &lt;td>&lt;a href="#number">Number&lt;/a>
+ *          &lt;td>&lt;code>55&lt;/code>
+ *      &lt;tr>
+ *          &lt;td>&lt;code>S&lt;/code>
+ *          &lt;td>Millisecond
+ *          &lt;td>&lt;a href="#number">Number&lt;/a>
+ *          &lt;td>&lt;code>978&lt;/code>
+ *      &lt;tr bgcolor="#eeeeff">
+ *          &lt;td>&lt;code>z&lt;/code>
+ *          &lt;td>Time zone
+ *          &lt;td>&lt;a href="#timezone">General time zone&lt;/a>
+ *          &lt;td>&lt;code>Pacific Standard Time&lt;/code>; &lt;code>PST&lt;/code>; &lt;code>GMT-08:00&lt;/code>
+ *      &lt;tr>
+ *          &lt;td>&lt;code>Z&lt;/code>
+ *          &lt;td>Time zone
+ *          &lt;td>&lt;a href="#rfc822timezone">RFC 822 time zone&lt;/a>
+ *          &lt;td>&lt;code>-0800&lt;/code>
+ *  &lt;/table>
+ *  &lt;/blockquote>
+ *
+ * &lt;p>The pattern: "yyyy-MM-dd kk:mm:ss.SSS" represents "117849600" seconds as "1973-09-26 01:00:00.000".&lt;/p>
+ *
+ * @param {Number}	seconds		seconds since UTC 1970-01-01 00:00:00.0 (default = current time)
+ * @param {String}	pattern		defines the output format of the time string (default = "yyyy-MM-dd kk:mm:ss.SSS")
+ *
+ * @type String
+ * @return time string formatted using "pattern"
+ */
+function getTime(seconds, pattern)
+{
+	if (!seconds)
+	{
+		seconds = System.currentTimeMillis();
+	} else
+	{
+		seconds *= 1000;
+	}
+	if (!pattern)
+	{
+		pattern = "yyyy-MM-dd kk:mm:ss.SSS";
+	}
+
+	var date = new Date(seconds);
+	var sdf = new SimpleDateFormat(pattern);
+	return sdf.format(date);
+}
+
+/**
+ * Compare two objects numerically. Used as a comparator for sortNumbersAscending.
+ * 
+ * @param {Object}	x	the first object
+ * @param {Object}	x	the first object
+ *
+ * @type Number
+ * @return	0 if x == y; -1 if x &amp;lt; y; 1 if x > y
+ */
+function numericCompare(x, y)
+{
+	x = Number(x);
+	y = Number(y)
+	if (x &lt; y)
+	{
+		return -1;
+	}
+	else if (x == y)
+	{
+		return 0;
+	}
+	else
+	{
+		return 1;
+	}
+}
+
+/** 
+ * Sort a delimited string containing numbers
+ *
+ * @param {String} 	numbersIn	list of numbers to be sorted
+ * @param {String}	delimiter	string that delimits numbers in numbersIn
+ *
+ * @type String
+ * @return numbersIn sorted ascending
+ */
+function sortNumbersAscending(numbersIn, delimiter)
+{
+	return numbersIn.split(delimiter).sort(numericCompare).join(delimiter);
+}
+
+/* ========================================================================
+ *  This section contains various public methods
+ *  ======================================================================== */
+ 
+/** 
+ * Move and/or rename a file
+ *
+ * @param {String}	oldname 	source file name
+ * @param {String}	newname 	destination file name
+ *
+ * @type String
+ * @return status message
+ */
+function moveFile(oldname, newname)
+{
+	try
+	{
+		var ofile = new File(oldname);
+		var nfile = new File(newname);
+		if( nfile.exists() )
+		{
+			System.err.println( "Error: File already exists:" + newname + ":" );
+			return( "Error: File already exists:" + newname + ":" );
+		}
+		if( ofile.renameTo( nfile ) == true )
+		{
+			System.err.println( "moved file:" + oldname + ": to :" + newname + ":" );
+			return( "success: File:" + oldname + ": moved to :" + newname + ":" );
+		}
+		else
+		{
+			System.err.println( "Error: File:" + oldname + ": not moved to :" + newname + ":" );
+			return( "Error: File:" + oldname + ": not moved to :" + newname + ":" );
+		}
+	}
+	catch(e)
+	{
+		return String(e);
+	}
+}
+
+/**
+ * Wait for the some period of time.
+ *
+ * @param {Number}	interval	milliseconds to wait
+ *
+ * @type String
+ * @return error message if wait was interrupted, null otherwise
+ */
+function doWait(interval)
+{
+	try
+	{
+		java.lang.Thread.sleep(interval);
+	}
+	catch(e)
+	{
+		return String(e);
+	}
+	return null;
+}
+
+/**
+ * Get first line of a text file.
+ *
+ * @param {String}	filename	input string filename
+ * @param {String}	encoding	character encoding of file contents (optional: default=system encoding)
+ *
+ * @type String
+ * @return the first line of the file or the exception message if file couldn't be read
+ */
+function readLineFromFile(filename, encoding)
+{
+	var fileInputStream = null;
+	if (!encoding)
+	{
+		encoding = System.getProperty("file.encoding")
+	}
+	try
+	{
+		fileInputStream = new FileInputStream(filename);	
+		var reader = new BufferedReader(new InputStreamReader(fileInputStream, encoding));
+		return reader.readLine();
+	} catch (e)
+	{
+		return String(e);
+	}
+	finally
+	{
+		if (fileInputStream != null)
+		{
+			fileInputStream.close();
+		}
+	}
+}
+ 
+/** 
+ * Returns a string with double apostroph for a single apostrophe
+ *
+ * @param {String}	name	input string O'Donnell
+ *
+ * @type String
+ * @return string like O''Donnell 
+ */
+function makeSpecName(name)
+{
+	return name.replace(/'/g, "''");
+}
+
+
+/** 
+ * Get the numbers of seconds since january, 1st 1970 from a time input of the format: DD.MM.YYYY
+ *
+ * @param {String}	time	input time in one of the following formats:&lt;br/>
+ *							se.mi.ho.dd.mm.yyyy (e.g. 05.52.23.08.07.2002)&lt;br/>
+ * 		  					YYYYMMDDHOMISE (e.g. 20020708235205)
+ *
+ * @type Number
+ * @return number of seconds since 1/1/1970
+ */
+function getUTPTime(time)
+{
+	// Note(sv): The code here came mostly from the original AJC code, but I don't know why
+	// it didn't just use SimpleDateFormat.parse(). Could probably even be rewritten in terms of native ECMAScript Date type
+	
+	// check the input string format
+	var Sec, Min, H, D, M, Y;
+	try
+	{
+		if(time.charAt(2) == ".")
+		{
+			// first we'll parse the input to get year, month
+			// and day into seperate variables
+			Sec = Number(time.substring(0,2));
+			Min = Number(time.substring(3,5));
+			H = Number(time.substring(6,8));
+			D = Number(time.substring(9,11));
+			M = Number(time.substring(12,14));
+			Y = Number(time.substring(15));
+		} else {
+			Sec = Number(time.substring(12));
+			Min = Number(time.substring(10,12));
+			H = Number(time.substring(8,10));
+			D = Number(time.substring(6,8));
+			M = Number(time.substring(4,6));
+			Y = Number(time.substring(0,4));
+		}
+		
+		// now we'll create a new Calendar object and set it's
+		// date, month and year properties from our parsed
+		// input. To get a consistent date, we always set
+		// hours, minutes and seconds to 0
+		
+		// Note(sv): The above comment came from the original AJC code, but it doesn't appear to be accurate
+		
+		var calendar = new GregorianCalendar();
+		calendar.set(Y, M-1, D, H+1, Min+1, Sec+1);
+		// the last step is to get the UTP time from the
+		// Date object. Because the getTime() method returns
+		// milliseconds instead of seconds, we have to devide
+		// the rsult by 1000 and truncate it
+		return String(Math.floor((calendar.getTime().getTime()/1000)-61));
+		// Note(sv): Math.abs() was used in the original AJC code, but that can't be right because the result wouldn't be useful for a negative number
+	}
+	catch (e)
+	{
+		// this will print an ugly but informational error
+		// error message to stdout
+		println(e)
+		// in case somthing goes wrong, we'll return 0
+		// wich is 1/1/1970
+		return "0";
+	}
+}
+
+/** 
+ * Check if input string matches a Regular Expression.
+ *
+ * @param {String}	str		input string
+ * @param {String}	pattern	the Regular Expression to match
+ *
+ * @type Boolean
+ * @return true if input string matches pattern, false otherwise
+ */
+function match(str, pattern)
+
+{
+	try
+	{
+		var re = new RegExp(pattern);
+		return re.test(str);
+	}
+	catch (e)
+	{
+		return false;
+	}
+}
+
+/** 
+ * Convert a Base64 encoded octet string value to an ASCII HEX string.
+ *
+ * @param {String}	s	Base64 encoded octet string
+ *
+ * @type String
+ * @return ASCIIHEX string
+ */
+function octet2AsciiHex(s)
+{
+	var bytes = Base64Codec.decode(s);
+	return encodeAsciiHex(bytes);
+}
+
+/** 
+ * Convert a Base64 encoded GUID attribute value to an ASCII string
+ * in the format the NDS2NDS driver uses as its association.
+ *
+ * @param {String}	s	Base64 encoded GUID attribute value
+ *
+ * @type String
+ * @return ASCII string
+ *
+ * @throws IOException -
+ */
+function guid2Association(s)
+{
+	var bytes = Base64Codec.decode(s);
+	var s1 = encodeAsciiHex(bytes);
+	return '{' +
+		s1.substring(0, 8) +
+		'-' +
+		s1.substring(8, 12) +
+		'-' +
+		s1.substring(12, 16).toLowerCase() +
+		'-' +
+		s1.substring(16, 20) +
+		'-' +
+		s1.substring(20) +
+		'}';
+}
+
+/** 
+ * Convert a Base64 encoded GUID attribute value to an ASCII string
+ * in the typical string format of a GUID.
+ *
+ * @param {String}	s	Base64 encoded GUID attribute value
+ *
+ * @type String
+ * @return ASCII string
+ *
+ * @throws IOException -
+ */
+function guid2string(s)
+{
+	var bytes = Base64Codec.decode(s);
+	var s1 = encodeAsciiHex(bytes);
+	return s1.substring(0, 8) +
+		'-' +
+		s1.substring(8, 12) +
+		'-' +
+		s1.substring(12, 16).toLowerCase() +
+		'-' +
+		s1.substring(16, 20) +
+		'-' +
+		s1.substring(20);
+}
+
+/** 
+ * Get the hostname/ipaddress
+ *
+ * @type String
+ * @return local hostname in format name/ipaddres
+ */
+function getHostname()
+{
+	try
+	{
+		return java.net.InetAddress.getLocalHost().toString();
+	}
+	catch (uh)
+	{
+		return String(uh);
+	}
+}
+
+/** 
+ * Convert a distinguished name in LDAP format as input (e.g.
+ * cn=vscnw,ou=org,o=comp) and converts it to a distinguished name in
+ * slash format (e.g. \comp\org\vscnw).
+ 
+ * &lt;p>Note: This came from AJC pretty much as is, but there are much better ways to perform DN
+ * conversion that account for all the special cases using the com.novell.nds.dirxml.util.XdsDN class.&lt;/p>
+ *
+ * &lt;p>Note: This preserves the original AJC behaviour where the result always starts with a backslash.
+ * This is probably not the desired behavior, but left that way for backward compatibility.&lt;/p>
+ *
+ * @param {String}	dn	distinguished name in LDAP format
+ *
+ * @type String
+ * @return distinguished name in slash format
+ */
+ 
+ function dn2xml(dn, delimiter)
+{
+	var xmldn = "";
+	if (!delimiter)
+	{
+		delimiter = ",";
+	}
+	var items = tokenize(dn , delimiter, '\\');
+	for (var i = items.length - 1; i > -1; i--)
+	{
+		xmldn = xmldn + "\\" + tokenize(items[i], '=', '\\')[1];
+	}
+	return xmldn;
+}
+
+/** 
+ * Encodes a string using Base64 encoding.
+ *
+ * @param {String}	str			input clear text string
+ * @param {String}	encoding	character encoding to convert string to bytes (optional: default=system encoding)
+ *
+ * @type String
+ * @return Base64 encoded string
+ */
+function Base64encode(str, encoding)
+{
+	if (!encoding)
+	{
+		encoding = System.getProperty("file.encoding")
+	}
+	return new JString(Base64Codec.encode(new JString(str).getBytes(encoding)));
+}
+
+/** 
+ * Decode character data encoded as Base64 encoded string.
+ *
+ * @param {String}	b64			Base64 encoded string
+ * @param {String}	encoding 	character encodingto use to convert bytes to characters (optional: default=system encoding)
+ *
+ * @throws IOException if input string is not valid Base64 data
+ *
+ * @type String
+ * @return decoded string
+ */
+function Base64decode(b64, encoding)
+{
+	if (!encoding)
+	{
+		encoding = System.getProperty("file.encoding")
+	}
+	return new JString(Base64Codec.decode(b64), encoding);
+}
+
+/** 
+ * Execute a system command.
+ *
+ * @param {String}	eStr     command string to be executed
+ *
+ * @type String
+ * @return output of the command (if any)
+ */
+function execString(eStr)
+{
+	var br = null;
+	try
+	{
+		var runtime = java.lang.Runtime.getRuntime();
+		var proc = runtime.exec(eStr);
+		br = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+		var l="";
+		var r="";
+		l = l + "RESULT: [" + proc.waitFor() + "]";
+//		println(l);
+
+		while((l = br.readLine()) != null)
+		{
+			//Note(sv): original AJC behavior would exclude new lines
+			if (r)
+			{
+				r += "\n";
+			}
+			r += l;
+		}
+		return r;
+	}
+	catch (e)
+	{
+		return String(e);
+	}
+	finally
+	{
+		if (br)
+		{
+			br.close();
+		}
+	}
+}
+
+/* ========================================================================
+ *  This section contains public methods dealing with naming conversion
+ *  ======================================================================== */
+ 
+/** 
+ * Convert a slash format DN (including the tree name) into an LDAP DN.
+ *  &lt;p>We have three common cases:&lt;br/>
+ *  a) cn=...,...,o=...&lt;br/>
+ *  b) uid=...,...,o=...            -> the first attributeName is an arbitrary string&lt;br/>
+ *  c) arbitrary attribute names, like "ou=...,dc=...,l=...,ou=...,o=...,c=..."&lt;/p>
+ *
+ *  &lt;p>The cases a) and b) are only special cases of c)&lt;/p>
+ *
+ *  &lt;p>If the DirXML name starts with a '\' we have a tree-based DirXML name,
+ *  otherwise we only have a container based DirXML name.&lt;/p>
+ *
+ * &lt;p>There are two optional parameters (type1 and type2)that specify the type qualifiers for the leaf node and for the intermediate container.
+ * The default leaf qualifier is cn and the default container qualifier is ou. If type1 only is provided, then it becomes the leaf qualifier.
+ * If type1 and type2 are both provided then type1 is the container qualifier and type 2 is leaf qualifier.&lt;/p>
+ *
+ * &lt;p>The different meaning of type1 based on the existence of type2 is in order to maintain compatibility with the 
+ * different overloads of the function in the original AJC.&lt;/p>
+ *
+ * @param {String}	slashDN		the DN in unqualified slash form
+ * @param {String}	type1		the first type name (optional: see above description of meaning)
+ * @param (String}	type 2		the second type name (optional: see above description of meaning)
+ *
+ ************************************************************/
+
+ // Note(sv): the original AJC code had 3 overloads, but since ECMAscript
+ // doesn't allow overloaded functions, the meaning of the each type parameter
+ // changes based on how many types are specified because the original AJC adds
+ // parameters in the middle instead of the end
+ 
+function xml2dn(slashDN, type1, type2)
+{
+	// simple function to create a pseudo LDAP name
+	// we assume that all container objects are from type OU
+	// the base type and the leaf type are given as parameters
+
+	var baseType = "o";
+	var leafType = "cn";
+	if (type1)
+	{
+		if (type2)
+		{
+			baseType = type1;
+			leafType = type2;
+		}
+		else
+		{
+			leafType = type1;
+		}
+	}
+	var dn = tokenize(slashDN,"\\", "'");
+
+	//strip treename
+	if (slashDN.charAt(0) == "\\")
+	{
+		dn.shift();        
+		dn.shift();        
+	}
+		
+
+	var fdn;
+	
+	fdn = leafType + '=' + dn.pop() + ',';
+	
+	while (dn.length > 1)
+	{
+		fdn += "ou=" + dn.pop() + ',';
+	}
+	fdn += baseType + '=' + dn[0];
+	return fdn;
+}
+
+// Note(sv): didn't port XML2dn because it appears to be unfinished and not actually do anything
+
+/*
+// handle the general case - we use a string array for mapping the name spaces
+function XML2dn(String slashDN, String attributeNames) {
+	boolean withTree = slashDN.startsWith("\\");
+	String fdn = "";
+	Vector dn = new Vector();
+	Vector an = new Vector();
+	
+	dn = tokenize(reverseString(slashDN,"\\"),'\\');
+	an = tokenize(attributeNames,',');
+	
+	// check if xml2dn was called with an incomplete attributeNames string
+	if (dn.size() != an.size()) {
+		if (an.size() == 1) {
+			// according to our definitions this can only be the attribute name of the leaf object
+			int max = withTree ? dn.size() - 2 : dn.size() - 1;
+			for (int i = 1; i &lt; max; i++) an.addElement("ou");
+			an.addElement("o");
+			if (withTree) an.addElement("t");
+		}
+	}
+	// that's it...
+	return fdn;
+}
+*/
+ 
+/** 
+ * Serialize a NodeSet to a String
+ *
+ * @param {NodeSet}	nodeset		nodeset to be serialized
+ *
+ * @type String
+ * @return  serialized NodeSet
+ */
+function NodeSetToString(nodeset)
+{
+	var node = nodeset.first();
+	var sw = new java.io.StringWriter();
+	var dw = new Packages.com.novell.xml.dom.DOMWriter(node, sw);
+	dw.write();
+	var str = sw.toString();
+	sw.close();
+	return str;
+}
+
+/**
+ * Pad (via right justification) or truncate a String to a given length.
+ *
+ * @param {String}	inStr		string to pad/truncate
+ * @param {String}	size        target size of the string
+ * @param {String}	padStr      pad character
+ *
+ * @type String
+ * @return padded/truncated string
+ */
+function fixLengthRight(inStr, size, padStr)
+{
+	if (inStr.length >= size)
+	{
+		return inStr.substring(inStr.length - size, inStr.length);
+	}
+	else
+	{
+		var dest = "";
+		for (var i = 0; i &lt; (size - inStr.length); i++)
+		{
+			dest = dest + padStr.charAt(0);
+		}
+		return dest + inStr;
+	}
+}
+
+/** 
+ * Create a trace message
+ *
+ * @param {String}	msg		message text
+ *
+ * @type void
+ */
+function traceMsg(msg)
+{
+	println("UTRACE: " + msg);
+}
+
+/** 
+ * Get current time plus a given number of seconds in the format: "YYYYMMDDhhmmss". This format is e.g. used to schedule an xdsQ-Event.
+ * 
+ * @param {Number} 	secs	seconds to add to current time.
+ *
+ * @type String
+ * @return the future time in the format: "YYYYMMDDhhmmss"
+ */
+function xdsQschedule(secs) {
+	var now, schedule;
+	var Y_str, M_str, D_str, h_str, m_str, s_str;
+	var calendar = new GregorianCalendar();
+	calendar.add(calendar.SECOND, secs);
+	
+	var Y = calendar.get(calendar.YEAR);
+	var M = calendar.get(calendar.MONTH) + 1;
+	var D = calendar.get(calendar.DAY_OF_MONTH);
+	var h = calendar.get(calendar.HOUR_OF_DAY);
+	var m = calendar.get(calendar.MINUTE);
+	var s = calendar.get(calendar.SECOND);
+	
+	if (Y&lt;100) {
+		Y_str = "200" + String(Y);
+	} else {
+		Y_str = String(Y);
+	}
+	if (M&lt;10) {
+		M_str = "0" + String(M);
+	} else {
+		M_str = String(M);
+	}
+	if (D&lt;10) {
+		D_str = "0" + String(D);
+	} else {
+		D_str = String(D);
+	}
+	if (h&lt;10) {
+		h_str = "0" + String(h);
+	} else {
+		h_str = String(h);
+	}
+	if (m&lt;10) {
+		m_str = "0" + String(m);
+	} else {
+		m_str = String(m);
+	}
+	if (s&lt;10) {
+		s_str = "0" + String(s);
+	} else {
+		s_str = String(s);
+	}
+	
+	return Y_str + M_str + D_str + h_str + m_str + s_str;
+}
+
+// Note(sv): this table used to be a 2 dimensional array, with each element having 3 strings.
+//				The first string essentially amounted to the index and isn't really needed because
+//				we can calculate the offest using simple math.
+//				The third entry appeared to be not used at all but would seem to be for documentation
+//				purposes so I changed it into a comment
+
+var BASIC_LATIN_MIN = 161;
+var BASIC_LATIN_MAX = 254;
+
+var latinToAscii = [
+	"?",	// ¡
+	"c",	// ¢
+	"?",	// £
+	"?",	// ¤
+	"Y",	// ¥
+	"?",	// ¦
+	"?",	// §
+	"?",	// ¨
+	"(c)",	// ©
+	"?",	// ª
+	"&lt;&lt;",	// «
+	"?",	// ¬
+	"-",	// ­
+	"(R)",	// ®
+	"?",	// ¯
+	"?",	// °
+	"?",	// ±
+	"2",	// ²
+	"3",	// ³
+	"?",	// ´
+	"u",	// µ
+	"?",	// ¶
+	".",	// ·
+	"?",	// ¸
+	"1",	// ¹
+	"?",	// º
+	">>",	// »
+	"1/4",	// ¼
+	"1/2",	// ½
+	"3/4",	// ¾
+	"?",	// ¿
+	"A",	// À
+	"A",	// �?
+	"A",	// Â
+	"A",	// Ã
+	"Ae",	// Ä
+	"A",	// Å
+	"Ae",	// Æ
+	"C",	// Ç
+	"E",	// È
+	"E",	// É
+	"E",	// Ê
+	"E",	// Ë
+	"I",	// Ì
+	"I",	// �?
+	"I",	// Î
+	"I",	// �?
+	"D",	// �?
+	"N",	// Ñ
+	"O",	// Ò
+	"O",	// Ó
+	"O",	// Ô
+	"O",	// Õ
+	"Oe",	// Ö
+	"*",	// ×
+	"O",	// Ø
+	"U",	// Ù
+	"U",	// Ú
+	"U",	// Û
+	"Ue",	// Ü
+	"Y",	// �?
+	"?",	// Þ
+	"ss",	// ß
+	"a",	// à
+	"a",	// á
+	"a",	// â
+	"a",	// ã
+	"ae",	// ä
+	"a",	// å
+	"ae",	// æ
+	"c",	// ç
+	"e",	// è
+	"e",	// é
+	"e",	// ê
+	"e",	// ë
+	"i",	// ì
+	"i",	// í
+	"i",	// î
+	"i",	// ï
+	"?",	// ð
+	"n",	// ñ
+	"o",	// ò
+	"o",	// ó
+	"o",	// ô
+	"o",	// õ
+	"oe",	// ö
+	"/",	// ÷
+	"?",	// ø
+	"u",	// ù
+	"u",	// ú
+	"u",	// û
+	"ue",	// ü
+	"y",	// ý
+	"?",	// þ
+	];
+
+/** 
+ * Replace extended Latin characters in string with closest ASCII equivalant.
+ *
+ * @param {String}	input	input string
+ *
+ * @type String
+ * @return the input string with all special characters removed
+ */
+function interString(input)
+{
+	var chars = input.split("");
+
+	for(var i = 0; i &lt; chars.length; i++)
+	{
+		var charCode = chars[i].charCodeAt(0);
+		if((charCode >= BASIC_LATIN_MIN) &amp;&amp; (charCode &lt;= BASIC_LATIN_MAX))
+		{
+			chars[i] = latinToAscii[charCode - BASIC_LATIN_MIN];
+		}
+	}
+	
+	return chars.join("");
+}
+
+/**
+ * Get a string representation of the current time (YYYYMMDDHHmmss).
+ *
+ * @type String
+ * @return a string representing the current time (YYYYMMDDHHmmss)
+ */
+function getTimeString()
+{
+	var oDate = new JDate();
+	var oString = String(oDate.getYear()+1900);
+	if((oDate.getMonth()+1)&lt;10)
+		oString = oString + "0" +String(oDate.getMonth()+1);
+	else
+		oString = oString + String(oDate.getMonth()+1);
+	if((oDate.getDate())&lt;10)
+		oString = oString + "0" +String(oDate.getDate());
+	else
+		oString = oString + String(oDate.getDate());
+	if((oDate.getHours())&lt;10)
+		oString = oString + "0" +String(oDate.getHours());
+	else
+		oString = oString + String(oDate.getHours());
+	if((oDate.getMinutes())&lt;10)
+		oString = oString + "0" +String(oDate.getMinutes());
+	else
+		oString = oString + String(oDate.getMinutes());
+	if((oDate.getSeconds())&lt;10)
+		oString = oString + "0" +String(oDate.getSeconds());
+	else
+		oString = oString + String(oDate.getSeconds());
+		
+	return oString;
+}
+
+/** 
+ * Create a password.
+ *
+ * @param {String} input a string that is used to identify the output
+ *
+ * @type String
+ * @return a string in the format: &lt;PRE>passwd: input *******&lt;/PRE>
+ */
+function createPassword(input)
+{
+	var oDate = new JDate();
+	var oString = "passwd: "+input+" "+String(oDate.getDay())+String(oDate.getMonth())+String(oDate.getHours())+String(oDate.getMinutes())+String(oDate.getSeconds());
+	
+	return oString;
+}
+
+/** 
+ * Create a numeric password.
+ *
+ * @param {Number} minLength minimum length of the password
+ *
+ * @type String
+ * @return a string in the format: &lt;PRE>1234567&lt;/PRE>
+ */
+function createPassword2(minLength) {
+	var oString = "";
+	var numeric;
+// Note(sv): following line appeared to be superfluous
+//	int count = (int)(Math.random()*6);
+	for (var i = 0; i &lt; minLength; i++)
+	{
+		numeric = Math.floor((Math.random()*100));
+		oString = oString + String(numeric);
+	}
+	return oString;
+}
+
+/** 
+ * Create an alphanumeric password.
+*
+ * @param {Number} minLength minimum length of the password
+ *
+ * @type String
+ * @return a string in the format: &lt;PRE>1AB2C3D&lt;/PRE>
+ */
+function createPassword3(minLength) {
+	var oString = "";
+	var randchar = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	var alpha, numeric;
+// Note(sv): following line appeared to be superfluous
+//	int count = (int)(Math.random()*6);
+	for (var i = 0; i &lt; minLength; i++)
+	{
+		if(Math.floor(Math.random()*2) == 1)
+		{
+			alpha = Math.random()*51;
+			oString = oString + randchar.charAt(alpha);
+		}
+		else
+		{
+			numeric = Math.floor((Math.random()*100));
+			oString = oString + String(numeric);
+		}
+	}
+	return oString;
+}
+
+/** 
+ * Create an alphanumeric password.
+ *
+ * @param {String} passwordLength length of the password
+ * @param {Number} numOfAlphabets count of characters in the password
+ * @param {Number} numOfDigits count of digits in the password
+ * 
+ * @type String
+ * @return a string in the format: &lt;PRE>1AB2C3D&lt;/PRE>
+ */
+function createPassword4(passwordLength, numOfAlphabets, numOfDigits)
+{
+	var characters	=	"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	var digits		=	"0123456789";
+	
+	if(passwordLength &lt; (numOfAlphabets + numOfDigits))
+	{
+		throw new Error(pwdExceptionMessage);
+	}
+	
+	var password = [];
+		
+	var charLength		=	characters.length;
+	var digitLength		=	digits.length;
+	
+	var pwdArrayIndex	=	0;
+	var index			=	0;
+	
+	for(var i = 0; i &lt; numOfAlphabets; i++)
+	{
+		do
+		{
+			pwdArrayIndex = Math.round(Math.random()*(passwordLength - 1));
+		} while(password[pwdArrayIndex]);
+		
+		index = Math.round(Math.random()*(charLength - 1));
+		password[pwdArrayIndex] = characters.charAt(index);
+	}
+	
+	for(var i = 0; i &lt; numOfDigits; i++)
+	{
+		do
+		{
+			pwdArrayIndex = Math.round(Math.random()*(passwordLength - 1));
+		} while (password[pwdArrayIndex]);
+		
+		index = Math.round(Math.random()*(digitLength - 1));
+		password[pwdArrayIndex] = digits.charAt(index);
+	}
+	
+	for(var i = 0; i &lt; passwordLength; i++)
+	{
+		if(!password[i])
+		{
+			index = Math.round(Math.random()*(digitLength + charLength - 1));
+			
+			if(index &lt; charLength)
+			{
+				password[i]	= characters.charAt(index);
+			}
+			else
+			{
+				password[i] = digits.charAt(index - charLength);
+			}
+		}
+	}
+	
+	return password.join("");
+}
+
+/** 
+ * Create a password.
+ *
+ * &lt;p>Note(sv): This appears to be identical to createPassword(), but included
+ * for compatibility with AJC.&lt;/p>
+ *
+ * @param {String} input a string that is used to identify the output
+ *
+ * @type String
+ * @return a string in the format: &lt;PRE>passwd: input *******&lt;/PRE>
+ */
+function CreatePasswd(input)
+{
+	var oDate = new Date();
+	var oString = "passwd: "+input+" "+String(oDate.getDay())+String(oDate.getMonth())+String(oDate.getHours())+String(oDate.getMinutes())+String(oDate.getSeconds());
+	
+	return oString;
+}
+
+/** 
+ * Send an eMail.
+ *
+ * @param {String} from sender address
+ * @param {String} to recipients addresses (delimited by comma)
+ * @param {String} subj subject
+ * @param {String} msgText message
+ * @param {String} host IP address of the SMTP mail host
+ * @param {String} debugging true or false (shows a debug trace on the system console)
+ *
+ * @type Boolean
+ * @return true if successful or false if it fails
+ */
+function sendMail(from, to, subj, msgText, host, debugging)
+{
+	return sendMailCWithAttachment(from, to, subj, msgText, null, host, debugging, null);
+}
+
+/** 
+ * Send an eMail with attachment.
+ *
+ * &lt;p>Note(sv): had to rename from the orginal AJC because javascript
+ * doesn't support overloading and there is no easy way to disambiguate the parameters.&lt;/p>
+ *
+ * @param {String} from sender address
+ * @param {String} to recipients addresses (delimited by comma)
+ * @param {String} subj subject
+ * @param {String} msgText message
+ * @param {String} file file to attach
+ * @param {String} host IP address of the SMTP mail host
+ * @param {String} debugging true or false (shows a debug trace on the system console)
+ *
+ * @type Boolean
+ * @return true if successful or false if it fails
+ */
+
+function sendMailWithAttachment(from, to, subj, msgText, file, host, debugging)
+{
+	return sendMailCWithAttachment(from, to, subj, msgText, file, host, debugging, null);
+}
+
+/** 
+ * Send a character set encoded eMail.
+ *
+ * &lt;p>Note: The character set encoding only applies to the message body.&lt;/p>
+ *
+ * @param {String} from sender address
+ * @param {String} to recipients addresses (delimited by comma)
+ * @param {String} subj subject
+ * @param {String} msgText message
+ * @param {String} host IP address of the SMTPa mail host
+ * @param {String} debugging true or false (shows a debug trace on the system console)
+ * @param {String} charSet set this to character set encoding you want to use for message body. ex: ISO-8859-1
+ *
+ * @type Boolean
+ * @return true if successful or false if it fails
+ */
+
+function sendMailC(from, to, subj, msgText, host, debugging, charSet)
+{
+	return sendMailCWithAttachment(from, to, subj, msgText, null, host, debugging, charSet);
+}
+
+/** 
+ * Send a character set encoded eMail.
+ *
+ * &lt;p>Note: The character set encoding only applies to the message body.&lt;/p>
+ *
+ * &lt;p>Note(sv): had to rename from the orginal AJC because javascript
+ * doesn't support overloading and there is no easy way to disambiguate the parameters.&lt;/p>
+ *
+ * @param {String} from sender address
+ * @param {String} to recipients addresses (delimited by comma)
+ * @param {String} subj subject
+ * @param {String} msgText message
+ * @param {String} host IP address of the SMTPa mail host
+ * @param {String} file file to attach
+ * @param {String} debugging true or false (shows a debug trace on the system console)
+ * @param {String} charSet set this to character set encoding you want to use for message body. ex: ISO-8859-1
+ *
+ * @type Boolean
+ * @return true if successful or false if it fails
+ */
+function sendMailCWithAttachment(from, to, subj, msgText, file, host, debugging, charSet)
+{
+	var debug = java.lang.Boolean.valueOf(debugging).booleanValue();
+	var status = false;
+	var props = new java.util.Properties(System.getProperties());
+	props.put("mail.smtp.host", host);
+	props.put("mail.smtp.auth", "false");
+	
+	if (charSet)
+	{
+		props.setProperty("mail.mime.charset", charSet);
+	}
+	
+	var session = Packages.javax.mail.Session.getInstance(props, null);
+	session.setDebug(debug);
+	try
+	{
+		var msg = new Packages.javax.mail.internet.MimeMessage(session);
+		msg.setFrom(new Packages.javax.mail.internet.InternetAddress(from));
+		var addresses_str = to.split(',');
+		var addresses = new java.lang.reflect.Array.newInstance(Packages.javax.mail.internet.InternetAddress,
+																addresses_str.length);
+		for (var i in addresses_str)
+		{
+			addresses[i] = new Packages.javax.mail.internet.InternetAddress(addresses_str[i]);
+		}
+		
+		msg.setRecipients(Packages.javax.mail.Message.RecipientType.TO, addresses);
+		msg.setSubject(subj);
+		if (file)
+		{
+			var mp = new Packages.javax.mail.internet.MimeMultipart();
+			var mbp1 = new Packages.javax.mail.internet.MimeBodyPart();
+			
+			mbp1.setText(msgText, charSet);
+			
+			mp.addBodyPart(mbp1);
+			var files = file.split(',');
+			for (var i in files)
+			{
+				var attachement = new Packages.javax.mail.internet.MimeBodyPart();
+				var fds = new Packages.javax.activation.FileDataSource(files[i].toString());
+				attachement.setDataHandler(new Packages.javax.activation.DataHandler(fds));
+				attachement.setFileName(fds.getName());
+				mp.addBodyPart(attachement);
+			}
+			
+			msg.setContent(mp);
+		}
+		else
+		{
+			msg.setText(msgText, charSet);
+		}
+		msg.setSentDate(new Date());
+		Packages.javax.mail.Transport.send(msg);
+		status = true;
+	}
+	catch (e)
+	{
+		println("( " + e + " )");
+		if (e.javaException)
+		{
+			e.javaException.printStackTrace();
+		}
+	}
+	
+	return status;
+}
+
+/**
+ * Convert a string to pure ASCII.
+ *
+ * &lt;p>Note(sv): appears to require International Components for Unicode jar file(s) available at http://icu.sourceforge.net&lt;/p>
+ *
+ * @param {String} s0 input string
+ *
+ * @type String
+ * @return the input string converted to its closest ascii equivalent
+ */
+function makeAscii(s0)
+{
+	var sDecomposed = String(Packages.com.ibm.icu.text.Normalizer.decompose(s0, false));
+	var sASCII = "";
+	
+	for (var i = 0;  i &lt; sDecomposed.length; ++i)
+	{	
+		if ( 0 == Packages.com.ibm.icu.lang.UCharacter.getCombiningClass(sDecomposed.charCodeAt(i)) )
+		{
+			sASCII += sDecomposed.charAt(i);
+		}
+	}
+	return sASCII;
+}
+
+/**
+ * Convert a string to pure ASCII and remove non-alpha characters from the result
+ *
+ * &lt;p>Note(sv): appears to require International Components for Unicode jar file(s) available at http://icu.sourceforge.net&lt;/p>
+ *
+ * @param {String} s0 input string
+ *
+ * @type String
+ * @return the input string converted to its closest ascii equivalent with all non-alpha characters removed
+ */
+function makeAsciiAlpha(s0)
+{
+	var sDecomposed = String(Packages.com.ibm.icu.text.Normalizer.decompose(s0, false));
+	var sASCII = "";
+	
+	for (var i=0;  i &lt; sDecomposed.length; ++i)
+	{
+		var cp = Packages.com.ibm.icu.lang.UCharacter.getCodePoint(sDecomposed.charCodeAt(i));
+		
+		if ( 0 == Packages.com.ibm.icu.lang.UCharacter.getCombiningClass(sDecomposed.charCodeAt(i)) )
+		{
+			// only allow a-z and A-Z through
+			if ((cp > 64 &amp;&amp; cp &lt; 91) || (cp > 96 &amp;&amp; cp &lt; 123))
+			{
+				sASCII += sDecomposed.charAt(i);
+			}
+		}
+	}
+	return sASCII;
+}
+
+/** 
+ * Write to a log file.
+ *
+ * &lt;p>Note(sv): Unlike the original AJC, this function is not thread-safe - I think this can be fixed.&lt;/p>
+ *
+ * @param {String} filename filename (including path)
+ * @param {String} msg message to write to the file
+ * @param {String} encoding string to define encoding type to be used e.g. UTF-8
+ *
+ * @type String
+ * @return the message if successful, error string otherwise
+ */
+function writeLog(filename, msg, encoding)
+{
+	if (!encoding)
+	{
+		encoding = System.getProperty("file.encoding")
+	}
+	var bw = null;
+	try
+	{
+		bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename, true),encoding));
+		bw.write(msg+System.getProperty("line.separator"));
+		return msg;
+	}
+	catch(e) {
+		return String(e);
+	}
+	finally
+	{
+		if (bw)
+		{
+			bw.flush();
+			bw.close();
+		}
+	}
+}
+
+/** 
+ * Convert a string to upper case.
+ *
+ * @param {String} input string
+ *
+ * @type String
+ * @return the input string, converted to uppercase
+ */
+function upperString(input)
+{
+	return input.toString().toUpperCase();
+}
+
+/** 
+ * Replace leading spaces and changes double spaces to single space.
+ *
+ * &lt;p>Example:&lt;br>
+ * {@code      '  leading spaces' --> 'leading spaces'}&lt;br>
+ * {@code      'double  spaces' --> 'double spaces'}&lt;br>
+ * {@code      'ending spaces  ' --> 'ending spaces'}&lt;/p>
+ *
+ * &lt;p>Note(sv): I'm not sure why this was needed in the original AJC unless the XPath function normalize-space() did
+ * too much by converting all whitespace characters to spaces first, or the author just didn't know about it.
+ * I left the original functionality in case that is exactly how it was intended to behave.&lt;/p>
+ *
+ * @param {String} input input string
+ *
+ * @type String
+ * @return normalized string
+ */
+function normalizeSpace(input)
+{
+	return input.replace(/(^ +)|( +$)/g, "").replace(/  +/g, " ");
+}
+
+
+/** 
+ * Convert the first character of every word in the input string to upper case.
+ *
+ * @param {String} input input string (string must be normalized before)
+ *
+ * @type String
+ * @return string with capitalized words
+ */
+function capitalizeWords(input) {
+	var inVector = input.split(' ');
+	var out = "";
+	
+	for ( var i = 0; i &lt; inVector.length; i++ )
+	{
+		if (i > 0)
+		{
+			out += " ";
+		}
+		out += inVector[i].charAt(0).toUpperCase() + inVector[i].substring(1);
+	}
+	return out;
+}
+
+/** 
+ * Convert a string to lower case.
+ *
+ * @param {String} input string
+ *
+ * @type String
+ * @return the input string, converted to lowercase
+ */
+function lowerString(input)
+{
+	return input.toString().toLowerCase();
+}
+
+/** 
+ * Create a username out of two strings (e.g. firstname and lastname) and an optional delimiter.
+ *
+ * @param {String} s1 first string (e.g. firstname)
+ * @param {String} c1 how many characters should be taken
+ * @param {String} s2 second string (e.g. lastname)
+ * @param {String} c2 how many characters should be taken
+ * @param {String} delimiter optional string used as a delimiter between s1 and s2. (Optional: default = no delimiter)
+ *
+ * @type String
+ * @return the new created username
+ */
+function createUsername(s1, c1, s2, c2, delimiter)
+{
+	return s1.substring(0, c1) + (delimiter ? delimiter : "") + s2.substring(0, c2);
+}
+
+/** 
+ * Convert a date from a specified input to a specified output format.
+ *
+ * @param {String} inDate date as a string (e.g. "01.09.2000")
+ * @param {String} inFormat input format definition (e.g. "dd.mm.yyyy")
+ * @param {String} outFormatString output format definition (e.g. "mm/dd/yyyy")
+ *
+ * @type String
+ * @return converted date as a string (e.g. "09/01/2000")
+ */
+function convertDate(inDate, inFormat, outFormatString)
+{
+	if (inDate.length==inFormat.length)
+	{
+		var outFormat = new java.lang.StringBuffer(outFormatString);
+		var outDate = "";
+		var y = "";
+		var m = "";
+		var d = "";
+		inDate = inDate.toLowerCase();
+		inFormat = inFormat.toLowerCase();
+		var inyLength = patternCount(inFormat.toLowerCase(), "y");
+		var inmLength = patternCount(inFormat.toLowerCase(), "m");
+		var indLength = patternCount(inFormat.toLowerCase(), "d");
+		y = inDate.substring(inFormat.toLowerCase().indexOf('y'), inFormat.toLowerCase().lastIndexOf('y') + 1);
+		m = inDate.substring(inFormat.toLowerCase().indexOf('m'), inFormat.toLowerCase().lastIndexOf('m') + 1);
+		d = inDate.substring(inFormat.toLowerCase().indexOf('d'), inFormat.toLowerCase().lastIndexOf('d') + 1);
+		var outyLength = patternCount(outFormat.toString().toLowerCase(), "y");
+		var outmLength = patternCount(outFormat.toString().toLowerCase(), "m");
+		var outdLength = patternCount(outFormat.toString().toLowerCase(), "d");
+		outDate = outFormat.replace(outFormat.toString().toLowerCase().indexOf('y'), outFormat.toString().toLowerCase().indexOf('y') + outyLength, y).replace(outFormat.toString().toLowerCase().indexOf('m'), outFormat.toString().toLowerCase().indexOf('m') + outmLength, m).replace(outFormat.toString().toLowerCase().indexOf('d'), outFormat.toString().toLowerCase().indexOf('d') + outdLength, d).toString();
+		return String(outDate);
+	} else {
+		return "#ERROR!: Your input date has not the format specified by your input format.";
+	}
+}
+
+/** 
+ * Get the prefix of a dn.
+ *
+ * @param {String} input complete dn as a string (e.g. "\CUSTOM-TREE\Test\Username")
+ * @param {String} delim delimiter to search for (e.g. "\")
+ *
+ * @type String
+ * @return prefix of the input dn (e.g. "\CUSTOM-TREE\Test")
+ */
+function getPrefix(input, delim)
+{
+	return (input.lastIndexOf(delim) == -1 ? "" : input.substring(0, input.lastIndexOf(delim)));
+}
+
+/** 
+ * Get the suffix of a dn.
+ *
+ * @param {String} input complete dn as a string (e.g. "\CUSTOM-TREE\Test\Username")
+ * @param {String} delim delimiter to search for (e.g. "\")
+ *
+ * @type String
+ * @return prefix of the input dn (e.g. "\CUSTOM-TREE\Test")
+ */
+function getSuffix(input, delim)
+{
+	return (input.lastIndexOf(delim) == -1 ? "" : input.substring(1+ input.lastIndexOf(delim)));
+}
+
+/** 
+ * Get a substring of a string.
+ *
+ * @param {String} input a string (e.g. "ABC-String-N1")
+ * @param {Number} start the starting point in the string (e.g. 2)
+ * @param {Number} end the end point in the string (e.g. 5)
+ *
+ * @type String
+ * @return the substring (e.g. "C-S")
+ */
+function getSubstring(input , start, end)
+{
+	var out;
+	if(start &lt;= input.length)
+		if(input.length >= end)
+			out = input.substring(start,end);
+		else
+			out = input;
+	else
+		out="";
+	
+	return out;
+}
+
+/** 
+ * Count the occurrences of a string pattern in a string.
+ *
+ * @param {String} input Input string to search in.
+ * @param {String} pattern Pattern to search for.
+ *
+ * @type Number
+ * @return Occurrences of pattern in string.
+ */
+function patternCount(input, pattern)
+{
+	var repeat = true;
+	var counter = 0;
+	var buffer = -1;
+	
+	while ( repeat ) {
+		buffer = input.indexOf(pattern, buffer + 1);
+		if ( buffer + 1 != 0 ) {
+			counter++;
+		} else {
+			repeat = false;
+		}
+	}
+	
+	return counter;
+}
+
+/** 
+ * Create a string with a fixed length.
+ *
+ * &lt;p>This can be useful e.g. when creating an export file using the
+ * FlatFile driver when you need a fixed field length.&lt;/p>
+ *
+ * @param {String} input Input string
+ * @param {Number} len Desired length
+ * @param {String} pad pad character (Optional: default = space)
+ *
+ * @type String
+ * @return A string with fixed length either cut or filled with pad.
+ */ 
+function fixLength(input, len, pad)
+{
+	var out = "";
+	if ( input.length == len )
+	{
+		out = input;
+	}
+	else if ( input.length > len )
+	{
+		out = input.substring(0,len);
+	}
+	else
+	{
+		if (!pad)
+		{
+			pad = " "
+		}
+		else  
+		{
+			pad = pad.charAt(0);
+		}
+			
+		out = input.split("");
+		while (out.length &lt; len)
+		{
+			out.push(pad);
+		}
+		out = out.join("");
+	}
+	return out;
+}
+
+/** 
+ * Replace all instances of a character in a string.
+ *
+ * @param {String} inString any string (e.g. "user.test")
+ * @param {String} oldChar character (e.g. ".")
+ * @param {String} newChar character (e.g. "/")
+ *
+ * @type String
+ * @return converted string (e.g. "user/test")
+ */
+function replaceChar(inString, oldChar, newChar)
+{
+	return inString.replace(oldChar.charAt(0), newChar.charAt(0), "g");
+}
+
+/** 
+ * Remove all instances of character from a string.
+ *
+ * @param {String} inString any string (e.g. "user.test")
+ * @param {String} oldChar character (e.g. ".")
+ *
+ * @type String
+ * @return converted string (e.g. "usertest")
+ */
+function removeChar(inString, oldChar)
+{
+	return inString.replace(oldChar.charAt(0), "", "g");
+}
+
+/** 
+ * Remove apostrophe characters from a string.
+ *
+ * @param {String} inString any string (e.g. "user\'test")
+ *
+ * @type String
+ * @return converted string (e.g. "usertest")
+ */
+function removeApostrophe(inString) {
+	
+	return removeChar(inString,"'");
+}
+
+/** 
+ * Remove double-quote characters from a string.
+ *
+ * @param {String} inString any string (e.g. "user\"test")
+ *
+ * @type String
+ * @return converted string (e.g. "usertest")
+ */
+function removeQuote(inString)
+{
+	
+	return removeChar(inString,'"');
+}
+
+/** 
+ * Remove lesser-than characters from a string.
+ *
+ * @param {String} inString any string (e.g. "&lt;name>")
+ *
+ * @type String
+ * @return converted string (e.g. "name>")
+ */
+function removeLesser(inString)
+{
+	
+	return removeChar(inString,'&lt;');
+}
+
+/** 
+ * Remove greater-than characters from a string.
+ *
+ * @param {String} inString any string (e.g. "&lt;name>")
+ *
+ * @type String
+ * @return converted string (e.g. "&lt;name")
+ */
+function removeGreater(inString)
+{
+	
+	return removeChar(inString,'>');
+}
+
+/** 
+ * Replace all instances of a String within a string.
+ *
+ * @param {String} inString any string (e.g. "\PROD-TEST\All Users")
+ * @param {String} oldString any string (e.g. "\PROD-TEST")
+ * @param {String} newString character (e.g. "\TEST-PROD")
+ * 
+ * @type String
+ * @return converted string (e.g. "\TEST-PROD\All Users")
+ */
+function replaceString(inString, oldString, newString)
+{
+	return inString.replace(oldString, newString, "g");
+}
+
+/** 
+ * Reverse order of words in a string.
+ *
+ * @param {String} inString any string (e.g. "user/test/org")
+ * @param {String} delimiter (e.g. "/")
+ *
+ * @type String
+ * @return converted string (e.g. "org/test/user")
+ */
+function reverseString(inString, delimiter)
+{
+	return inString.split(delimiter.charAt(0)).reverse().join(delimiter.charAt(0));
+}
+
+/* ========================================================================
+ *  This section contains public methods dealing with date/time conversion
+ *  ======================================================================== */
+ 
+/** 
+ * Convert a date between locales.
+ * 
+ * &lt;p>This method takes a date string as input. The country specific format is
+ * given by the ISO-code fromLC. It will be converted to country specific
+ * format specified by toLC.&lt;/p>
+ *
+ * &lt;p>Note(sv): The arguments of this function are a little bit funky because their were
+ * two overloads of this function in the original AJC. Note that the optional argument is not at the end.&lt;/p>
+ *
+ * @param {String} ds        DateString
+ * @param {Number} style     FULL = 0, 1 = LONG, 2 = MEDIUM, 3 = SHORT (optional: default = SHORT)
+ * @param {String} fromLC    Source Country
+ * @param {String} toLC      destination Country
+ *
+ * @type String
+ * @return DateString in destination Country syntax
+ **/
+function convertDateBetweenLocales(ds, style, fromLC, toLC)
+{
+	if (!toLC)
+	{
+		toLC = fromLC;
+		fromLC = style;
+		style = DateFormat.SHORT;
+	}
+	return  convertTimeOrDate(false, style, ds, fromLC, toLC);
+}
+
+/** 
+ * Convert a time between locales.
+ *
+ * &lt;p>This method takes a time string as input. The country specific format is
+ *  given by the ISO-code fromLC. It will be converted to country specific
+ *  format specified by toLC, using the date style SHORT.&lt;/p>
+ *
+ *
+ * &lt;p>Note(sv): The arguments of this function are a little bit funky because their were
+ * two overloads of this function in the original AJC. Note that the optional argument is not at the end.&lt;/p>
+ *
+ * @param {String} ts        TimeString
+ * @param {Number} style     FULL = 0, 1 = LONG, 2 = MEDIUM, 3 = SHORT (optional: default = SHORT)
+ * @param {String} fromLC    Source Country Code
+ * @param {String} toLC      Destination Country Code
+ *
+ * @type String
+ * @return DateString in destination Country syntax
+ **/
+function convertTimeBetweenLocales(ts, style, fromLC, toLC)
+{
+	if (!toLC)
+	{
+		toLC = fromLC;
+		fromLC = style;
+		style = DateFormat.SHORT;
+	}
+	return  convertTimeOrDate(true, style, ds, fromLC, toLC);
+}
+
+/** 
+ * Convert a date or time between locales.
+ *
+ * @private
+ *
+ * @param {Boolean} useTime   true to convert time, false to convert date
+ * @param {Number} style     FULL = 0, 1 = LONG, 2 = MEDIUM, 3 = SHORT (optional: default = SHORT)
+ * @param {String} ds        DateString or TimeString
+ * @param {String} fromLC    Source Country Code
+ * @param {String} toLC      Destination Country Code
+ *
+ * @type String
+ * @return DateString or TimeString in destination Country syntax
+ **/
+function convertTimeOrDate(useTime, style, ds, fromLC, toLC)
+{
+	var fLC = new java.util.Locale("",fromLC);
+	var tLC = new java.util.Locale("",toLC);
+//	println("simpleDateFormat: flC.getDisplayName: " + fLC.getDisplayName());
+//	println("simpleDateFormat: tlC.getDisplayName: " + tLC.getDisplayName());
+	
+	var fDF = useTime ? DateFormat.getTimeInstance(style, fLC) : DateFormat.getDateInstance(style, fLC);
+	var tDF = useTime ? DateFormat.getTimeInstance(style, tLC) : DateFormat.getDateInstance(style, fLC);
+	try
+	{
+		return tDF.format(fDF.parse(ds));
+	}
+	catch (e)
+	{
+		println("Unable to parse " + ds);
+		return "";
+	}
+}
+
+/** 
+ * Convert a date+time between locales.
+ * 
+ * &lt;p>This method takes a date+time string as input. The country specific format is
+ * given by the ISO-code fromLC. It will be converted to country specific
+ * format specified by toLC.&lt;/p>
+ *
+ * &lt;p>Note(sv): The arguments of this function are a little bit funky because their were
+ * two overloads of this function in the original AJC. Note that the optional argument is not at the end.&lt;/p>
+ *
+ * @param {String} ds        DateTimeString
+ * @param {Number} style     FULL = 0, 1 = LONG, 2 = MEDIUM, 3 = SHORT (optional: default = SHORT)
+ * @param {String} fromLC    Source Country
+ * @param {String} toLC      destination Country
+ *
+ * @type String
+ * @return DateTimeString in destination Country syntax
+ **/
+function convertTimeDateBetweenLocales(ds, style, fromLC, toLC)
+{
+	if (!toLC)
+	{
+		toLC = fromLC;
+		fromLC = style;
+		style = DateFormat.SHORT;
+	}
+
+	var fLC = new java.util.Locale("",fromLC);
+	var tLC = new java.util.Locale("",toLC);
+	
+	var fDF = DateFormat.getDateTimeInstance(style, style, fLC);
+	var tDF = DateFormat.getDateTimeInstance(style, style, tLC);
+	try
+	{
+		return tDF.format(fDF.parse(ds));
+	} catch (e)
+	{
+		println("Unable to parse " + ds);
+		return "";
+	}
+}
+
+/** 
+ * Convert a DateTime string from the a given locales SHORT format to yyyyMMddHHmmssZ.
+ *
+ * &lt;p>This method takes a date string as input. The country specific format is
+ *  given by the ISO-code fromLC. It will be converted to eDirectory Syntax
+ *  yyyyMMddHHmmssZ.&lt;/p>
+ *
+ * @param {String} ds        DateString (e.g. "2004.12.08")
+ * @param {String} fromLC    Source Country  (e.g. "US")
+ *
+ * @type String
+ * @return DateString in destination Country syntax
+ **/
+function convertDateToDirFormat(ds, fromLC)
+{
+	return simpleDateFormat(ds, fromLC, "yyyyMMddHHmmss");
+}
+
+
+/** 
+ * Converts ldap lowercase qualifiers to upper case 
+ *
+ * @param ldapStrL     string with lowercase qualifiers (e.g cn=Users,dc=dom,dc=com)
+ * @return string with upper case ldap qualifiers. (CN=Users,DC=dom,DC=com)
+ */
+
+function convertLDAPtoUpper(ldapStrL)
+{
+	var retVal = "";
+	var ldaptokens = tokenize(ldapStrL,",","");
+	for(var index = 0 ; index &lt; ldaptokens.length ; index ++ )
+	{
+		var tokenL = tokenize(ldaptokens[index],"=","");
+		retVal = retVal + upperString(tokenL[0])+ "=" + tokenL[1] + ",";
+	}
+	return retVal.toString().substring(0,retVal.length - 1);
+}
+
+/** 
+ * Converts ldap uppercase qualifiers to lower case 
+ *
+ * @param ldapStrU     string with uppercase qualifiers (e.g CN=Users,DC=dom,DC=com)
+ * @return string with lowercase ldap qualifiers. (cn=Users,dc=dom,dc=com)
+ */
+ 
+function convertLDAPtoLower(ldapStrU)
+{
+	var retVal = "";
+	var ldaptokens = tokenize(ldapStrU,",","");
+	for(var index = 0 ; index &lt; ldaptokens.length ; index ++ )
+	{
+		var tokenU = tokenize(ldaptokens[index],"=","");
+		retVal = retVal + lowerString(tokenU[0])+ "=" + tokenU[1] + ",";
+	}
+	return retVal.toString().substring(0,retVal.length - 1);
+}
+
+/** 
+ * Convert a DateTime string from the a given locales SHORT format to a custom format.
+ *
+ * &lt;p>This method expects a SHORT date string as input. The country specific format is
+ *  given by the ISO-code fromLC. It will be converted to an arbitrary syntax,
+ *  given by parameter 'format'.&lt;/p>
+ *
+ * @param ds        DateString (e.g. "2004.12.08")
+ * @param fromLC    Source Country  (e.g. "US")
+ * @param format    format string for Date/Time formatter (e.g. "yyyyMMddHHmmss")
+ * @return DateString in destination Country syntax
+ **/
+function simpleDateFormat(ds, fromLC, format)
+{
+	var fLC = new java.util.Locale("", fromLC);
+	
+	println("simpleDateFormat: flC.getDisplayName: " + fLC.getDisplayName());
+	var fDF = DateFormat.getDateInstance(DateFormat.SHORT, fLC);
+	try
+	{
+		var d = fDF.parse(ds);
+		var formatter = new SimpleDateFormat(format);
+		return formatter.format(fDF.parse(ds));
+	} catch (e)
+	{
+		println("simpleDateFormat(" + ds + "," + fromLC + "," + format + "): Unable to parse ");
+		return "";
+	}
+}
+
+/* ========================================================================
+ *  This section contains public methods created for the IDM4 release
+ *  ======================================================================== */
+ 
+/** 
+ * Get the port from a hex net address string
+ *
+ * @param hexStr     hex string
+ * @return intPort   port as an integer
+ */
+function getPortFromHexNetAddr(hexStr)
+{
+	return Integer.parseInt(hexStr.substring(0,4),16);
+}
+
+/** 
+ * Get the IP from a hex net address string
+ *
+ * @param hexStr     hex string
+ * @return dottedIP  IP in common dotted string format
+ */
+function getIPFromHexNetAddr(hexStr)
+{
+	ip = "";
+	ip += hex2dec(hexStr.substring(4,6));
+	ip += ".";
+	ip += hex2dec(hexStr.substring(6,8));
+	ip += ".";
+	ip += hex2dec(hexStr.substring(8,10));
+	ip += ".";
+	ip += hex2dec(hexStr.substring(10,12));
+	return ip;
+}
+
+/** 
+ * Get the protocol from a URL
+ *
+ * @param urlStr     URL string
+ * @return intPort   port as an integer
+ */
+function getProtocolFromURL(urlStr)
+{
+	return urlStr.substring(0,urlStr.indexOf(':'));
+}
+
+/** 
+ * Get the port from a URL
+ *
+ * @param urlStr     URL string
+ * @return intPort   port as an integer
+ */
+function getPortFromURL(urlStr)
+{
+	port = "";
+	temp1 = urlStr.substring(urlStr.lastIndexOf(':')+1);
+	if (temp1.indexOf('/') > 0)
+	{
+		port = temp1.substring(0, temp1.indexOf('/'));
+	}
+	else
+	{
+		port = temp1;
+	}
+	lastChar = java.lang.Character.getNumericValue(port.substring(port.length-1)) 
+	if (lastChar > 9 || lastChar &lt; 0)
+	{
+		port = port.substring(0, port.length-1);
+	}
+	return port;
+}
+
+/** 
+ * Get the IP from a URL
+ *
+ * @param urlStr     URL string
+ * @return dottedIP  IP in common dotted string format
+ */
+function getIPFromURL(urlStr)
+{
+	var ip = "";
+	var temp1 = "";
+	
+	if (urlStr.lastIndexOf("://") >= 0 )
+	{
+		temp1 = urlStr.substring(urlStr.lastIndexOf("://")+3);
+	}
+	else
+	{
+		temp1 = urlStr;
+	}
+	
+	if (temp1.indexOf(":") > 0)
+	{
+		ip = temp1.substring(0, temp1.indexOf(":"));
+	}
+	else if (temp1.indexOf("/") > 0)
+	{
+		ip = temp1.substring(0, temp1.indexOf("/"));
+	}
+	else
+	{
+		ip = temp1;
+	}
+	return ip;
+}
+
+/** 
+ * Get named field form an entitlement parameter string
+ * The function tries to determine the parameter format automatically and parse the parameter accordingly
+ *
+ * @param param      parameter string ( e.g. '{"ID":"b53b65bb0b921548b8830cc698666dc2","ID2":"CN=PamelaGroup,CN=Users,DC=carpathia,DC=qalab,DC=com"}' or 'AG=Group1|LSNAME=S7ECLNT315|FROM=|TO=')
+ * @param field      field name
+ * @return value     field value
+ */
+function getEntParamField(param, field)
+{
+	return getEntParamFieldBackwardsCompatible(param, field, field);
+}
+
+/** 
+ * Get named field form an entitlement parameter string.
+ * The function tries to determine the parameter format automatically and parse the parameter accordingly. 
+ * If the field names have changed from the legacy format to the idm4 format, this method allows both field names to be specified.
+ *
+ * @param param        parameter string ( e.g. '{"ID":"b53b65bb0b921548b8830cc698666dc2","ID2":"CN=PamelaGroup,CN=Users,DC=carpathia,DC=qalab,DC=com"}' or 'AG=Group1|LSNAME=S7ECLNT315|FROM=|TO=')
+ * @param idm4field    idm4 format field name
+ * @param legacyfield  legacy format field name
+ * @return value       field value
+ */
+function getEntParamFieldBackwardsCompatible(param, idm4field, legacyfield)
+{
+	param = String((new JString(param)).trim());
+	if (param.charAt(0)=='{' &amp;&amp; param.charAt(param.length-1)=='}')
+	{
+		try {
+			return getIDM4EntParamField(param, idm4field);
+		}
+		catch (e) {
+			return getParamValue(param, legacyfield);
+		}
+	}
+	else {
+		return getParamValue(param, legacyfield);
+	}
+}
+
+/** 
+ * Get named field form a JSON-formatted IDM4 entitlement parameter string
+ *
+ * @param jsonstr    JSON string ( e.g. {"ID":"b53b65bb0b921548b8830cc698666dc2","ID2":"CN=PamelaGroup,CN=Users,DC=carpathia,DC=qalab,DC=com"} )
+ * @param field      field name
+ * @return value     field value
+ */
+function getIDM4EntParamField(jsonstr, field)
+{
+	var jsonobj = JSON.parse(jsonstr);
+	return jsonobj[field];
+}
+
+/** 
+ * Get named parameter value form a pipe-delimited (|) string
+ *
+ * @param paramString   parameter string string ( e.g. AG=Group1|LSNAME=S7ECLNT315|FROM=|TO= )
+ * @param paramName     parameter name
+ * @return value     	parameter value
+ */
+function getParamValue(paramString, paramName)
+{
+	try {
+		var pairs = String(paramString).split('|');
+		for (i in pairs) {
+			pair = pairs[i].split('=');
+   			if (pair[0].equals(paramName)) {
+				return pair[1];
+			}
+		}
+	} catch (e) {
+		return String(paramString);
+	}
+	return paramString;
+}
+
+/** 
+ * Convert a hex string into an integer.
+ *
+ * @param hexStr     hex string
+ * @return intStr    int string
+ */
+function hex2dec(hexStr)
+{
+	return Integer.parseInt(hexStr,16);
+}
+
+/** 
+ * Returns true if str1 ends with str2, false otherwise.
+ *
+ * @param str1     base string
+ * @param str2     sub-string
+ * @return boolean Returns true if str1 ends with str2, false otherwise.
+ */
+function endsWith(str1, str2)
+{
+	return new java.lang.String(str1).endsWith(str2);
+}
+
+/** 
+ * Returns b64 encoded string.
+ *
+ * @param s    		hex value of guid
+ * @return string 	b64 encoded guid value.
+ */
+ 
+function hexString2B64(s) 
+{ 
+	return new JString(Base64Codec.encode(decodeAsciiHex(s))); 
+} 
+ 
+/* ========================================================================
+ * private methods
+ ** ======================================================================== */
+ 
+/** 
+ * add tokenizer method to honour an escape character in source data
+ * @private
+ */
+
+function tokenize(source, delimiter, escapeChar)
+{
+	var dest = [];     // prepare the destination array
+	if (source &amp;&amp; source.length != 0)
+	{
+		var st = source.split(delimiter);
+		var re;
+		if (escapeChar)
+		{
+			re = new RegExp("\\" + escapeChar.charAt(0) + "+$");
+		}
+		while (st.length)
+		{
+			var token = st.shift();
+			// Note(sv): the algorithm for handling escape characters from the original AJC and was not robust enough
+			// because it wouln't handle the case where the escape character before the delimiter was itself escaped
+			if (re &amp;&amp; re.test(token) &amp;&amp; (RegExp.lastMatch.length &amp; 1))
+			{
+				token = token + delimiter + st.shift();
+			}
+			dest.push(token);
+		}
+	}
+	return dest;                    // deliver the result
+}
+/**
+ * @private
+ */
+function dump(data)
+{
+	var line = "";
+	for(var i = 0; i &lt; data.length; i++)
+	{
+		line += " " + hex(data[i]);
+		if(((i + 1) % 8) == 0) {
+			println(line);
+			line = "";
+		}
+		
+	}
+	if(line.length() > 0) {
+		println(line);
+	}
+}
+
+var digits = [
+	"0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
+	"A", "B", "C", "D", "E", "F"
+];
+
+var binToAscii = [
+'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+'A', 'B', 'C', 'D', 'E', 'F'
+];
+
+
+var asciiToBinLo = [
+	0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+	0, 0, 0, 0, 0, 0, 0, 10, 11, 12,
+	13, 14, 15
+];
+
+var asciiToBinHi = [
+	0, 16, 32, 48, 64, 80, 96, 112, 128, 144,
+	0, 0, 0, 0, 0, 0, 0, 160, 176, 192,
+	208, 224, 240
+];
+
+/**
+ * @private
+ */
+function hex(data)
+{
+	var digit1 = (data >>> 4) &amp; 0xf;
+	var digit2 = data &amp; 0xf;
+	return digits[digit1] + digits[digit2];
+}
+
+/**
+ * @private
+ */
+function decodeAsciiHex(s)
+{
+	s = s.toUpperCase();
+    var i = s.length;
+    var abyte0 = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, i / 2);;
+    var j = 0;
+    for(var k = 0; k &lt; i; k += 2)
+    {
+    	var xxx = asciiToBinHi[s.charCodeAt(k) - 48] + asciiToBinLo[s.charCodeAt(k + 1) - 48];
+    	if (xxx > 127)
+    	{
+    		xxx -= 256;
+    	}
+        abyte0[j++] = xxx;
+    }
+    return abyte0;
+}
+
+/**
+ * @private
+ */
+function encodeAsciiHex(abyte0)
+{
+	var buffer = "";
+	for(var i = 0; i &lt; abyte0.length; i++)
+	{
+		var byte0 = abyte0[i];
+		buffer += binToAscii[byte0 >> 4 &amp; 0xf];
+		buffer += binToAscii[byte0 &amp; 0xf];
+	}
+	
+	return buffer;
+}
+
+</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-installationdirective">
+			<ds-value>PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48aW5zdGFsbGF0aW9uLWRpcmVjdGl2ZT4KCTxwbGFjZW1lbnQgY29udGV4dD0iZHJpdmVyLXNldCIgbG9jYXRpb249ImxpYnJhcnkiIG5hbWU9IkxpYnJhcnkiLz4KCTxkcy1hdHRyaWJ1dGVzLz4KCTxwb2xpY3ktbGlua2FnZS8+CjwvaW5zdGFsbGF0aW9uLWRpcmVjdGl2ZT4=</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-directivechecksum">
+			<ds-value>2377117371</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-packageassocguid">
+			<ds-value>AG7O65ME_201004011133540084</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-packageguid">
+			<ds-value>L24GR3S2_201004011133330053</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-contentchecksum">
+			<ds-value>2913462615</ds-value>
+		</ds-attribute>
+	</ds-attributes>
+</ds-object>

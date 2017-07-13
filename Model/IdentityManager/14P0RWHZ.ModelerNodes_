@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.novell.idm.model:ModelerNodes xmlns:com.novell.idm.model="http://com.novell.idm.model" name="Modeler Diagram">
+  <modelerNodes height="470" width="595" objectURI="#E1FJU1YF.Domain_"/>
+  <modelerNodes height="110" width="170" x="261" y="183" objectURI="#V19T1CN7.IdentityVault_">
+    <sourcePorts name="source-top"/>
+    <sourcePorts name="source-bottom"/>
+    <sourcePorts name="source-left"/>
+    <sourcePorts name="source-right"/>
+    <sourcePorts name="source-center"/>
+    <targetPorts name="target-top"/>
+    <targetPorts name="target-bottom"/>
+    <targetPorts name="target-left"/>
+    <targetPorts name="target-right"/>
+    <targetPorts name="target-center"/>
+  </modelerNodes>
+  <modelerNodes height="39" width="43" x="20" y="40" objectURI="#ULWFK3Y1.DriverSet_">
+    <sourcePorts name="source-top" edges="//@edges.0 //@edges.1 //@edges.2"/>
+    <sourcePorts name="source-bottom"/>
+    <sourcePorts name="source-left"/>
+    <sourcePorts name="source-right"/>
+    <sourcePorts name="source-center"/>
+    <targetPorts name="target-top"/>
+    <targetPorts name="target-bottom"/>
+    <targetPorts name="target-left"/>
+    <targetPorts name="target-right"/>
+    <targetPorts name="target-center"/>
+  </modelerNodes>
+  <modelerNodes height="44" width="55" x="181" y="355" objectURI="#CFCSFWOV.Application_">
+    <sourcePorts name="source-top"/>
+    <sourcePorts name="source-bottom"/>
+    <sourcePorts name="source-left"/>
+    <sourcePorts name="source-right"/>
+    <sourcePorts name="source-center"/>
+    <targetPorts name="target-top" edges="//@edges.0"/>
+    <targetPorts name="target-bottom"/>
+    <targetPorts name="target-left"/>
+    <targetPorts name="target-right"/>
+    <targetPorts name="target-center"/>
+  </modelerNodes>
+  <modelerNodes height="44" width="55" x="355" y="356" objectURI="#EJPULPX1.Application_">
+    <sourcePorts name="source-top"/>
+    <sourcePorts name="source-bottom"/>
+    <sourcePorts name="source-left"/>
+    <sourcePorts name="source-right"/>
+    <sourcePorts name="source-center"/>
+    <targetPorts name="target-top" edges="//@edges.1"/>
+    <targetPorts name="target-bottom"/>
+    <targetPorts name="target-left"/>
+    <targetPorts name="target-right"/>
+    <targetPorts name="target-center"/>
+  </modelerNodes>
+  <modelerNodes height="44" width="55" x="275" y="32" objectURI="#JVRTN8WT.Application_">
+    <sourcePorts name="source-top"/>
+    <sourcePorts name="source-bottom"/>
+    <sourcePorts name="source-left"/>
+    <sourcePorts name="source-right"/>
+    <sourcePorts name="source-center"/>
+    <targetPorts name="target-top" edges="//@edges.2"/>
+    <targetPorts name="target-bottom"/>
+    <targetPorts name="target-left"/>
+    <targetPorts name="target-right"/>
+    <targetPorts name="target-center"/>
+  </modelerNodes>
+  <edges targetPort="//@modelerNodes.3/@targetPorts.0" sourcePort="//@modelerNodes.2/@sourcePorts.0"/>
+  <edges targetPort="//@modelerNodes.4/@targetPorts.0" sourcePort="//@modelerNodes.2/@sourcePorts.0"/>
+  <edges targetPort="//@modelerNodes.5/@targetPorts.0" sourcePort="//@modelerNodes.2/@sourcePorts.0"/>
+  <project href="../../CapacitacionMicroFocus.proj#/"/>
+</com.novell.idm.model:ModelerNodes>

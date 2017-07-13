@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?><policy xmlns:jadutil="http://www.novell.com/nxsl/java/com.novell.nds.dirxml.driver.ad.util.Utilities">
+	<description>Convert selected attributes to a form most commonly used in Active Directory.</description>
+	<rule>
+		<description>Street Address: Convert LF to CR-LF</description>
+		<comment xml:space="preserve">The Identity Vault Street Address typically uses the Unix end-of-line convention (a single new line character) while Active Directory uses the Windows convention (carriage return plus new line characters). This rule converts values to the Windows format so that the synchronized values display properly in both systems.</comment>
+		<conditions>
+			<and/>
+		</conditions>
+		<actions>
+			<do-reformat-op-attr name="streetAddress">
+				<arg-value>
+					<token-replace-all regex="[^\r]\n" replace-with="\r\n">
+						<token-local-variable name="current-value"/>
+					</token-replace-all>
+				</arg-value>
+			</do-reformat-op-attr>
+		</actions>
+	</rule>
+	<rule>
+		<description>logonHours: Convert to Active Directory form</description>
+		<comment xml:space="preserve">The Identity Vault Login Allowed Time Map is an octet string holding one bit for each half-hour period in a week. Users can logon when the bit representing the current half-hour is a 1.  The Active Directory logonHours works similarly except that there is one bit for each 1 hour period in a week. This rule converts to the logonHours format. Logon is allowed for any 1 hour period in Active Directory if logon is allowed in the Identity Vault for at least one of the two 1/2 hour periods. Use jadutil:translateTimMap2ADStrict for a conversion policy where logon is granted in Active Directory only if both 1/2 hour periods allow logon in the Identity Vault. Although this is a subscriber policy it can effect the Identity Vault. If the Active Directory value is synchronized back to the Identity Vault, the 1/2 hour granularity in the vault is lost.</comment>
+		<conditions>
+			<and/>
+		</conditions>
+		<actions>
+			<do-reformat-op-attr name="logonHours">
+				<arg-value type="octet">
+					<token-xpath expression="jadutil:translateTimeMap2ADLenient($current-value)"/>
+				</arg-value>
+			</do-reformat-op-attr>
+		</actions>
+	</rule>
+	<rule>
+		<description>accountExpires: Convert to Active Directory form</description>
+		<conditions>
+			<and>
+				<if-op-attr name="accountExpires" op="changing"/>
+			</and>
+		</conditions>
+		<actions>
+			<do-if>
+				<arg-conditions>
+					<or>
+						<if-op-attr mode="nocase" name="accountExpires" op="equal">-1</if-op-attr>
+						<if-op-attr mode="nocase" name="accountExpires" op="equal">-2</if-op-attr>
+					</or>
+				</arg-conditions>
+				<arg-actions>
+					<do-set-dest-attr-value name="accountExpires">
+						<arg-value type="int">
+							<token-text xml:space="preserve">0</token-text>
+						</arg-value>
+					</do-set-dest-attr-value>
+				</arg-actions>
+				<arg-actions>
+					<do-if>
+						<arg-conditions>
+							<and>
+								<if-op-attr mode="regex" name="accountExpires" op="changing-to">.+</if-op-attr>
+							</and>
+						</arg-conditions>
+						<arg-actions>
+							<do-reformat-op-attr name="accountExpires">
+								<arg-value type="octet">
+									<token-xpath expression="jadutil:translateEpoch2FileTime($current-value)"/>
+								</arg-value>
+							</do-reformat-op-attr>
+						</arg-actions>
+						<arg-actions>
+							<do-set-dest-attr-value name="accountExpires">
+								<arg-value>
+									<token-text xml:space="preserve">0</token-text>
+								</arg-value>
+							</do-set-dest-attr-value>
+						</arg-actions>
+					</do-if>
+				</arg-actions>
+			</do-if>
+		</actions>
+	</rule>
+	<rule>
+		<description>lockoutTime: Convert to Active Directory form</description>
+		<conditions>
+			<and>
+				<if-op-attr name="lockoutTime" op="available"/>
+			</and>
+		</conditions>
+		<actions>
+			<do-if>
+				<arg-conditions>
+					<and>
+						<if-xpath op="not-true">./modify-attr[@attr-name='lockoutTime']/add-value</if-xpath>
+					</and>
+				</arg-conditions>
+				<arg-actions>
+					<do-if>
+						<arg-conditions>
+							<and>
+								<if-xpath op="true">./modify-attr[@attr-name='lockoutTime']/remove-value</if-xpath>
+							</and>
+						</arg-conditions>
+						<arg-actions>
+							<do-strip-xpath expression="./modify-attr[@attr-name='lockoutTime']/remove-value"/>
+						</arg-actions>
+						<arg-actions/>
+					</do-if>
+					<do-append-xml-element expression="./modify-attr[@attr-name='lockoutTime']" name="remove-all-values"/>
+					<do-append-xml-element expression="./modify-attr[@attr-name='lockoutTime']" name="add-value"/>
+					<do-append-xml-element expression="./modify-attr[@attr-name='lockoutTime']/add-value" name="value"/>
+					<do-append-xml-text expression="./modify-attr[@attr-name='lockoutTime']/add-value/value">
+						<arg-string>
+							<token-text xml:space="preserve">0</token-text>
+						</arg-string>
+					</do-append-xml-text>
+				</arg-actions>
+				<arg-actions>
+					<do-if>
+						<arg-conditions>
+							<and>
+								<if-op-attr mode="numeric" name="lockoutTime" op="equal">0</if-op-attr>
+							</and>
+						</arg-conditions>
+						<arg-actions>
+							<do-if>
+								<arg-conditions>
+									<and>
+										<if-xpath op="true">./modify-attr[@attr-name='lockoutTime']/remove-value</if-xpath>
+									</and>
+								</arg-conditions>
+								<arg-actions>
+									<do-strip-xpath expression="./modify-attr[@attr-name='lockoutTime']/remove-value"/>
+								</arg-actions>
+								<arg-actions>
+									<do-append-xml-element before="./add-value" expression="./modify-attr[@attr-name='lockoutTime']" name="remove-all-values"/>
+								</arg-actions>
+							</do-if>
+						</arg-actions>
+						<arg-actions>
+							<do-strip-op-attr name="lockoutTime"/>
+						</arg-actions>
+					</do-if>
+				</arg-actions>
+			</do-if>
+			<do-strip-xpath expression="./modify-attr[@attr-name='Locked By Intruder']"/>
+		</actions>
+	</rule>
+	<rule>
+		<description>Add: User - convert multi-valued Telephone to single value</description>
+		<conditions>
+			<and>
+				<if-operation op="equal">add</if-operation>
+				<if-class-name op="equal">User</if-class-name>
+				<if-op-attr name="telephoneNumber" op="available"/>
+			</and>
+		</conditions>
+		<actions>
+			<do-set-local-variable name="phone-number">
+				<arg-string>
+					<token-xpath expression="./add-attr[@attr-name='telephoneNumber']/value[1]"/>
+				</arg-string>
+			</do-set-local-variable>
+			<do-strip-op-attr name="telephoneNumber"/>
+			<do-set-dest-attr-value name="telephoneNumber">
+				<arg-value type="string">
+					<token-local-variable name="phone-number"/>
+				</arg-value>
+			</do-set-dest-attr-value>
+		</actions>
+	</rule>
+	<rule>
+		<description>update Active Directory logon name</description>
+		<comment xml:space="preserve">When Active Directory logon name  (userPrincipalName) is set to follow the Active Directory e-mail address, changes to the e-mail address are set as an operational property and are acted on when the overall operation succeeds.</comment>
+		<conditions>
+			<and>
+				<if-xpath op="true">self::status[@level = 'success']/operation-data/windows-2000-logon-name</if-xpath>
+			</and>
+		</conditions>
+		<actions>
+			<do-set-dest-attr-value name="userPrincipalName">
+				<arg-value>
+					<token-op-property name="windows-2000-logon-name"/>
+				</arg-value>
+			</do-set-dest-attr-value>
+		</actions>
+	</rule>
+</policy>

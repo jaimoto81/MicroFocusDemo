@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.novell.designer.model:CObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:com.novell.designer.model="http://com.novell.designer.model" name="Entitlements">
+  <attributes xsi:type="com.novell.designer.model:CInteger" attrName="Idm:FolderId" value="4"/>
+  <relations name="Idm:Entitlements" type="Child" key="#MRKJH3SY.Entitlement_"/>
+  <relations name="Idm:Entitlements" type="Child" key="#5ARBH7UH.Entitlement_"/>
+  <relations name="Idm:Entitlements" type="Child" key="#Z66LG03S.Entitlement_"/>
+</com.novell.designer.model:CObject>

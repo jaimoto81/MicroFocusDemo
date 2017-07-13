@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><ds-object ds-object-class="DirXML-Rule" ds-object-name="NOVLJDBCCOMM-sub-mp" name="NOVLJDBCCOMM-sub-mp">
+	<ds-attributes>
+		<ds-attribute ds-attr-name="XmlData">
+			<ds-value>
+				<policy>
+					<rule>
+						<description>veto out-of-scope events</description>
+						<comment>When scoping by container, events outside of the Identity Vault containers defined in the above rule will not have a unmatched-src-dn operational property and will be vetoed. If you do not want to use container based scoping, this rule should be modified or removed.</comment>
+						<conditions>
+							<or>
+								<if-op-property name="attempt-to-match" op="not-available"/>
+								<if-op-property mode="nocase" name="attempt-to-match" op="equal">false</if-op-property>
+							</or>
+						</conditions>
+						<actions>
+							<do-veto/>
+						</actions>
+					</rule>
+					<rule>
+						<description>User:  Match on Surname, Given Name</description>
+						<conditions>
+							<and>
+								<if-operation op="equal">add</if-operation>
+								<if-class-name op="equal">User</if-class-name>
+							</and>
+						</conditions>
+						<actions>
+							<do-find-matching-object scope="subtree">
+								<arg-match-attr name="Surname"/>
+								<arg-match-attr name="Given Name"/>
+							</do-find-matching-object>
+						</actions>
+					</rule>
+				</policy>
+			</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-installationdirective">
+			<ds-value>PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48aW5zdGFsbGF0aW9uLWRpcmVjdGl2ZT4KCTxwbGFjZW1lbnQgbG9jYXRpb249InN1YnNjcmliZXIiLz4KCTxkcy1hdHRyaWJ1dGVzLz4KCTxwb2xpY3ktbGlua2FnZT4KCQk8cG9saWN5LXNldCBjaGFubmVsPSJzdWJzY3JpYmVyIiBuYW1lPSJtYXRjaGluZyIgb3JkZXI9IldlaWdodCIgdmFsdWU9IjUwMCIvPgoJPC9wb2xpY3ktbGlua2FnZT4KPC9pbnN0YWxsYXRpb24tZGlyZWN0aXZlPg==</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-directivechecksum">
+			<ds-value>3651018916</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-packageassocguid">
+			<ds-value>JM5SG0IU_201408131158120640</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-packageguid">
+			<ds-value>OUSAWV9O_201109241840310281</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-contentchecksum">
+			<ds-value>2697521436</ds-value>
+		</ds-attribute>
+	</ds-attributes>
+</ds-object>

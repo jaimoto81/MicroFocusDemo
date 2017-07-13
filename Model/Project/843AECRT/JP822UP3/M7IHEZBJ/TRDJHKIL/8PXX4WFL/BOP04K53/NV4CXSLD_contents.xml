@@ -1,0 +1,1674 @@
+<?xml version="1.0" encoding="UTF-8"?><policy>
+	<rule>
+		<description>Entitlements</description>
+		<conditions/>
+		<actions>
+			<do-set-local-variable name="xml" scope="policy">
+				<arg-node-set>
+					<token-xml-parse>
+						<token-text xml:space="preserve">&lt;?xml version="1.0" encoding="UTF-8"?>&lt;entitlement-configuration>&lt;entitlements/>&lt;/entitlement-configuration></token-text>
+					</token-xml-parse>
+				</arg-node-set>
+			</do-set-local-variable>
+			<do-set-xml-attr expression="$xml/entitlement-configuration" name="modified">
+				<arg-string>
+					<token-time format="yyyyMMddhhmmss" tz="UTC"/>
+				</arg-string>
+			</do-set-xml-attr>
+			<!--
+			create 'perm-map-xml' node variable with shell of PermissionEntMapping resource object
+			-->
+			<do-set-local-variable name="perm-map-xml" scope="driver">
+				<arg-node-set>
+					<token-xml-parse>
+						<token-text xml:space="preserve">&lt;?xml version="1.0" encoding="UTF-8"?>&lt;mapping-table>&lt;col-def name="entitlementName"/>&lt;col-def name="entitlementDN"/>&lt;col-def name="resourceDN"/>&lt;col-def name="csvFile"/>&lt;col-def name="multivalued"/>&lt;col-def name="assignmentAttribute"/>&lt;/mapping-table></token-text>
+					</token-xml-parse>
+				</arg-node-set>
+			</do-set-local-variable>
+			<do-set-local-variable name="entitlements" scope="policy">
+				<arg-node-set>
+					<token-query class-name="DirXML-Entitlement" datastore="src" scope="subordinates">
+						<arg-dn>
+							<token-global-variable name="dirxml.auto.driverdn"/>
+						</arg-dn>
+						<arg-string>
+							<token-text xml:space="preserve">CN</token-text>
+						</arg-string>
+					</token-query>
+				</arg-node-set>
+			</do-set-local-variable>
+			<do-set-local-variable name="staticQueryResult" scope="policy">
+				<arg-node-set>
+					<token-query class-name="DirXML-Resource" datastore="src" scope="subordinates">
+						<arg-dn>
+							<token-global-variable name="dirxml.auto.driverdn"/>
+						</arg-dn>
+						<arg-match-attr name="CN">
+							<arg-value type="string">
+								<token-text xml:space="preserve">StaticValueEntitlementMap</token-text>
+							</arg-value>
+						</arg-match-attr>
+						<arg-string>
+							<token-text xml:space="preserve">DirXML-Data</token-text>
+						</arg-string>
+					</token-query>
+				</arg-node-set>
+			</do-set-local-variable>
+			<do-set-local-variable name="decodedXML" scope="policy">
+				<arg-node-set>
+					<token-base64-decode charset="UTF-8">
+						<token-xpath expression="$staticQueryResult"/>
+					</token-base64-decode>
+				</arg-node-set>
+			</do-set-local-variable>
+			<do-set-local-variable name="static-map-xml" scope="driver">
+				<arg-node-set>
+					<token-xml-parse>
+						<token-replace-all regex="&amp;lt;" replace-with="&lt;">
+							<token-local-variable name="decodedXML"/>
+						</token-replace-all>
+					</token-xml-parse>
+				</arg-node-set>
+			</do-set-local-variable>
+			<do-for-each>
+				<arg-node-set>
+					<token-local-variable name="entitlements"/>
+				</arg-node-set>
+				<arg-actions>
+					<do-set-local-variable name="entName" scope="policy">
+						<arg-node-set>
+							<token-xpath expression="$current-node/attr[@attr-name='CN']/value[1]/text()"/>
+						</arg-node-set>
+					</do-set-local-variable>
+					<do-set-local-variable name="locTables" scope="policy">
+						<arg-node-set>
+							<token-query datastore="src">
+								<arg-dn>
+									<token-global-variable name="dirxml.auto.driverdn"/>
+								</arg-dn>
+								<arg-match-attr name="CN">
+									<arg-value type="string">
+										<token-text xml:space="preserve">L10N*</token-text>
+									</arg-value>
+								</arg-match-attr>
+								<arg-string>
+									<token-text xml:space="preserve">CN</token-text>
+								</arg-string>
+							</token-query>
+						</arg-node-set>
+					</do-set-local-variable>
+					<do-if>
+						<arg-conditions>
+							<and>
+								<if-local-variable mode="nocase" name="entName" op="equal">UserAccount</if-local-variable>
+							</and>
+						</arg-conditions>
+						<arg-actions>
+							<do-trace-message>
+								<arg-string>
+									<token-text xml:space="preserve">Found supported entitlement "$entName$"</token-text>
+								</arg-string>
+							</do-trace-message>
+							<do-set-src-attr-value class-name="DirXML-Entitlement" direct="true" name="ACL">
+								<arg-dn>
+									<token-global-variable name="dirxml.auto.driverdn"/>
+									<token-text xml:space="preserve">\</token-text>
+									<token-local-variable name="current-node"/>
+								</arg-dn>
+								<arg-value type="structured">
+									<arg-component name="protectedName">
+										<token-text xml:space="preserve">[Entry Rights]</token-text>
+									</arg-component>
+									<arg-component name="trustee">
+										<token-global-variable name="dirxml.auto.driverdn"/>
+										<token-text xml:space="preserve">\PermissionOnboarding</token-text>
+									</arg-component>
+									<arg-component name="privileges">
+										<token-text xml:space="preserve">1</token-text>
+									</arg-component>
+								</arg-value>
+							</do-set-src-attr-value>
+							<do-add-src-attr-value class-name="DirXML-Entitlement" direct="true" name="ACL">
+								<arg-dn>
+									<token-global-variable name="dirxml.auto.driverdn"/>
+									<token-text xml:space="preserve">\</token-text>
+									<token-local-variable name="current-node"/>
+								</arg-dn>
+								<arg-value type="structured">
+									<arg-component name="protectedName">
+										<token-text xml:space="preserve">[All Attributes Rights]</token-text>
+									</arg-component>
+									<arg-component name="trustee">
+										<token-global-variable name="dirxml.auto.driverdn"/>
+										<token-text xml:space="preserve">\PermissionOnboarding</token-text>
+									</arg-component>
+									<arg-component name="privileges">
+										<token-text xml:space="preserve">39</token-text>
+									</arg-component>
+								</arg-value>
+							</do-add-src-attr-value>
+							<do-append-xml-element expression="$xml/entitlement-configuration/entitlements" name="entitlement"/>
+							<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]" name="dn">
+								<arg-string>
+									<token-parse-dn dest-dn-format="ldap" src-dn-format="slash">
+										<token-xpath expression="$current-node/@qualified-src-dn"/>
+									</token-parse-dn>
+								</arg-string>
+							</do-set-xml-attr>
+							<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]" name="data-collection">
+								<arg-string>
+									<token-xpath expression="string($drv.datacollection.enable='true' and $drv.datacollection.UserAccount='true')"/>
+								</arg-string>
+							</do-set-xml-attr>
+							<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]" name="role-mapping">
+								<arg-string>
+									<token-global-variable name="drv.rolemapping.UserAccount"/>
+								</arg-string>
+							</do-set-xml-attr>
+							<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]" name="resource-mapping">
+								<arg-string>
+									<token-global-variable name="drv.resourcemapping.UserAccount"/>
+								</arg-string>
+							</do-set-xml-attr>
+							<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]" name="parameter-format">
+								<arg-string>
+									<token-global-variable name="drv.entitlement.format.UserAccount"/>
+								</arg-string>
+							</do-set-xml-attr>
+							<do-append-xml-element expression="$xml/entitlement-configuration/entitlements/entitlement[last()]" name="type"/>
+							<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]/type[last()]" name="id">
+								<arg-string>
+									<token-text xml:space="preserve">user</token-text>
+								</arg-string>
+							</do-set-xml-attr>
+							<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]/type[last()]" name="name">
+								<arg-string>
+									<token-text xml:space="preserve">account</token-text>
+								</arg-string>
+							</do-set-xml-attr>
+							<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]/type[last()]" name="category">
+								<arg-string>
+									<token-text xml:space="preserve">security account</token-text>
+								</arg-string>
+							</do-set-xml-attr>
+							<do-append-xml-element expression="$xml/entitlement-configuration/entitlements/entitlement[last()]/type[last()]" name="display-name"/>
+							<do-for-each>
+								<arg-node-set>
+									<token-local-variable name="locTables"/>
+								</arg-node-set>
+								<arg-actions>
+									<do-set-local-variable name="locTableDN" scope="policy">
+										<arg-string>
+											<token-xpath expression="$current-node/@src-dn"/>
+										</arg-string>
+									</do-set-local-variable>
+									<do-set-local-variable name="langCode" scope="policy">
+										<arg-string>
+											<token-xpath expression="substring-after($current-node/attr[@attr-name='CN']/value[1], 'L10N_')"/>
+										</arg-string>
+									</do-set-local-variable>
+									<do-set-local-variable name="value" scope="policy">
+										<arg-string>
+											<token-map dest="value" src="key" table="$locTableDN$">
+												<token-text xml:space="preserve">ent$entName$DisplayName</token-text>
+											</token-map>
+										</arg-string>
+									</do-set-local-variable>
+									<do-trace-message>
+										<arg-string>
+											<token-text xml:space="preserve">localizing $entName$ entitlement display name: $langCode$: $value$</token-text>
+										</arg-string>
+									</do-trace-message>
+									<do-append-xml-element expression="$xml/entitlement-configuration/entitlements/entitlement[last()]/type[last()]/display-name[last()]" name="value"/>
+									<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]/type[last()]/display-name[last()]/value[last()]" name="langCode">
+										<arg-string>
+											<token-local-variable name="langCode"/>
+										</arg-string>
+									</do-set-xml-attr>
+									<do-append-xml-text expression="$xml/entitlement-configuration/entitlements/entitlement[last()]/type[last()]/display-name[last()]/value[last()]">
+										<arg-string>
+											<token-local-variable name="value"/>
+										</arg-string>
+									</do-append-xml-text>
+								</arg-actions>
+							</do-for-each>
+							<do-if>
+								<arg-conditions>
+									<and>
+										<if-global-variable mode="nocase" name="drv.entitlement.format.UserAccount" op="equal">idm4</if-global-variable>
+									</and>
+								</arg-conditions>
+								<arg-actions>
+									<do-set-local-variable name="parameters" scope="policy">
+										<arg-node-set>
+											<token-xml-parse>
+												<token-text xml:space="preserve">&lt;parameters>
+													&lt;parameter mandatory="true" name="ID" source="read-attr" source-name="ADDomainValue"/>&lt;/parameters></token-text>
+											</token-xml-parse>
+										</arg-node-set>
+									</do-set-local-variable>
+									<do-clone-xpath dest-expression="$xml/entitlement-configuration/entitlements/entitlement[last()]" src-expression="$parameters"/>
+								</arg-actions>
+								<arg-actions/>
+							</do-if>
+							<do-set-local-variable name="extensions" scope="policy">
+								<arg-node-set>
+									<token-xml-parse>
+										<token-replace-all regex="&amp;lt;" replace-with="&lt;">
+											<token-global-variable name="drv.entitlement.extensions.UserAccount"/>
+										</token-replace-all>
+									</token-xml-parse>
+								</arg-node-set>
+							</do-set-local-variable>
+							<do-clone-xpath dest-expression="$xml/entitlement-configuration/entitlements/entitlement[last()]" src-expression="$extensions/entitlement-extensions/node()"/>
+							<!-- 
+							IF the UserAccount.onboarding GCV is set to 'true'
+							append UserAccount information to the PermissionEntMapping object which
+							enables onboarding policies
+							-->
+							<do-if>
+								<arg-conditions>
+									<and>
+										<if-global-variable mode="nocase" name="drv.entitlement.UserAccount.onboard" op="equal">true</if-global-variable>
+									</and>
+								</arg-conditions>
+								<arg-actions>
+									<do-append-xml-element expression="$perm-map-xml/mapping-table" name="row"/>
+									<do-append-xml-element expression="$perm-map-xml/mapping-table/row[last()]" name="col"/>
+									<do-append-xml-text expression="$perm-map-xml/mapping-table/row[last()]/col[last()]">
+										<arg-string>
+											<token-local-variable name="current-node"/>
+										</arg-string>
+									</do-append-xml-text>
+									<do-append-xml-element expression="$perm-map-xml/mapping-table/row[last()]" name="col"/>
+									<do-append-xml-text expression="$perm-map-xml/mapping-table/row[last()]/col[last()]">
+										<arg-string>
+											<token-global-variable name="dirxml.auto.driverdn"/>
+											<token-text xml:space="preserve">\</token-text>
+											<token-local-variable name="current-node"/>
+										</arg-string>
+									</do-append-xml-text>
+									<do-append-xml-element expression="$perm-map-xml/mapping-table/row[last()]" name="col"/>
+									<do-append-xml-text expression="$perm-map-xml/mapping-table/row[last()]/col[last()]">
+										<arg-string>
+											<token-map dest="resourceDN" src="entitlementName" table="PermissionEntMapping">
+												<token-local-variable name="current-node"/>
+											</token-map>
+										</arg-string>
+									</do-append-xml-text>
+									<do-append-xml-element expression="$perm-map-xml/mapping-table/row[last()]" name="col"/>
+									<do-append-xml-element expression="$perm-map-xml/mapping-table/row[last()]" name="col"/>
+									<do-set-local-variable name="multiValuedAttr" scope="policy">
+										<arg-string>
+											<token-text xml:space="preserve">false</token-text>
+										</arg-string>
+									</do-set-local-variable>
+									<do-append-xml-text expression="$perm-map-xml/mapping-table/row[last()]/col[last()]">
+										<arg-string>
+											<token-local-variable name="multiValuedAttr"/>
+										</arg-string>
+									</do-append-xml-text>
+									<do-append-xml-element expression="$perm-map-xml/mapping-table/row[last()]" name="col"/>
+									<do-set-local-variable name="assignAttr" scope="policy">
+										<arg-string>
+											<token-text xml:space="preserve">Login Disabled</token-text>
+										</arg-string>
+									</do-set-local-variable>
+									<do-append-xml-text expression="$perm-map-xml/mapping-table/row[last()]/col[last()]">
+										<arg-string>
+											<token-local-variable name="assignAttr"/>
+										</arg-string>
+									</do-append-xml-text>
+								</arg-actions>
+								<arg-actions/>
+							</do-if>
+						</arg-actions>
+						<arg-actions>
+							<do-if>
+								<arg-conditions>
+									<and>
+										<if-local-variable mode="nocase" name="entName" op="equal">Group</if-local-variable>
+									</and>
+								</arg-conditions>
+								<arg-actions>
+									<do-trace-message>
+										<arg-string>
+											<token-text xml:space="preserve">Found supported entitlement "$entName$"</token-text>
+										</arg-string>
+									</do-trace-message>
+									<!--
+									Read the 'Group' entitlement object, add an event-id to the
+									entitlement query, write it back out.
+									-->
+									<do-set-local-variable name="groupEntObj" scope="policy">
+										<arg-node-set>
+											<token-query class-name="DirXML-Entitlement" datastore="src" scope="entry">
+												<arg-dn>
+													<token-global-variable name="dirxml.auto.driverdn"/>
+													<token-text xml:space="preserve">\Group</token-text>
+												</arg-dn>
+												<arg-string>
+													<token-text xml:space="preserve">XmlData</token-text>
+												</arg-string>
+											</token-query>
+										</arg-node-set>
+									</do-set-local-variable>
+									<!--
+									set local variable 'entData' with entitlement xml
+									-->
+									<do-set-local-variable name="entData" scope="policy">
+										<arg-node-set>
+											<token-xml-parse>
+												<token-base64-decode>
+													<token-xpath expression="$groupEntObj/attr[@attr-name='XmlData']/value/text()"/>
+												</token-base64-decode>
+											</token-xml-parse>
+										</arg-node-set>
+									</do-set-local-variable>
+									<!--
+									set event-id for use in caching reply data
+									-->
+									<do-set-xml-attr expression="$entData/entitlement/values/query-app/query-xml/nds/input/query" name="event-id">
+										<arg-string>
+											<token-text xml:space="preserve">ENTITLEMENT:Group</token-text>
+										</arg-string>
+									</do-set-xml-attr>
+									<!--
+									write entitlement value back
+									-->
+									<do-set-src-attr-value class-name="DirXML-Entitlement" direct="true" name="XmlData">
+										<arg-dn>
+											<token-global-variable name="dirxml.auto.driverdn"/>
+											<token-text xml:space="preserve">\Group</token-text>
+										</arg-dn>
+										<arg-value type="octet">
+											<token-base64-encode>
+												<token-xml-serialize>
+													<token-local-variable name="entData"/>
+												</token-xml-serialize>
+											</token-base64-encode>
+										</arg-value>
+									</do-set-src-attr-value>
+									<!-- 
+									Now add the Group_Values object to the Identity vault
+									reply data will be put in this object
+									-->
+									<!--
+									create 'values-xml' node variable with shell of Group_Values resource object
+									-->
+									<do-set-local-variable name="values-xml" scope="driver">
+										<arg-node-set>
+											<token-xml-parse>
+												<token-text xml:space="preserve">&lt;?xml version="1.0" encoding="UTF-8"?>&lt;mapping-table>&lt;col-def name="nativeName"/>&lt;col-def name="entValue"/>&lt;/mapping-table></token-text>
+											</token-xml-parse>
+										</arg-node-set>
+									</do-set-local-variable>
+									<!-- 
+									Add the serialized and b64-encoded content of our 'xml'
+									variable to the new entitlement object's 'XmlData' attribute
+									-->
+									<do-add-src-attr-value class-name="DirXML-Resource" direct="true" name="DirXML-Data">
+										<arg-dn>
+											<token-global-variable name="dirxml.auto.driverdn"/>
+											<token-text xml:space="preserve">\Group_Values</token-text>
+										</arg-dn>
+										<arg-value type="octet">
+											<token-base64-encode>
+												<token-xml-serialize>
+													<token-local-variable name="values-xml"/>
+												</token-xml-serialize>
+											</token-base64-encode>
+										</arg-value>
+									</do-add-src-attr-value>
+									<do-set-src-attr-value class-name="DirXML-Entitlement" direct="true" name="ACL">
+										<arg-dn>
+											<token-global-variable name="dirxml.auto.driverdn"/>
+											<token-text xml:space="preserve">\</token-text>
+											<token-local-variable name="current-node"/>
+										</arg-dn>
+										<arg-value type="structured">
+											<arg-component name="protectedName">
+												<token-text xml:space="preserve">[Entry Rights]</token-text>
+											</arg-component>
+											<arg-component name="trustee">
+												<token-global-variable name="dirxml.auto.driverdn"/>
+												<token-text xml:space="preserve">\PermissionOnboarding</token-text>
+											</arg-component>
+											<arg-component name="privileges">
+												<token-text xml:space="preserve">1</token-text>
+											</arg-component>
+										</arg-value>
+									</do-set-src-attr-value>
+									<do-add-src-attr-value class-name="DirXML-Entitlement" direct="true" name="ACL">
+										<arg-dn>
+											<token-global-variable name="dirxml.auto.driverdn"/>
+											<token-text xml:space="preserve">\</token-text>
+											<token-local-variable name="current-node"/>
+										</arg-dn>
+										<arg-value type="structured">
+											<arg-component name="protectedName">
+												<token-text xml:space="preserve">[All Attributes Rights]</token-text>
+											</arg-component>
+											<arg-component name="trustee">
+												<token-global-variable name="dirxml.auto.driverdn"/>
+												<token-text xml:space="preserve">\PermissionOnboarding</token-text>
+											</arg-component>
+											<arg-component name="privileges">
+												<token-text xml:space="preserve">39</token-text>
+											</arg-component>
+										</arg-value>
+									</do-add-src-attr-value>
+									<!-- 
+									Add the serialized and b64-encoded content of our 'xml'
+									variable to the new entitlement object's 'XmlData' attribute
+									-->
+									<do-append-xml-element expression="$xml/entitlement-configuration/entitlements" name="entitlement"/>
+									<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]" name="dn">
+										<arg-string>
+											<token-parse-dn dest-dn-format="ldap" src-dn-format="slash">
+												<token-xpath expression="$current-node/@qualified-src-dn"/>
+											</token-parse-dn>
+										</arg-string>
+									</do-set-xml-attr>
+									<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]" name="data-collection">
+										<arg-string>
+											<token-xpath expression="string($drv.datacollection.enable='true' and $drv.datacollection.Group='true')"/>
+										</arg-string>
+									</do-set-xml-attr>
+									<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]" name="role-mapping">
+										<arg-string>
+											<token-global-variable name="drv.rolemapping.Group"/>
+										</arg-string>
+									</do-set-xml-attr>
+									<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]" name="resource-mapping">
+										<arg-string>
+											<token-global-variable name="drv.resourcemapping.Group"/>
+										</arg-string>
+									</do-set-xml-attr>
+									<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]" name="parameter-format">
+										<arg-string>
+											<token-global-variable name="drv.entitlement.format.Group"/>
+										</arg-string>
+									</do-set-xml-attr>
+									<do-append-xml-element expression="$xml/entitlement-configuration/entitlements/entitlement[last()]" name="type"/>
+									<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]/type[last()]" name="id">
+										<arg-string>
+											<token-text xml:space="preserve">group</token-text>
+										</arg-string>
+									</do-set-xml-attr>
+									<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]/type[last()]" name="name">
+										<arg-string>
+											<token-text xml:space="preserve">group</token-text>
+										</arg-string>
+									</do-set-xml-attr>
+									<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]/type[last()]" name="category">
+										<arg-string>
+											<token-text xml:space="preserve">security grouping</token-text>
+										</arg-string>
+									</do-set-xml-attr>
+									<do-append-xml-element expression="$xml/entitlement-configuration/entitlements/entitlement[last()]/type[last()]" name="display-name"/>
+									<do-for-each>
+										<arg-node-set>
+											<token-local-variable name="locTables"/>
+										</arg-node-set>
+										<arg-actions>
+											<do-set-local-variable name="locTableDN" scope="policy">
+												<arg-string>
+													<token-xpath expression="$current-node/@src-dn"/>
+												</arg-string>
+											</do-set-local-variable>
+											<do-set-local-variable name="langCode" scope="policy">
+												<arg-string>
+													<token-xpath expression="substring-after($current-node/attr[@attr-name='CN']/value[1], 'L10N_')"/>
+												</arg-string>
+											</do-set-local-variable>
+											<do-set-local-variable name="value" scope="policy">
+												<arg-string>
+													<token-map dest="value" src="key" table="$locTableDN$">
+														<token-text xml:space="preserve">ent$entName$DisplayName</token-text>
+													</token-map>
+												</arg-string>
+											</do-set-local-variable>
+											<do-trace-message>
+												<arg-string>
+													<token-text xml:space="preserve">localizing $entName$ entitlement display name: $langCode$: $value$</token-text>
+												</arg-string>
+											</do-trace-message>
+											<do-append-xml-element expression="$xml/entitlement-configuration/entitlements/entitlement[last()]/type[last()]/display-name[last()]" name="value"/>
+											<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]/type[last()]/display-name[last()]/value[last()]" name="langCode">
+												<arg-string>
+													<token-local-variable name="langCode"/>
+												</arg-string>
+											</do-set-xml-attr>
+											<do-append-xml-text expression="$xml/entitlement-configuration/entitlements/entitlement[last()]/type[last()]/display-name[last()]/value[last()]">
+												<arg-string>
+													<token-local-variable name="value"/>
+												</arg-string>
+											</do-append-xml-text>
+										</arg-actions>
+									</do-for-each>
+									<do-if>
+										<arg-conditions>
+											<and>
+												<if-global-variable mode="nocase" name="drv.entitlement.format.Group" op="equal">idm4</if-global-variable>
+											</and>
+										</arg-conditions>
+										<arg-actions>
+											<do-set-local-variable name="parameters" scope="policy">
+												<arg-node-set>
+													<token-xml-parse>
+														<token-text xml:space="preserve">&lt;parameters>
+	&lt;parameter mandatory="true" name="ID" source="association"/>
+	&lt;parameter mandatory="true" name="ID2" source="src-dn"/>
+&lt;/parameters></token-text>
+													</token-xml-parse>
+												</arg-node-set>
+											</do-set-local-variable>
+											<do-clone-xpath dest-expression="$xml/entitlement-configuration/entitlements/entitlement[last()]" src-expression="$parameters"/>
+										</arg-actions>
+										<arg-actions/>
+									</do-if>
+									<do-append-xml-element expression="$xml/entitlement-configuration/entitlements/entitlement[last()]" name="native-value"/>
+									<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]/native-value[last()]" name="source">
+										<arg-string>
+											<token-text xml:space="preserve">src-dn</token-text>
+										</arg-string>
+									</do-set-xml-attr>
+									<do-set-local-variable name="extensions" scope="policy">
+										<arg-node-set>
+											<token-xml-parse>
+												<token-global-variable name="drv.entitlement.extensions.Group"/>
+											</token-xml-parse>
+										</arg-node-set>
+									</do-set-local-variable>
+									<do-clone-xpath dest-expression="$xml/entitlement-configuration/entitlements/entitlement[last()]" src-expression="$extensions/entitlement-extensions/node()"/>
+									<!-- 
+									IF the Group.onboarding GCV is set to 'true'
+									append Group information to the PermissionEntMapping object which
+									enables onboarding policies
+									-->
+									<do-if>
+										<arg-conditions>
+											<and>
+												<if-global-variable mode="nocase" name="drv.entitlement.Group.onboard" op="equal">true</if-global-variable>
+											</and>
+										</arg-conditions>
+										<arg-actions>
+											<do-append-xml-element expression="$perm-map-xml/mapping-table" name="row"/>
+											<do-append-xml-element expression="$perm-map-xml/mapping-table/row[last()]" name="col"/>
+											<do-append-xml-text expression="$perm-map-xml/mapping-table/row[last()]/col[last()]">
+												<arg-string>
+													<token-local-variable name="current-node"/>
+												</arg-string>
+											</do-append-xml-text>
+											<do-append-xml-element expression="$perm-map-xml/mapping-table/row[last()]" name="col"/>
+											<do-append-xml-text expression="$perm-map-xml/mapping-table/row[last()]/col[last()]">
+												<arg-string>
+													<token-global-variable name="dirxml.auto.driverdn"/>
+													<token-text xml:space="preserve">\</token-text>
+													<token-local-variable name="current-node"/>
+												</arg-string>
+											</do-append-xml-text>
+											<do-append-xml-element expression="$perm-map-xml/mapping-table/row[last()]" name="col"/>
+											<do-append-xml-text expression="$perm-map-xml/mapping-table/row[last()]/col[last()]">
+												<arg-string>
+													<token-map dest="resourceDN" src="entitlementName" table="PermissionEntMapping">
+														<token-local-variable name="current-node"/>
+													</token-map>
+												</arg-string>
+											</do-append-xml-text>
+											<do-append-xml-element expression="$perm-map-xml/mapping-table/row[last()]" name="col"/>
+											<do-append-xml-element expression="$perm-map-xml/mapping-table/row[last()]" name="col"/>
+											<do-set-local-variable name="multiValuedAttr" scope="policy">
+												<arg-string>
+													<token-text xml:space="preserve">true</token-text>
+												</arg-string>
+											</do-set-local-variable>
+											<do-append-xml-text expression="$perm-map-xml/mapping-table/row[last()]/col[last()]">
+												<arg-string>
+													<token-local-variable name="multiValuedAttr"/>
+												</arg-string>
+											</do-append-xml-text>
+											<do-append-xml-element expression="$perm-map-xml/mapping-table/row[last()]" name="col"/>
+											<do-set-local-variable name="assignAttr" scope="policy">
+												<arg-string>
+													<token-text xml:space="preserve">Group Membership</token-text>
+												</arg-string>
+											</do-set-local-variable>
+											<do-append-xml-text expression="$perm-map-xml/mapping-table/row[last()]/col[last()]">
+												<arg-string>
+													<token-local-variable name="assignAttr"/>
+												</arg-string>
+											</do-append-xml-text>
+										</arg-actions>
+										<arg-actions/>
+									</do-if>
+								</arg-actions>
+								<arg-actions>
+									<do-if>
+										<arg-conditions>
+											<and>
+												<if-local-variable mode="nocase" name="entName" op="equal">ExchangeMailbox</if-local-variable>
+											</and>
+										</arg-conditions>
+										<arg-actions>
+											<do-trace-message>
+												<arg-string>
+													<token-text xml:space="preserve">Found supported entitlement "$entName$"</token-text>
+												</arg-string>
+											</do-trace-message>
+											<do-set-src-attr-value class-name="DirXML-Entitlement" direct="true" name="ACL">
+												<arg-dn>
+													<token-global-variable name="dirxml.auto.driverdn"/>
+													<token-text xml:space="preserve">\</token-text>
+													<token-local-variable name="current-node"/>
+												</arg-dn>
+												<arg-value type="structured">
+													<arg-component name="protectedName">
+														<token-text xml:space="preserve">[Entry Rights]</token-text>
+													</arg-component>
+													<arg-component name="trustee">
+														<token-global-variable name="dirxml.auto.driverdn"/>
+														<token-text xml:space="preserve">\PermissionOnboarding</token-text>
+													</arg-component>
+													<arg-component name="privileges">
+														<token-text xml:space="preserve">1</token-text>
+													</arg-component>
+												</arg-value>
+											</do-set-src-attr-value>
+											<do-add-src-attr-value class-name="DirXML-Entitlement" direct="true" name="ACL">
+												<arg-dn>
+													<token-global-variable name="dirxml.auto.driverdn"/>
+													<token-text xml:space="preserve">\</token-text>
+													<token-local-variable name="current-node"/>
+												</arg-dn>
+												<arg-value type="structured">
+													<arg-component name="protectedName">
+														<token-text xml:space="preserve">[All Attributes Rights]</token-text>
+													</arg-component>
+													<arg-component name="trustee">
+														<token-global-variable name="dirxml.auto.driverdn"/>
+														<token-text xml:space="preserve">\PermissionOnboarding</token-text>
+													</arg-component>
+													<arg-component name="privileges">
+														<token-text xml:space="preserve">39</token-text>
+													</arg-component>
+												</arg-value>
+											</do-add-src-attr-value>
+											<do-append-xml-element expression="$xml/entitlement-configuration/entitlements" name="entitlement"/>
+											<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]" name="dn">
+												<arg-string>
+													<token-parse-dn dest-dn-format="ldap" src-dn-format="slash">
+														<token-xpath expression="$current-node/@qualified-src-dn"/>
+													</token-parse-dn>
+												</arg-string>
+											</do-set-xml-attr>
+											<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]" name="data-collection">
+												<arg-string>
+													<token-xpath expression="string($drv.datacollection.enable='true' and $drv.datacollection.ExchangeMailbox='true')"/>
+												</arg-string>
+											</do-set-xml-attr>
+											<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]" name="role-mapping">
+												<arg-string>
+													<token-global-variable name="drv.rolemapping.ExchangeMailbox"/>
+												</arg-string>
+											</do-set-xml-attr>
+											<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]" name="resource-mapping">
+												<arg-string>
+													<token-global-variable name="drv.resourcemapping.ExchangeMailbox"/>
+												</arg-string>
+											</do-set-xml-attr>
+											<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]" name="parameter-format">
+												<arg-string>
+													<token-global-variable name="drv.entitlement.format.ExchangeMailbox"/>
+												</arg-string>
+											</do-set-xml-attr>
+											<do-append-xml-element expression="$xml/entitlement-configuration/entitlements/entitlement[last()]" name="type"/>
+											<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]/type[last()]" name="id">
+												<arg-string>
+													<token-text xml:space="preserve">mailbox</token-text>
+												</arg-string>
+											</do-set-xml-attr>
+											<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]/type[last()]" name="name">
+												<arg-string>
+													<token-text xml:space="preserve">mailbox</token-text>
+												</arg-string>
+											</do-set-xml-attr>
+											<do-append-xml-element expression="$xml/entitlement-configuration/entitlements/entitlement[last()]" name="native-value"/>
+											<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]/native-value" name="source">
+												<arg-string>
+													<token-text xml:space="preserve">src-dn</token-text>
+												</arg-string>
+											</do-set-xml-attr>
+											<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]/type[last()]" name="category">
+												<arg-string>
+													<token-text xml:space="preserve">other account</token-text>
+												</arg-string>
+											</do-set-xml-attr>
+											<do-append-xml-element expression="$xml/entitlement-configuration/entitlements/entitlement[last()]/type[last()]" name="display-name"/>
+											<do-for-each>
+												<arg-node-set>
+													<token-local-variable name="locTables"/>
+												</arg-node-set>
+												<arg-actions>
+													<do-set-local-variable name="locTableDN" scope="policy">
+														<arg-string>
+															<token-xpath expression="$current-node/@src-dn"/>
+														</arg-string>
+													</do-set-local-variable>
+													<do-set-local-variable name="langCode" scope="policy">
+														<arg-string>
+															<token-xpath expression="substring-after($current-node/attr[@attr-name='CN']/value[1], 'L10N_')"/>
+														</arg-string>
+													</do-set-local-variable>
+													<do-set-local-variable name="value" scope="policy">
+														<arg-string>
+															<token-map dest="value" src="key" table="$locTableDN$">
+																<token-text xml:space="preserve">ent$entName$DisplayName</token-text>
+															</token-map>
+														</arg-string>
+													</do-set-local-variable>
+													<do-trace-message>
+														<arg-string>
+															<token-text xml:space="preserve">localizing $entName$ entitlement display name: $langCode$: $value$</token-text>
+														</arg-string>
+													</do-trace-message>
+													<do-append-xml-element expression="$xml/entitlement-configuration/entitlements/entitlement[last()]/type[last()]/display-name[last()]" name="value"/>
+													<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]/type[last()]/display-name[last()]/value[last()]" name="langCode">
+														<arg-string>
+															<token-local-variable name="langCode"/>
+														</arg-string>
+													</do-set-xml-attr>
+													<do-append-xml-text expression="$xml/entitlement-configuration/entitlements/entitlement[last()]/type[last()]/display-name[last()]/value[last()]">
+														<arg-string>
+															<token-local-variable name="value"/>
+														</arg-string>
+													</do-append-xml-text>
+												</arg-actions>
+											</do-for-each>
+											<do-set-local-variable name="extensions" scope="policy">
+												<arg-node-set>
+													<token-xml-parse>
+														<token-global-variable name="drv.entitlement.extensions.ExchangeMailbox"/>
+													</token-xml-parse>
+												</arg-node-set>
+											</do-set-local-variable>
+											<do-clone-xpath dest-expression="$extensions/entitlement-extensions/node()" src-expression="$xml/entitlement-configuration/entitlements/entitlement[last()]"/>
+											<do-if>
+												<arg-conditions>
+													<and>
+														<if-global-variable mode="nocase" name="drv.entitlement.Exchange.onboard" op="equal">true</if-global-variable>
+													</and>
+												</arg-conditions>
+												<arg-actions>
+													<do-append-xml-element expression="$perm-map-xml/mapping-table" name="row"/>
+													<do-append-xml-element expression="$perm-map-xml/mapping-table/row[last()]" name="col"/>
+													<do-append-xml-text expression="$perm-map-xml/mapping-table/row[last()]/col[last()]">
+														<arg-string>
+															<token-local-variable name="current-node"/>
+														</arg-string>
+													</do-append-xml-text>
+													<do-append-xml-element expression="$perm-map-xml/mapping-table/row[last()]" name="col"/>
+													<do-append-xml-text expression="$perm-map-xml/mapping-table/row[last()]/col[last()]">
+														<arg-string>
+															<token-global-variable name="dirxml.auto.driverdn"/>
+															<token-text xml:space="preserve">\</token-text>
+															<token-local-variable name="current-node"/>
+														</arg-string>
+													</do-append-xml-text>
+													<do-append-xml-element expression="$perm-map-xml/mapping-table/row[last()]" name="col"/>
+													<do-append-xml-text expression="$perm-map-xml/mapping-table/row[last()]/col[last()]">
+														<arg-string>
+															<token-map dest="resourceDN" src="entitlementName" table="PermissionEntMapping">
+																<token-local-variable name="current-node"/>
+															</token-map>
+														</arg-string>
+													</do-append-xml-text>
+													<do-append-xml-element expression="$perm-map-xml/mapping-table/row[last()]" name="col"/>
+													<do-append-xml-element expression="$perm-map-xml/mapping-table/row[last()]" name="col"/>
+													<do-set-local-variable name="multiValuedAttr" scope="policy">
+														<arg-string>
+															<token-text xml:space="preserve">true</token-text>
+														</arg-string>
+													</do-set-local-variable>
+													<do-append-xml-text expression="$perm-map-xml/mapping-table/row[last()]/col[last()]">
+														<arg-string>
+															<token-local-variable name="multiValuedAttr"/>
+														</arg-string>
+													</do-append-xml-text>
+													<do-append-xml-element expression="$perm-map-xml/mapping-table/row[last()]" name="col"/>
+													<do-set-local-variable name="assignAttr" scope="policy">
+														<arg-string>
+															<token-text xml:space="preserve">Mailbox ID</token-text>
+														</arg-string>
+													</do-set-local-variable>
+													<do-append-xml-text expression="$perm-map-xml/mapping-table/row[last()]/col[last()]">
+														<arg-string>
+															<token-local-variable name="assignAttr"/>
+														</arg-string>
+													</do-append-xml-text>
+												</arg-actions>
+												<arg-actions/>
+											</do-if>
+										</arg-actions>
+										<arg-actions>
+											<do-trace-message disabled="true">
+												<arg-string>
+													<token-text xml:space="preserve">Found un-supported or disabled entitlement "$entName$"</token-text>
+												</arg-string>
+											</do-trace-message>
+											<do-append-xml-element disabled="true" expression="$xml/entitlement-configuration/entitlements" name="entitlement"/>
+											<do-set-xml-attr disabled="true" expression="$xml/entitlement-configuration/entitlements/entitlement[last()]" name="data-collection">
+												<arg-string>
+													<token-text xml:space="preserve">false</token-text>
+												</arg-string>
+											</do-set-xml-attr>
+											<do-set-xml-attr disabled="true" expression="$xml/entitlement-configuration/entitlements/entitlement[last()]" name="role-mapping">
+												<arg-string>
+													<token-text xml:space="preserve">false</token-text>
+												</arg-string>
+											</do-set-xml-attr>
+											<do-set-xml-attr disabled="true" expression="$xml/entitlement-configuration/entitlements/entitlement[last()]" name="resource-mapping">
+												<arg-string>
+													<token-text xml:space="preserve">false</token-text>
+												</arg-string>
+											</do-set-xml-attr>
+											<do-set-xml-attr disabled="true" expression="$xml/entitlement-configuration/entitlements/entitlement[last()]" name="dn">
+												<arg-string>
+													<token-parse-dn dest-dn-format="ldap" src-dn-format="slash">
+														<token-xpath expression="$current-node/@qualified-src-dn"/>
+													</token-parse-dn>
+												</arg-string>
+											</do-set-xml-attr>
+										</arg-actions>
+									</do-if>
+								</arg-actions>
+							</do-if>
+						</arg-actions>
+					</do-if>
+				</arg-actions>
+			</do-for-each>
+		</actions>
+	</rule>
+	<rule>
+		<description>Extended Entitlements</description>
+		<comment xml:space="preserve">Add new DirXML-Entitlement objects as needed to represent the native entitlement names identified in the 'PermissionNameToFile' mapping table</comment>
+		<conditions/>
+		<actions>
+			<!--
+			initialize local variable 'xml' with the contents of an empty
+			entitlementConfiguration resource object
+			-->
+			<do-set-local-variable name="ent-xml" scope="policy">
+				<arg-node-set>
+					<token-xml-parse>
+						<token-text xml:space="preserve">&lt;?xml version="1.0" encoding="UTF-8"?>&lt;entitlement conflict-resolution="union">&lt;values>&lt;query-app>&lt;query-xml>&lt;nds dtdversion="2.0">&lt;input>&lt;query class-name="Entitlement"  scope="subtree">&lt;search-class/>&lt;read-attr attr-name="DisplayName"/>&lt;read-attr attr-name="Description"/>&lt;/query>&lt;/input>&lt;/nds>&lt;/query-xml>&lt;result-set>&lt;display-name>&lt;token-attr attr-name="DisplayName"/>&lt;/display-name>&lt;description>&lt;token-attr attr-name="Description"/>&lt;/description>&lt;ent-value>&lt;token-association/>&lt;/ent-value>&lt;/result-set>&lt;/query-app>&lt;/values>&lt;/entitlement></token-text>
+					</token-xml-parse>
+				</arg-node-set>
+			</do-set-local-variable>
+			<!--
+			initialize local variable 'values-xml' with a <values> element
+			-->
+			<do-set-local-variable name="values-xml" scope="policy">
+				<arg-node-set>
+					<token-xml-parse>
+						<token-text xml:space="preserve">&lt;?xml version="1.0" encoding="UTF-8"?>&lt;values>&lt;/values></token-text>
+					</token-xml-parse>
+				</arg-node-set>
+			</do-set-local-variable>
+			<!-- 
+			initialize local variable 'nameToFileMap' with the contents of the Mapping Object
+			that contains the map between native permission names and a csv file that
+			contains the values for that permission
+			eg: '\TREE\system\driverset1\driver\PermissionNameToFile'
+			-->
+			<do-set-local-variable name="nameToFileMap" scope="driver">
+				<arg-node-set>
+					<token-document>
+						<arg-string>
+							<token-global-variable name="dirxml.auto.driverdn"/>
+							<token-text xml:space="preserve">\PermissionNameToFile</token-text>
+						</arg-string>
+					</token-document>
+				</arg-node-set>
+			</do-set-local-variable>
+			<!-- 
+			initialize nodeset local variable 'entitlements' with the values of the
+			first column (entitlementName) parsed from 'nameToFileMap'
+			These will be used to create new DirXML-Entitlement objects
+			-->
+			<do-set-local-variable name="extended-entitlements" scope="policy">
+				<arg-node-set>
+					<token-xpath expression="$nameToFileMap/mapping-table/row/col[1]/text()"/>
+				</arg-node-set>
+			</do-set-local-variable>
+			<!--
+			Read the driver object and store it in nodeset local variable 'driverObj'
+			-->
+			<do-set-local-variable name="driverObj" scope="policy">
+				<arg-node-set>
+					<token-query class-name="DirXML-Driver" datastore="src" scope="entry">
+						<arg-dn>
+							<token-global-variable name="dirxml.auto.driverdn"/>
+						</arg-dn>
+						<arg-string>
+							<token-text xml:space="preserve">CN</token-text>
+						</arg-string>
+					</token-query>
+				</arg-node-set>
+			</do-set-local-variable>
+			<!--
+			set local variable 'driverCN' with driver's CN
+			-->
+			<do-set-local-variable name="driverCN" scope="policy">
+				<arg-node-set>
+					<token-xpath expression="$driverObj/attr[@attr-name='CN']/value[1]/text()"/>
+				</arg-node-set>
+			</do-set-local-variable>
+			<!-- 
+			set local variable 'driverQualifiedDn' with the value of the 'qualified-src-dn
+			attribute on the root node of 'driverObj'
+			-->
+			<do-set-local-variable name="driverQualifiedDn" scope="policy">
+				<arg-string>
+					<token-xpath expression="$driverObj/@qualified-src-dn"/>
+				</arg-string>
+			</do-set-local-variable>
+			<!-- 
+			For each native 'entilements' value, create a new DirXML-Entitlement object
+			of the same name and set ACL values on them so they can be managed by the
+			PermissionOnboarding job
+			-->
+			<do-for-each>
+				<arg-node-set>
+					<token-local-variable name="extended-entitlements"/>
+				</arg-node-set>
+				<arg-actions>
+					<!--
+					try to read an entitlement object with the current entitlement name
+					-->
+					<do-set-local-variable name="entObj" scope="policy">
+						<arg-node-set>
+							<token-query class-name="DirXML-Entitlement" datastore="src" scope="entry">
+								<arg-dn>
+									<token-global-variable name="dirxml.auto.driverdn"/>
+									<token-text xml:space="preserve">\</token-text>
+									<token-local-variable name="current-node"/>
+								</arg-dn>
+							</token-query>
+						</arg-node-set>
+					</do-set-local-variable>
+					<do-if>
+						<arg-conditions>
+							<and>
+								<if-xpath op="not-true">string-length($entObj/@src-dn)>0</if-xpath>
+							</and>
+						</arg-conditions>
+						<arg-actions>
+							<do-trace-message>
+								<arg-string>
+									<token-text xml:space="preserve">Creating new Entitlement object</token-text>
+								</arg-string>
+							</do-trace-message>
+							<!--
+							Add some description attributes to the entitlement XML
+							-->
+							<do-set-xml-attr expression="$ent-xml/entitlement/values/query-app/query-xml/nds/input/query/search-class" name="class-name">
+								<arg-string>
+									<token-local-variable name="current-node"/>
+								</arg-string>
+							</do-set-xml-attr>
+							<!-- 
+							Now add the entitlement object to the Identity vault
+							-->
+							<do-set-local-variable name="multivalued" scope="policy">
+								<arg-string>
+									<token-map dest="multivalued" src="entitlementName" table="PermissionNameToFile">
+										<token-local-variable name="current-node"/>
+									</token-map>
+								</arg-string>
+							</do-set-local-variable>
+							<do-set-xml-attr expression="$ent-xml/entitlement/values" name="multi-valued">
+								<arg-string>
+									<token-local-variable name="multivalued"/>
+								</arg-string>
+							</do-set-xml-attr>
+							<do-set-xml-attr expression="$ent-xml/entitlement" name="display-name">
+								<arg-string>
+									<token-local-variable name="current-node"/>
+									<token-text xml:space="preserve"> Entitlement</token-text>
+								</arg-string>
+							</do-set-xml-attr>
+							<do-set-local-variable name="entDescription" scope="policy">
+								<arg-string>
+									<token-text xml:space="preserve">The </token-text>
+									<token-local-variable name="current-node"/>
+									<token-text xml:space="preserve"> Entitlement is used to synchronize permission values assigned via the application attribute mapped to the IDM '</token-text>
+									<token-map dest="assignmentAttribute" src="entitlementName" table="PermissionNameToFile">
+										<token-local-variable name="current-node"/>
+									</token-map>
+									<token-text xml:space="preserve">' attribute. Values for this entitlement are obtained from the '</token-text>
+									<token-map dest="csvFile" src="entitlementName" table="PermissionNameToFile">
+										<token-local-variable name="current-node"/>
+									</token-map>
+									<token-text xml:space="preserve">' file in the IDM host file system. The entitlement is </token-text>
+								</arg-string>
+							</do-set-local-variable>
+							<do-if>
+								<arg-conditions>
+									<and>
+										<if-local-variable mode="nocase" name="multivalued" op="equal">true</if-local-variable>
+									</and>
+								</arg-conditions>
+								<arg-actions>
+									<do-set-xml-attr expression="$ent-xml/entitlement" name="description">
+										<arg-string>
+											<token-local-variable name="entDescription"/>
+											<token-text xml:space="preserve">multi-valued.</token-text>
+										</arg-string>
+									</do-set-xml-attr>
+								</arg-actions>
+								<arg-actions>
+									<do-set-xml-attr expression="$ent-xml/entitlement" name="description">
+										<arg-string>
+											<token-local-variable name="entDescription"/>
+											<token-text xml:space="preserve">single-valued.</token-text>
+										</arg-string>
+									</do-set-xml-attr>
+								</arg-actions>
+							</do-if>
+							<do-add-src-object class-name="DirXML-Entitlement" direct="true">
+								<arg-dn>
+									<token-global-variable name="dirxml.auto.driverdn"/>
+									<token-text xml:space="preserve">\</token-text>
+									<token-local-variable name="current-node"/>
+								</arg-dn>
+							</do-add-src-object>
+							<!-- 
+							Add the serialized and b64-encoded content of our 'xml'
+							variable to the new entitlement object's 'XmlData' attribute
+							-->
+							<do-add-src-attr-value class-name="DirXML-Entitlement" direct="true" name="XmlData">
+								<arg-dn>
+									<token-global-variable name="dirxml.auto.driverdn"/>
+									<token-text xml:space="preserve">\</token-text>
+									<token-local-variable name="current-node"/>
+								</arg-dn>
+								<arg-value type="octet">
+									<token-base64-encode>
+										<token-xml-serialize>
+											<token-local-variable name="ent-xml"/>
+										</token-xml-serialize>
+									</token-base64-encode>
+								</arg-value>
+							</do-add-src-attr-value>
+							<do-set-src-attr-value class-name="DirXML-Entitlement" name="ACL">
+								<arg-dn>
+									<token-global-variable name="dirxml.auto.driverdn"/>
+									<token-text xml:space="preserve">\</token-text>
+									<token-local-variable name="current-node"/>
+								</arg-dn>
+								<arg-value type="structured">
+									<arg-component name="protectedName">
+										<token-text xml:space="preserve">[Entry Rights]</token-text>
+									</arg-component>
+									<arg-component name="trustee">
+										<token-global-variable name="dirxml.auto.driverdn"/>
+										<token-text xml:space="preserve">\PermissionOnboarding</token-text>
+									</arg-component>
+									<arg-component name="privileges">
+										<token-text xml:space="preserve">1</token-text>
+									</arg-component>
+								</arg-value>
+							</do-set-src-attr-value>
+							<do-add-src-attr-value class-name="DirXML-Entitlement" direct="true" name="ACL">
+								<arg-dn>
+									<token-global-variable name="dirxml.auto.driverdn"/>
+									<token-text xml:space="preserve">\</token-text>
+									<token-local-variable name="current-node"/>
+								</arg-dn>
+								<arg-value type="structured">
+									<arg-component name="protectedName">
+										<token-text xml:space="preserve">[All Attributes Rights]</token-text>
+									</arg-component>
+									<arg-component name="trustee">
+										<token-global-variable name="dirxml.auto.driverdn"/>
+										<token-text xml:space="preserve">\PermissionOnboarding</token-text>
+									</arg-component>
+									<arg-component name="privileges">
+										<token-text xml:space="preserve">39</token-text>
+									</arg-component>
+								</arg-value>
+							</do-add-src-attr-value>
+							<!--
+							Add structured ACL values for the Permission Onboarding job to allow management by the job.
+							The first value is a 'set' operation which removes previous values and adds the
+							new value. The second operation is an 'add' of an additional ACL value
+							-->
+							<do-trace-message>
+								<arg-string>
+									<token-text xml:space="preserve">Creating new Permission Value resource</token-text>
+								</arg-string>
+							</do-trace-message>
+							<!--
+							Add some description attributes to the entitlement XML
+							-->
+							<!-- 
+							Now add the entitlement object to the Identity vault
+							-->
+							<do-add-src-object class-name="DirXML-Resource" direct="true">
+								<arg-dn>
+									<token-global-variable name="dirxml.auto.driverdn"/>
+									<token-text xml:space="preserve">\</token-text>
+									<token-local-variable name="current-node"/>
+									<token-text xml:space="preserve">_Values</token-text>
+								</arg-dn>
+							</do-add-src-object>
+							<!-- 
+							Add the serialized and b64-encoded content of our 'xml'
+							variable to the new entitlement object's 'XmlData' attribute
+							-->
+							<do-add-src-attr-value class-name="DirXML-Resource" direct="true" name="DirXML-Data">
+								<arg-dn>
+									<token-global-variable name="dirxml.auto.driverdn"/>
+									<token-text xml:space="preserve">\</token-text>
+									<token-local-variable name="current-node"/>
+									<token-text xml:space="preserve">_Values</token-text>
+								</arg-dn>
+								<arg-value type="octet">
+									<token-base64-encode>
+										<token-xml-serialize>
+											<token-local-variable name="values-xml"/>
+										</token-xml-serialize>
+									</token-base64-encode>
+								</arg-value>
+							</do-add-src-attr-value>
+							<!--
+							Add structured ACL values for the Permission Onboarding job to allow management by the job.
+							The first value is a 'set' operation which removes previous values and adds the
+							new value. The second operation is an 'add' of an additional ACL value
+							-->
+							<do-set-src-attr-value class-name="DirXML-Resource" direct="true" name="ACL">
+								<arg-dn>
+									<token-global-variable name="dirxml.auto.driverdn"/>
+									<token-text xml:space="preserve">\</token-text>
+									<token-local-variable name="current-node"/>
+									<token-text xml:space="preserve">_Values</token-text>
+								</arg-dn>
+								<arg-value type="structured">
+									<arg-component name="protectedName">
+										<token-text xml:space="preserve">[Entry Rights]</token-text>
+									</arg-component>
+									<arg-component name="trustee">
+										<token-global-variable name="dirxml.auto.driverdn"/>
+										<token-text xml:space="preserve">\PermissionOnboarding</token-text>
+									</arg-component>
+									<arg-component name="privileges">
+										<token-text xml:space="preserve">1</token-text>
+									</arg-component>
+								</arg-value>
+							</do-set-src-attr-value>
+							<do-add-src-attr-value class-name="DirXML-Resource" direct="true" name="ACL">
+								<arg-dn>
+									<token-global-variable name="dirxml.auto.driverdn"/>
+									<token-text xml:space="preserve">\</token-text>
+									<token-local-variable name="current-node"/>
+									<token-text xml:space="preserve">_Values</token-text>
+								</arg-dn>
+								<arg-value type="structured">
+									<arg-component name="protectedName">
+										<token-text xml:space="preserve">[All Attributes Rights]</token-text>
+									</arg-component>
+									<arg-component name="trustee">
+										<token-global-variable name="dirxml.auto.driverdn"/>
+										<token-text xml:space="preserve">\PermissionOnboarding</token-text>
+									</arg-component>
+									<arg-component name="privileges">
+										<token-text xml:space="preserve">39</token-text>
+									</arg-component>
+								</arg-value>
+							</do-add-src-attr-value>
+							<do-set-src-attr-value class-name="DirXML-Resource" direct="true" name="DirXML-ContentType">
+								<arg-dn>
+									<token-global-variable name="dirxml.auto.driverdn"/>
+									<token-text xml:space="preserve">\</token-text>
+									<token-local-variable name="current-node"/>
+									<token-text xml:space="preserve">_Values</token-text>
+								</arg-dn>
+								<arg-value type="string">
+									<token-text xml:space="preserve">text/vnd.novell.idm.entitlementValues+xml</token-text>
+								</arg-value>
+							</do-set-src-attr-value>
+						</arg-actions>
+						<arg-actions/>
+					</do-if>
+					<do-trace-message>
+						<arg-string>
+							<token-text xml:space="preserve">Appending entitlement configuration info for entitlement: </token-text>
+							<token-local-variable name="current-node"/>
+						</arg-string>
+					</do-trace-message>
+					<do-append-xml-element expression="$xml/entitlement-configuration/entitlements" name="entitlement"/>
+					<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]" name="data-collection">
+						<arg-string>
+							<token-text xml:space="preserve">true</token-text>
+						</arg-string>
+					</do-set-xml-attr>
+					<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]" name="dn">
+						<arg-string>
+							<token-parse-dn dest-dn-format="ldap" src-dn-format="qualified-slash">
+								<token-local-variable name="driverQualifiedDn"/>
+								<token-text xml:space="preserve">\CN=</token-text>
+								<token-local-variable name="current-node"/>
+							</token-parse-dn>
+						</arg-string>
+					</do-set-xml-attr>
+					<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]" name="role-mapping">
+						<arg-string>
+							<token-text xml:space="preserve">true</token-text>
+						</arg-string>
+					</do-set-xml-attr>
+					<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]" name="resource-mapping">
+						<arg-string>
+							<token-text xml:space="preserve">true</token-text>
+						</arg-string>
+					</do-set-xml-attr>
+					<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]" name="parameter-format">
+						<arg-string>
+							<token-text xml:space="preserve">idm4</token-text>
+						</arg-string>
+					</do-set-xml-attr>
+					<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]" name="rbpm-refresh-rate">
+						<arg-string>
+							<token-text xml:space="preserve">0</token-text>
+						</arg-string>
+					</do-set-xml-attr>
+					<do-append-xml-element expression="$xml/entitlement-configuration/entitlements/entitlement[last()]" name="type"/>
+					<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]/type[last()]" name="id">
+						<arg-string>
+							<token-local-variable name="current-node"/>
+						</arg-string>
+					</do-set-xml-attr>
+					<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]/type[last()]" name="name">
+						<arg-string>
+							<token-local-variable name="current-node"/>
+						</arg-string>
+					</do-set-xml-attr>
+					<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]/type[last()]" name="category">
+						<arg-string>
+							<token-text xml:space="preserve">permission</token-text>
+						</arg-string>
+					</do-set-xml-attr>
+					<do-append-xml-element expression="$xml/entitlement-configuration/entitlements/entitlement[last()]/type[last()]" name="display-name"/>
+					<do-append-xml-element expression="$xml/entitlement-configuration/entitlements/entitlement[last()]/type[last()]/display-name" name="value"/>
+					<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]/type[last()]/display-name/value" name="langCode">
+						<arg-string>
+							<token-text xml:space="preserve">en</token-text>
+						</arg-string>
+					</do-set-xml-attr>
+					<do-append-xml-text expression="$xml/entitlement-configuration/entitlements/entitlement[last()]/type[last()]/display-name/value">
+						<arg-string>
+							<token-local-variable name="current-node"/>
+						</arg-string>
+					</do-append-xml-text>
+					<do-append-xml-element expression="$xml/entitlement-configuration/entitlements/entitlement[last()]" name="native-value"/>
+					<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]/native-value" name="source">
+						<arg-string>
+							<token-text xml:space="preserve">src-dn</token-text>
+						</arg-string>
+					</do-set-xml-attr>
+					<do-append-xml-element expression="$xml/entitlement-configuration/entitlements/entitlement[last()]" name="parameters"/>
+					<do-append-xml-element expression="$xml/entitlement-configuration/entitlements/entitlement[last()]/parameters" name="parameter"/>
+					<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]/parameters/parameter[last()]" name="mandatory">
+						<arg-string>
+							<token-text xml:space="preserve">true</token-text>
+						</arg-string>
+					</do-set-xml-attr>
+					<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]/parameters/parameter[last()]" name="name">
+						<arg-string>
+							<token-text xml:space="preserve">ID</token-text>
+						</arg-string>
+					</do-set-xml-attr>
+					<do-set-xml-attr expression="$xml/entitlement-configuration/entitlements/entitlement[last()]/parameters/parameter[last()]" name="source">
+						<arg-string>
+							<token-text xml:space="preserve">association</token-text>
+						</arg-string>
+					</do-set-xml-attr>
+					<do-trace-message>
+						<arg-string>
+							<token-text xml:space="preserve">Adding PermissionEntMapping info for entitlement: </token-text>
+							<token-local-variable name="current-node"/>
+						</arg-string>
+					</do-trace-message>
+					<do-set-local-variable name="assignAttr" scope="policy">
+						<arg-string>
+							<token-map dest="assignmentAttribute" src="entitlementName" table="PermissionNameToFile">
+								<token-local-variable name="current-node"/>
+							</token-map>
+						</arg-string>
+					</do-set-local-variable>
+					<do-set-local-variable name="currResourceDN" scope="policy">
+						<arg-string>
+							<token-map dest="resourceDN" src="entitlementName" table="PermissionEntMapping">
+								<token-local-variable name="current-node"/>
+							</token-map>
+						</arg-string>
+					</do-set-local-variable>
+					<do-set-local-variable name="csvname" scope="policy">
+						<arg-string>
+							<token-map dest="csvFile" src="entitlementName" table="PermissionNameToFile">
+								<token-local-variable name="current-node"/>
+							</token-map>
+						</arg-string>
+					</do-set-local-variable>
+					<do-set-local-variable name="ismultivalued" scope="policy">
+						<arg-string>
+							<token-map dest="multivalued" src="entitlementName" table="PermissionNameToFile">
+								<token-local-variable name="current-node"/>
+							</token-map>
+						</arg-string>
+					</do-set-local-variable>
+					<do-append-xml-element expression="$perm-map-xml/mapping-table" name="row"/>
+					<do-append-xml-element expression="$perm-map-xml/mapping-table/row[last()]" name="col"/>
+					<do-append-xml-text expression="$perm-map-xml/mapping-table/row[last()]/col[last()]">
+						<arg-string>
+							<token-local-variable name="current-node"/>
+						</arg-string>
+					</do-append-xml-text>
+					<do-append-xml-element expression="$perm-map-xml/mapping-table/row[last()]" name="col"/>
+					<do-append-xml-text expression="$perm-map-xml/mapping-table/row[last()]/col[last()]">
+						<arg-string>
+							<token-global-variable name="dirxml.auto.driverdn"/>
+							<token-text xml:space="preserve">\</token-text>
+							<token-local-variable name="current-node"/>
+						</arg-string>
+					</do-append-xml-text>
+					<do-append-xml-element expression="$perm-map-xml/mapping-table/row[last()]" name="col"/>
+					<do-append-xml-text expression="$perm-map-xml/mapping-table/row[last()]/col[last()]">
+						<arg-string>
+							<token-local-variable name="currResourceDN"/>
+						</arg-string>
+					</do-append-xml-text>
+					<do-append-xml-element expression="$perm-map-xml/mapping-table/row[last()]" name="col"/>
+					<do-append-xml-text expression="$perm-map-xml/mapping-table/row[last()]/col[last()]">
+						<arg-string>
+							<token-local-variable name="csvname"/>
+						</arg-string>
+					</do-append-xml-text>
+					<do-append-xml-element expression="$perm-map-xml/mapping-table/row[last()]" name="col"/>
+					<do-append-xml-text expression="$perm-map-xml/mapping-table/row[last()]/col[last()]">
+						<arg-string>
+							<token-local-variable name="ismultivalued"/>
+						</arg-string>
+					</do-append-xml-text>
+					<do-append-xml-element expression="$perm-map-xml/mapping-table/row[last()]" name="col"/>
+					<do-append-xml-text expression="$perm-map-xml/mapping-table/row[last()]/col[last()]">
+						<arg-string>
+							<token-local-variable name="assignAttr"/>
+						</arg-string>
+					</do-append-xml-text>
+				</arg-actions>
+			</do-for-each>
+		</actions>
+	</rule>
+	<rule>
+		<description>Create or update Entitlement Configuration resource object</description>
+		<conditions/>
+		<actions>
+			<do-set-local-variable name="entConfigResObj" scope="policy">
+				<arg-node-set>
+					<token-query class-name="DirXML-Resource" datastore="src" scope="entry">
+						<arg-dn>
+							<token-global-variable name="dirxml.auto.driverdn"/>
+							<token-text xml:space="preserve">\EntitlementConfiguration</token-text>
+						</arg-dn>
+						<arg-match-attr name="DirXML-ContentType">
+							<arg-value type="string">
+								<token-text xml:space="preserve">text/vnd.novell.idm.entitlementConfiguration+xml</token-text>
+							</arg-value>
+						</arg-match-attr>
+					</token-query>
+				</arg-node-set>
+			</do-set-local-variable>
+			<do-if>
+				<arg-conditions>
+					<and>
+						<if-xpath op="true">string-length($entConfigResObj/@src-dn)>0</if-xpath>
+					</and>
+				</arg-conditions>
+				<arg-actions>
+					<do-set-local-variable name="currentXml" scope="policy">
+						<arg-node-set>
+							<token-document>
+								<arg-string>
+									<token-text xml:space="preserve">vnd.nds.stream:</token-text>
+									<token-text xml:space="preserve">/</token-text>
+									<token-parse-dn dest-dn-delims="00,/+=*\" dest-dn-format="custom" src-dn-format="slash">
+										<token-xpath expression="$entConfigResObj/@src-dn"/>
+									</token-parse-dn>
+									<token-text xml:space="preserve">#</token-text>
+									<token-text xml:space="preserve">DirXML-Data</token-text>
+								</arg-string>
+							</token-document>
+						</arg-node-set>
+					</do-set-local-variable>
+					<do-set-local-variable name="currentXmlStr" scope="policy">
+						<arg-string>
+							<token-replace-all regex="\s" replace-with="">
+								<token-xml-serialize>
+									<token-xpath expression="$currentXml/entitlement-configuration/node()"/>
+								</token-xml-serialize>
+							</token-replace-all>
+						</arg-string>
+					</do-set-local-variable>
+					<do-set-local-variable name="xmlStr" scope="policy">
+						<arg-string>
+							<token-replace-all regex="\s" replace-with="">
+								<token-xml-serialize>
+									<token-xpath expression="$xml/entitlement-configuration/node()"/>
+								</token-xml-serialize>
+							</token-replace-all>
+						</arg-string>
+					</do-set-local-variable>
+					<do-if>
+						<arg-conditions>
+							<and>
+								<if-local-variable mode="case" name="currentXmlStr" op="equal">$xmlStr$</if-local-variable>
+							</and>
+						</arg-conditions>
+						<arg-actions>
+							<do-trace-message>
+								<arg-string>
+									<token-text xml:space="preserve">Configuration still up-to-date. No update necessary.</token-text>
+								</arg-string>
+							</do-trace-message>
+						</arg-actions>
+						<arg-actions>
+							<do-trace-message>
+								<arg-string>
+									<token-text xml:space="preserve">Update existing Entitlement Configuration resource object</token-text>
+								</arg-string>
+							</do-trace-message>
+							<do-set-src-attr-value class-name="DirXML-Resource" direct="true" name="DirXML-Data">
+								<arg-dn>
+									<token-xpath expression="$entConfigResObj/@src-dn"/>
+								</arg-dn>
+								<arg-value type="octet">
+									<token-base64-encode>
+										<token-xml-serialize>
+											<token-local-variable name="xml"/>
+										</token-xml-serialize>
+									</token-base64-encode>
+								</arg-value>
+							</do-set-src-attr-value>
+						</arg-actions>
+					</do-if>
+				</arg-actions>
+				<arg-actions>
+					<do-trace-message>
+						<arg-string>
+							<token-text xml:space="preserve">Creating new Entitlement Configuration resource object</token-text>
+						</arg-string>
+					</do-trace-message>
+					<do-add-src-object class-name="DirXML-Resource" direct="true">
+						<arg-dn>
+							<token-global-variable name="dirxml.auto.driverdn"/>
+							<token-text xml:space="preserve">\EntitlementConfiguration</token-text>
+						</arg-dn>
+					</do-add-src-object>
+					<do-add-src-attr-value class-name="DirXML-Resource" direct="true" name="DirXML-ContentType">
+						<arg-dn>
+							<token-global-variable name="dirxml.auto.driverdn"/>
+							<token-text xml:space="preserve">\EntitlementConfiguration</token-text>
+						</arg-dn>
+						<arg-value>
+							<token-text xml:space="preserve">text/vnd.novell.idm.entitlementConfiguration+xml</token-text>
+						</arg-value>
+					</do-add-src-attr-value>
+					<do-add-src-attr-value class-name="DirXML-Resource" direct="true" name="DirXML-Data">
+						<arg-dn>
+							<token-global-variable name="dirxml.auto.driverdn"/>
+							<token-text xml:space="preserve">\EntitlementConfiguration</token-text>
+						</arg-dn>
+						<arg-value type="octet">
+							<token-base64-encode>
+								<token-xml-serialize>
+									<token-local-variable name="xml"/>
+								</token-xml-serialize>
+							</token-base64-encode>
+						</arg-value>
+					</do-add-src-attr-value>
+				</arg-actions>
+			</do-if>
+			<do-set-src-attr-value class-name="DirXML-Resource" direct="true" name="DirXML-Data">
+				<arg-dn>
+					<token-global-variable name="dirxml.auto.driverdn"/>
+					<token-text xml:space="preserve">\PermissionEntMapping</token-text>
+				</arg-dn>
+				<arg-value type="string">
+					<token-xml-serialize>
+						<token-local-variable name="perm-map-xml"/>
+					</token-xml-serialize>
+				</arg-value>
+			</do-set-src-attr-value>
+			<do-set-src-attr-value class-name="DirXML-Resource" direct="true" name="ACL">
+				<arg-dn>
+					<token-global-variable name="dirxml.auto.driverdn"/>
+					<token-text xml:space="preserve">\PermissionEntMapping</token-text>
+				</arg-dn>
+				<arg-value type="structured">
+					<arg-component name="protectedName">
+						<token-text xml:space="preserve">[Entry Rights]</token-text>
+					</arg-component>
+					<arg-component name="trustee">
+						<token-global-variable name="dirxml.auto.driverdn"/>
+						<token-text xml:space="preserve">\PermissionOnboarding</token-text>
+					</arg-component>
+					<arg-component name="privileges">
+						<token-text xml:space="preserve">1</token-text>
+					</arg-component>
+				</arg-value>
+			</do-set-src-attr-value>
+			<do-add-src-attr-value class-name="DirXML-Resource" direct="true" name="ACL">
+				<arg-dn>
+					<token-global-variable name="dirxml.auto.driverdn"/>
+					<token-text xml:space="preserve">\PermissionEntMapping</token-text>
+				</arg-dn>
+				<arg-value type="structured">
+					<arg-component name="protectedName">
+						<token-text xml:space="preserve">[All Attributes Rights]</token-text>
+					</arg-component>
+					<arg-component name="trustee">
+						<token-global-variable name="dirxml.auto.driverdn"/>
+						<token-text xml:space="preserve">\PermissionOnboarding</token-text>
+					</arg-component>
+					<arg-component name="privileges">
+						<token-text xml:space="preserve">39</token-text>
+					</arg-component>
+				</arg-value>
+			</do-add-src-attr-value>
+			<do-trace-message>
+				<arg-string>
+					<token-xml-serialize>
+						<token-local-variable name="xml"/>
+					</token-xml-serialize>
+				</arg-string>
+			</do-trace-message>
+		</actions>
+	</rule>
+	<rule>
+		<description>Configure Onboard Job</description>
+		<comment xml:space="preserve">Configure the PermissionOnboarding job with parameters it needs to run. This is the last onboarding setup rule in the chain. The IDM engine will commit all of the changes up to here so the objects can be utilized by subsequent policies and the job.</comment>
+		<conditions/>
+		<actions>
+			<do-set-local-variable name="onboardJob" scope="policy">
+				<arg-node-set>
+					<token-query class-name="DirXML-Job" datastore="src">
+						<arg-dn>
+							<token-global-variable name="dirxml.auto.driverdn"/>
+						</arg-dn>
+					</token-query>
+					<token-text xml:space="preserve">\PermissionOnboarding</token-text>
+				</arg-node-set>
+			</do-set-local-variable>
+			<do-set-local-variable name="jobXmlData" scope="policy">
+				<arg-node-set>
+					<token-xml-parse>
+						<token-base64-decode charset="UTF-8">
+							<token-src-attr class-name="DirXML-Job" name="XmlData">
+								<arg-dn>
+									<token-global-variable name="dirxml.auto.driverdn"/>
+									<token-text xml:space="preserve">\PermissionOnboarding</token-text>
+								</arg-dn>
+							</token-src-attr>
+						</token-base64-decode>
+					</token-xml-parse>
+				</arg-node-set>
+			</do-set-local-variable>
+			<do-trace-message level="5">
+				<arg-string>
+					<token-xml-serialize>
+						<token-local-variable name="jobXmlData"/>
+					</token-xml-serialize>
+				</arg-string>
+			</do-trace-message>
+			<do-strip-xpath expression="$jobXmlData/job-aggregation/job-definition/configuration-values/definitions/definition[@name='onboarding-gcv']/value/text()"/>
+			<do-append-xml-text expression="$jobXmlData/job-aggregation/job-definition/configuration-values/definitions/definition[@name='onboarding-gcv']/value">
+				<arg-string>
+					<token-global-variable name="drv.entitlement.onboarding"/>
+				</arg-string>
+			</do-append-xml-text>
+			<do-strip-xpath expression="$jobXmlData/job-aggregation/job-definition/configuration-values/definitions/definition[@name='mapping-obj']/value/text()"/>
+			<do-append-xml-text expression="$jobXmlData/job-aggregation/job-definition/configuration-values/definitions/definition[@name='mapping-obj']/value">
+				<arg-string>
+					<token-global-variable name="dirxml.auto.driverdn"/>
+					<token-text xml:space="preserve">\PermissionEntMapping</token-text>
+				</arg-string>
+			</do-append-xml-text>
+			<do-strip-xpath expression="$jobXmlData/job-aggregation/job-definition/configuration-values/definitions/definition[@name='ua-user']/value/text()"/>
+			<do-append-xml-text expression="$jobXmlData/job-aggregation/job-definition/configuration-values/definitions/definition[@name='ua-user']/value">
+				<arg-string>
+					<token-global-variable name="UAProvAdmin"/>
+				</arg-string>
+			</do-append-xml-text>
+			<do-strip-xpath expression="$jobXmlData/job-aggregation/job-definition/configuration-values/definitions/definition[@name='ua-url']/value/text()"/>
+			<do-append-xml-text expression="$jobXmlData/job-aggregation/job-definition/configuration-values/definitions/definition[@name='ua-url']/value">
+				<arg-string>
+					<token-global-variable name="UAProvURL"/>
+				</arg-string>
+			</do-append-xml-text>
+			<do-set-src-attr-value class-name="DirXML-Job" direct="true" name="XmlData">
+				<arg-dn>
+					<token-global-variable name="dirxml.auto.driverdn"/>
+					<token-text xml:space="preserve">\PermissionOnboarding</token-text>
+				</arg-dn>
+				<arg-value type="string">
+					<token-text xml:space="preserve">&lt;?xml version="1.0" encoding="UTF-8"?></token-text>
+					<token-xml-serialize>
+						<token-local-variable name="jobXmlData"/>
+					</token-xml-serialize>
+				</arg-value>
+			</do-set-src-attr-value>
+		</actions>
+	</rule>
+</policy>

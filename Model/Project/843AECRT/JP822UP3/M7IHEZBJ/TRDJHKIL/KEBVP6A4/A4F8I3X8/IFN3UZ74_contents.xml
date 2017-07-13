@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?><policy>
+	<description>Find a matching unassociated object in the Identity Vault.</description>
+	<rule>
+		<description>veto out-of-scope events</description>
+		<comment>When scoping by container, events outside of the Active Directory containers defined in the above rule will not have a unmatched-src-dn operational property and will be vetoed. If you do not want to use container based scoping, this rule should be modified or removed.</comment>
+		<conditions>
+			<or>
+				<if-op-property name="attempt-to-match" op="not-available"/>
+				<if-op-property mode="nocase" name="attempt-to-match" op="equal">false</if-op-property>
+			</or>
+		</conditions>
+		<actions>
+			<do-veto/>
+		</actions>
+	</rule>
+	<rule>
+		<description>match users based on NT logon name</description>
+		<comment xml:space="preserve">Logon name policy: match object name from the Identity Vault to the NT logon name in Active Directory. Objects are matched anywhere in the destination hierarchy, not just the relative position in the hierarchy. This match is not performed if a matching object was found in a previous rule.</comment>
+		<conditions>
+			<and>
+				<if-class-name mode="case" op="equal">User</if-class-name>
+				<if-global-variable mode="case" name="LogonNameMap" op="equal">true</if-global-variable>
+			</and>
+		</conditions>
+		<actions>
+			<do-if>
+				<arg-conditions>
+					<and>
+						<if-global-variable mode="nocase" name="drv.pubPlacementType" op="equal">flat</if-global-variable>
+					</and>
+				</arg-conditions>
+				<arg-actions>
+					<do-find-matching-object scope="entry">
+						<arg-dn>
+							<token-global-variable name="idv.dit.data.users"/>
+							<token-text xml:space="preserve">\</token-text>
+							<token-attr name="CN"/>
+						</arg-dn>
+					</do-find-matching-object>
+				</arg-actions>
+				<arg-actions>
+					<do-find-matching-object scope="subtree">
+						<arg-dn>
+							<token-global-variable name="idv.dit.data.users"/>
+						</arg-dn>
+						<arg-match-attr name="CN"/>
+					</do-find-matching-object>
+				</arg-actions>
+			</do-if>
+		</actions>
+	</rule>
+	<rule>
+		<description>match users based on full name</description>
+		<comment xml:space="preserve">Full name policy: </comment>
+		<conditions>
+			<and>
+				<if-class-name mode="case" op="equal">User</if-class-name>
+				<if-global-variable mode="case" name="FullNameMap" op="equal">true</if-global-variable>
+			</and>
+		</conditions>
+		<actions>
+			<do-if>
+				<arg-conditions>
+					<and>
+						<if-global-variable mode="nocase" name="drv.pubPlacementType" op="equal">flat</if-global-variable>
+					</and>
+				</arg-conditions>
+				<arg-actions>
+					<do-find-matching-object scope="subordinates">
+						<arg-dn>
+							<token-global-variable name="idv.dit.data.users"/>
+						</arg-dn>
+						<arg-match-attr name="Full Name">
+							<arg-value type="string">
+								<token-src-name/>
+							</arg-value>
+						</arg-match-attr>
+					</do-find-matching-object>
+				</arg-actions>
+				<arg-actions>
+					<do-find-matching-object scope="subtree">
+						<arg-dn>
+							<token-global-variable name="idv.dit.data.users"/>
+							<token-text xml:space="preserve">\</token-text>
+							<token-parse-dn dest-dn-format="dest-dn" length="-2">
+								<token-op-property name="unmatched-src-dn"/>
+							</token-parse-dn>
+						</arg-dn>
+						<arg-match-attr name="Full Name">
+							<arg-value type="string">
+								<token-src-name/>
+							</arg-value>
+						</arg-match-attr>
+					</do-find-matching-object>
+				</arg-actions>
+			</do-if>
+		</actions>
+	</rule>
+	<rule>
+		<description>match everything else</description>
+		<comment xml:space="preserve">Match objects in Active Directory based on the object name and relative position in the hierarchy. This match is not performed if a matching object was found in a previous rule.</comment>
+		<conditions>
+			<and/>
+		</conditions>
+		<actions>
+			<do-if>
+				<arg-conditions>
+					<and>
+						<if-global-variable mode="nocase" name="drv.pubPlacementType" op="equal">flat</if-global-variable>
+					</and>
+				</arg-conditions>
+				<arg-actions>
+					<do-find-matching-object scope="entry">
+						<arg-dn>
+							<token-global-variable name="idv.dit.data.users"/>
+							<token-text xml:space="preserve">\</token-text>
+							<token-src-name/>
+						</arg-dn>
+					</do-find-matching-object>
+				</arg-actions>
+				<arg-actions>
+					<do-find-matching-object scope="entry">
+						<arg-dn>
+							<token-global-variable name="idv.dit.data.users"/>
+							<token-text xml:space="preserve">\</token-text>
+							<token-op-property name="unmatched-src-dn"/>
+						</arg-dn>
+					</do-find-matching-object>
+				</arg-actions>
+			</do-if>
+		</actions>
+	</rule>
+</policy>

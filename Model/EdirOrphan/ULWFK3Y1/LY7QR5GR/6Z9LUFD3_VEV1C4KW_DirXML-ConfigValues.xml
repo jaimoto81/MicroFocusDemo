@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?><configuration-values>
+	<definitions display-name="Replica Value">
+		<definition display-name="Synchronize the first or the last replica value?" name="replica-value" type="enum">
+			<description>Select whether to synchronize the first or last replica value of multi-valued attributes mapped to single-valued columns.</description>
+			<enum-choice display-name="first">first</enum-choice>
+			<enum-choice display-name="last">last</enum-choice>
+			<value>first</value>
+		</definition>
+	</definitions>
+</configuration-values>

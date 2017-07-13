@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?><configuration-values>
+	<definitions>
+		<header display-name="Database Details:"/>
+		<definition display-name="Select database Version:" name="jDatabase" type="enum">
+			<description>Select the appropriate database version.</description>
+			<enum-choice display-name="PostgreSQL 8">pgsql8</enum-choice>
+			<enum-choice display-name="PostgreSQL 9">pgsql9</enum-choice>
+			<value>pgsql9</value>
+		</definition>
+		<definition display-name="Synchronization model:" name="jSyncModel" type="enum">
+			<description>Select a Direct or Indirect synchronization model.  Direct synchronization uses views to synchronize directly to existing tables of arbitrary structure.  Indirect synchronization synchronizes to intermediate staging tables with a particular structure.</description>
+			<enum-choice display-name="Indirect">indirect</enum-choice>
+			<enum-choice display-name="Direct">direct</enum-choice>
+			<value>indirect</value>
+		</definition>
+		<definition display-name="Data flow:" name="jDataFlow" type="enum">
+			<description>Select the data flow that you desire. Bi-directional means that both the database and Identity Manager are authoritative sources of the data synchronized between them.  Database to Identity Manager means that the database is the authoritative source.  Identity Manager to database means that Identity Manager is the authoritative source.</description>
+			<enum-choice display-name="bi-directional">both</enum-choice>
+			<enum-choice display-name="Identity Manager to database (subscribe)">subscribe</enum-choice>
+			<enum-choice display-name="database to Identity Manager (publish)">publish</enum-choice>
+			<value>both</value>
+		</definition>
+	</definitions>
+</configuration-values>

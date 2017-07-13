@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?><configuration-values>
+	<definitions display-name="Password Synchronization">
+		<header display-name="Password GCVs"/>
+		<definition display-name="Application accepts passwords from IDM" name="enable-password-subscribe" type="boolean">
+			<description>If true, allows passwords to flow from the Identity Vault to the connected system.</description>
+			<value>true</value>
+		</definition>
+		<definition display-name="IDM accepts passwords from application" name="enable-password-publish" type="boolean">
+			<description>If true, allows passwords to flow from the connected system to the Identity Vault.</description>
+			<value>true</value>
+		</definition>
+		<definition display-name="Publish passwords to NDS password" name="publish-password-to-nds" type="boolean">
+			<description>Use the password from the connected system to set the non-reversible NDS password in eDirectory.</description>
+			<value>true</value>
+		</definition>
+		<definition display-name="Publish passwords to Distribution Password" name="publish-password-to-dp" type="boolean">
+			<description>Use the password from the connected system to set the NMAS Distribution Password used for Identity Manager password synchronization.</description>
+			<value>false</value>
+		</definition>
+		<definition display-name="Require password policy validation before publishing passwords" name="enforce-password-policy" type="boolean">
+			<description>If true, applies NMAS password policies during publish password operations. Password is not written to the data store if it does not comply.</description>
+			<value>true</value>
+		</definition>
+		<definition display-name="Reset user's external system password to the IDM password on failure" name="reset-external-password-on-failure" type="boolean">
+			<description>If true, on a publish Distribution Password failure, attempt to reset the password in the connected system using the Distribution Password from the Identity Vault.</description>
+			<value>true</value>
+		</definition>
+		<definition display-name="Notify the user of password synchronization failure via e-mail" name="notify-user-on-password-dist-failure" type="boolean">
+			<description/>
+			<value>true</value>
+		</definition>
+		<definition display-name="Connected System or Driver Name" name="ConnectedSystemName" type="string">
+			<description>The name of the connected system, application or Identity Manager driver. This value is used by the e-mail notification templates.</description>
+			<value xml:space="preserve">~drv.name~</value>
+		</definition>
+	</definitions>
+</configuration-values>

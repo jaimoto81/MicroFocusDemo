@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><ds-object ds-object-class="notfMergeTemplate" ds-object-name="Password Reset Fail_de" name="Password Reset Fail_de">
+	<ds-attributes>
+		<ds-attribute ds-attr-name="XmlData">
+			<ds-value>
+				<html xmlns:form="http://www.novell.com/dirxml/workflow/form">
+					<form:token-descriptions>
+						<form:token-description description="Vollständiger Name des Benutzers" item-name="UserFullName"/>
+						<form:token-description description="Vorname des Benutzers" item-name="UserGivenName"/>
+						<form:token-description description="Nachname des Benutzers" item-name="UserLastName"/>
+						<form:token-description description="Name der externen Anwendung" item-name="ConnectedSystemName"/>
+						<form:token-description description="Die Fehlerursache" item-name="FailureReason"/>
+					</form:token-descriptions>
+					<head>
+						<title>Fehler beim Zurücksetzen des Passworts</title>
+						<style>
+							<!-- body { font-family: Trebuchet MS } -->
+						</style>
+					</head>
+					<body BGCOLOR="#FFFFFF">
+						<p>Sehr geehrte(r) $UserFullName$,</p>
+						<p>Ihr Passwort konnte nicht in dem $ConnectedSystemName$-System zurückgesetzt werden. Die Fehlerursache finden Sie unten:</p>
+						<p>Ursache: $FailureReason$</p>
+						<p>Falls Sie noch Fragen haben,
+     wenden Sie sich an den Helpdesk unter (012) 345-6789 oder senden Sie eine Email
+     an <a href="mailto:help.desk@mycompany.com">
+     help.desk@mycompany.com </a>
+						</p>
+						<p> - Automatisierte Sicherheit</p>
+						<p>
+							<img ALT="Powered by Novell" SRC="cid:powered_by_novell.gif" height="29" width="80"/>
+						</p>
+					</body>
+				</html>
+			</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="notfMergeTemplateSubject">
+			<ds-value>Fehler beim Zurücksetzen des Passworts</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-installationdirective">
+			<ds-value>PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48aW5zdGFsbGF0aW9uLWRpcmVjdGl2ZT4KCTxwbGFjZW1lbnQgbG9jYXRpb249Im5vdGYtY29sbGVjdGlvbiIvPgoJPGRzLWF0dHJpYnV0ZXMvPgo8L2luc3RhbGxhdGlvbi1kaXJlY3RpdmU+</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-directivechecksum">
+			<ds-value>2483156663</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-packageassocguid">
+			<ds-value>7X6RCFWU_201007271209070331</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-packageguid">
+			<ds-value>FWSFLGUH_201007271204040551</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-contentchecksum">
+			<ds-value>963511883</ds-value>
+		</ds-attribute>
+	</ds-attributes>
+</ds-object>

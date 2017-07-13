@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?><configuration-values>
+	<definitions display-name="Synchronization">
+		<header display-name="xlfid(NOVLEDIRDCFG.idmresource.NOVLEDIRDCFGSynchronizationPrompts.gcv.header.SynchronizationSettings)Synchronization Settings"/>
+		<definition display-name="xlfid(NOVLEDIRDCFG.idmresource.NOVLEDIRDCFGSynchronizationPrompts.gcv.drv.publisher.placement.type)eDirectory Publisher Placement type" name="drv.publisher.placement.type" type="enum">
+			<description>xlfid(NOVLEDIRDCFG.idmresource.NOVLEDIRDCFGSynchronizationPrompts.gcv.dscr.drv.publisher.placement.type)Select how objects are placed in the remote eDirectory and the local Identity Vault.
+Mirrored:
+Mirrors the structure between the remote eDirectory and the local Identity Vault.
+
+Flat:
+All of the objects are placed in a single container.
+
+Department:
+Users are placed in containers named after the department.</description>
+			<value>mirrored</value>
+			<enum-choice display-name="xlfid(NOVLEDIRDCFG.idmresource.NOVLEDIRDCFGSynchronizationPrompts.gcv.choice.drv.publisher.placement.type.mirrored)mirrored">mirrored</enum-choice>
+			<enum-choice display-name="xlfid(NOVLEDIRDCFG.idmresource.NOVLEDIRDCFGSynchronizationPrompts.gcv.choice.drv.publisher.placement.type.flat)flat">flat</enum-choice>
+			<enum-choice display-name="xlfid(NOVLEDIRDCFG.idmresource.NOVLEDIRDCFGSynchronizationPrompts.gcv.choice.drv.publisher.placement.type.department)department">department</enum-choice>
+		</definition>
+		<definition display-name="xlfid(NOVLEDIRDCFG.idmresource.NOVLEDIRDCFGSynchronizationPrompts.gcv.drv.remote.dit.data.users)Remote Tree Base User Container" dn-space="application" dn-type="slash" mandatory="true" name="drv.remote.dit.data.users" type="dn">
+			<description>xlfid(NOVLEDIRDCFG.idmresource.NOVLEDIRDCFGSynchronizationPrompts.gcv.dscr.drv.remote.dit.data.users)Specify the (base) container in your remote eDirectory where the users reside.</description>
+			<value/>
+		</definition>
+		<definition display-name="xlfid(NOVLEDIRDCFG.idmresource.NOVLEDIRDCFGSynchronizationPrompts.gcv.drv.remote.dit.data.groups)Remote Tree Base Groups Container" dn-space="application" dn-type="slash" name="drv.remote.dit.data.groups" type="dn">
+			<description>xlfid(NOVLEDIRDCFG.idmresource.NOVLEDIRDCFGSynchronizationPrompts.gcv.dscr.drv.remote.dit.data.groups)Specify the (base) container in your remote eDirectory where the users reside.</description>
+			<value/>
+		</definition>
+	</definitions>
+</configuration-values>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?><policy>
+	<rule>
+		<description>Break if not a User</description>
+		<conditions>
+			<and>
+				<if-class-name mode="nocase" op="not-equal">User</if-class-name>
+			</and>
+		</conditions>
+		<actions>
+			<do-break/>
+		</actions>
+	</rule>
+	<rule>
+		<description>Veto if nspmDistributionPassword is not available</description>
+		<conditions>
+			<and/>
+		</conditions>
+		<actions>
+			<do-veto-if-op-attr-not-available name="nspmDistributionPassword"/>
+		</actions>
+	</rule>
+	<rule>
+		<description>Veto if Full Name is not available and Full Name Mapping is turned on</description>
+		<comment xml:space="preserve">When Full Name Mapping is turned on, the Full Name is used as the object name in Active Directory to resemble users created with MMC in Active Directory, </comment>
+		<conditions>
+			<and>
+				<if-global-variable mode="nocase" name="FullNameMap" op="equal">true</if-global-variable>
+			</and>
+		</conditions>
+		<actions>
+			<do-veto-if-op-attr-not-available name="Full Name"/>
+		</actions>
+	</rule>
+	<rule>
+		<description>Escape object name</description>
+		<conditions>
+			<or>
+				<if-global-variable name="UpnMap" op="equal">edir-name-auth</if-global-variable>
+				<if-global-variable mode="case" name="LogonNameMap" op="equal">true</if-global-variable>
+			</or>
+		</conditions>
+		<actions>
+			<do-set-local-variable name="object-name" scope="policy">
+				<arg-string>
+					<token-replace-all regex="[\x22\x5b\x5d\x3a\x3b\x7c\x3d\x2b\x2a\x3f\x3c\x3e\x2f\x5c\x2c]" replace-with="">
+						<token-src-name/>
+					</token-replace-all>
+				</arg-string>
+			</do-set-local-variable>
+		</actions>
+	</rule>
+	<rule>
+		<description>Map CN to Active Directory user logon name</description>
+		<comment xml:space="preserve">Windows logon name mapping: When userPrincipalName is configured to follow the eDirectory user name, set userPrincipalName to the eDirectory object name plus the name of the Active Directory domain. A reference to the userPrincipalName is stored in eDirectory in the DirXML-ADAliasName attribute.</comment>
+		<conditions>
+			<and>
+				<if-global-variable name="UpnMap" op="equal">edir-name-auth</if-global-variable>
+			</and>
+		</conditions>
+		<actions>
+			<do-set-dest-attr-value name="DirXML-ADAliasName">
+				<arg-value>
+					<token-local-variable name="object-name"/>
+					<token-text xml:space="preserve">@</token-text>
+					<token-global-variable name="drv.domain.dns.name"/>
+				</arg-value>
+			</do-set-dest-attr-value>
+			<do-add-src-attr-value class-name="User" name="Object Class">
+				<arg-value>
+					<token-text xml:space="preserve">DirXML-ApplicationAttrs</token-text>
+				</arg-value>
+			</do-add-src-attr-value>
+			<do-set-src-attr-value name="DirXML-ADAliasName">
+				<arg-value>
+					<token-local-variable name="object-name"/>
+					<token-text xml:space="preserve">@</token-text>
+					<token-global-variable name="drv.domain.dns.name"/>
+				</arg-value>
+			</do-set-src-attr-value>
+		</actions>
+	</rule>
+	<rule>
+		<description>Map CN to Active Directory user logon name (pre-Windows 2000)</description>
+		<comment xml:space="preserve">Logon name policy: Keep destination sAMAccountName in sync with source object name.</comment>
+		<conditions>
+			<and>
+				<if-global-variable mode="case" name="LogonNameMap" op="equal">true</if-global-variable>
+			</and>
+		</conditions>
+		<actions>
+			<do-set-dest-attr-value name="CN">
+				<arg-value>
+					<token-substring length="20">
+						<token-local-variable name="object-name"/>
+					</token-substring>
+				</arg-value>
+			</do-set-dest-attr-value>
+		</actions>
+	</rule>
+	<rule>
+		<description>Identity Vault accounts are enabled if Login Disabled does not exist</description>
+		<conditions>
+			<and>
+				<if-op-attr name="Login Disabled" op="not-available"/>
+			</and>
+		</conditions>
+		<actions>
+			<do-set-dest-attr-value name="Login Disabled">
+				<arg-value type="string">
+					<token-text xml:space="preserve">false</token-text>
+				</arg-value>
+			</do-set-dest-attr-value>
+		</actions>
+	</rule>
+</policy>

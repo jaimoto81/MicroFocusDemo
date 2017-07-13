@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<item cn="cn=Resource Approval" filename="ResourceApproval.prd"
+    hasContainment="false" modstamp="1499820862498" protected="true"
+    readonly="true" type="srvprvRequest"
+        visible="true">
+    <guid>PM3XVO62</guid>
+    <display
+        xml:lang="de">Genehmigung der Ressourcenzuweisung/-zurücknahme</display>
+    <display
+        xml:lang="ru">Утверждение назначения/аннулирования ресурса</display>
+    <display
+        xml:lang="sv">Godkännande av resurstilldelning/-återkallelse</display>
+    <display
+        xml:lang="pt">Aprovação de Atribuição/Revogação de Recurso</display>
+    <display
+        xml:lang="zh-TW">資源指定/撤銷核准</display>
+    <display
+        xml:lang="en">Resource Assignment/Revocation Approval</display>
+    <display
+        xml:lang="it">Approvazione assegnazione/revoca risorsa</display>
+    <display
+        xml:lang="fr">Approbation de l'assignation/la révocation de ressource</display>
+    <display
+        xml:lang="zh-CN">资源指派/撤消批准</display>
+    <display
+        xml:lang="es">Aprobación de asignación o revocación de recurso</display>
+    <display
+        xml:lang="ja">リソース割り当て/取り消しの承認</display>
+    <display
+        xml:lang="da">Godkendelse af ressourcetildeling/tilbagekaldelse</display>
+    <display
+        xml:lang="nl">Definitie goedkeuring resourcetoewijzing/-intrekking</display>
+    <descr
+        xml:lang="de">Genehmigung der Ressourcenzuweisung/-zurücknahme</descr>
+    <descr
+        xml:lang="ru">Утверждение назначения/аннулирования ресурса</descr>
+    <descr
+        xml:lang="sv">Godkännande av resurstilldelning/-återkallelse</descr>
+    <descr
+        xml:lang="pt">Aprovação de Atribuição/Revogação de Recurso</descr>
+    <descr
+        xml:lang="zh-TW">資源指定/撤銷核准</descr>
+    <descr
+        xml:lang="en">Resource Assignment/Revocation Approval</descr>
+    <descr
+        xml:lang="it">Approvazione assegnazione/revoca risorsa</descr>
+    <descr
+        xml:lang="fr">Approbation de l'assignation/la révocation de ressource</descr>
+    <descr
+        xml:lang="zh-CN">资源指派/撤消批准</descr>
+    <descr
+        xml:lang="es">Aprobación de asignación o revocación de recurso</descr>
+    <descr
+        xml:lang="ja">リソース割り当て/取り消しの承認</descr>
+    <descr
+        xml:lang="da">Godkendelse af ressourcetildeling/tilbagekaldelse</descr>
+    <descr xml:lang="nl">Definitie goedkeuring resourcetoewijzing/-intrekking</descr>
+    <keys>
+        <key>nrf</key>
+    </keys>
+    <package-id>B5PAGQ5E_201005261601510810</package-id>
+    <pkg-assoc-id>CIQWV68V_201112271032220875</pkg-assoc-id>
+    <pkg-checksum>1113053448</pkg-checksum></item>

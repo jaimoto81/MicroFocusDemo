@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?><html xmlns:form="http://www.novell.com/dirxml/workflow/form">
+	<form:token-descriptions>
+		<form:token-description description="Brugerens fulde navn" item-name="UserFullName"/>
+		<form:token-description description="Brugerens fornavn" item-name="UserGivenName"/>
+		<form:token-description description="Brugerens efternavn" item-name="UserLastName"/>
+		<form:token-description description="Navn på det eksterne program" item-name="ConnectedSystemName"/>
+		<form:token-description description="Årsagen til fejlen" item-name="FailureReason"/>
+	</form:token-descriptions>
+	<head>
+		<title>Besked om fejl ved synkronisering af adgangskode</title>
+		<style>
+			<!-- body { font-family: Trebuchet MS } -->
+		</style>
+	</head>
+	<body BGCOLOR="#FFFFFF">
+		<p>Kære $UserFullName$,</p>
+		<p>Dette er en besked om, at dinadgangskode fra$ConnectedSystemName$ ikke kunne synkroniseres med andre tilsluttede systemer. Årsagen til fejlen angives nedenfor:</p>
+		<p>Årsag: $FailureReason$</p>
+		<p>Hvis du har yderligere spørgsmål, er du velkommen til at kontakte helpdesk på (012)
+     345-6789 eller via e-mail på <a href="mailto:help.desk@mycompany.com">
+     help.desk@mycompany.com </a>
+		</p>
+		<p> - Automatisk sikkerhed</p>
+		<p>
+			<img ALT="Styret af Novell" SRC="cid:powered_by_novell.gif" height="29" width="80"/>
+		</p>
+	</body>
+</html>

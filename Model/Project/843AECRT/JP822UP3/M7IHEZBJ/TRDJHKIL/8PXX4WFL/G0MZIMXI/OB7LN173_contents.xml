@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?><configuration-values>
+	<definitions>
+		<header display-name="Important Note:"/>
+		<header display-name="Designer 4.5 has a fix to address a weighting problem where policies that were"/>
+		<header display-name="assigned with similar weights could be deployed in the wrong order."/>
+		<header display-name="Please upgrade to Designer 4.5 and perform a 'Migrate Linkages' on the package catalog. "/>
+		<header display-name="Once this completes do a compare to your deployed driver in order to verify"/>
+		<header display-name="if there will be a change in the policy order."/>
+		<header display-name="This version of AD Entitlement and Exchange Mailbox Package requires:"/>
+		<header display-name="* Identity Manager 4.5.1(or later)"/>
+		<header display-name="* Designer version 4.0.2 Auto Update 3 (or later) or Designer version 4.5"/>
+		<header display-name="Fields marked as * are mandatory  "/>
+	</definitions>
+</configuration-values>

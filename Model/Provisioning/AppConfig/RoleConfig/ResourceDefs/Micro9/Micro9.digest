@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<container cn="cn=Micro9" protected="false" readonly="false"
+    sub-container="true" type="nrfResourceDefs-Micro9" visible="true">
+    <guid>14W3Y2NT</guid>
+    <modstamp>0</modstamp></container>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.novell.designer.model:CObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:com.novell.designer.model="http://com.novell.designer.model" name="Policies">
+  <attributes xsi:type="com.novell.designer.model:CInteger" attrName="Idm:FolderId" value="1"/>
+  <relations name="Idm:Policies" type="Child" key="#G58TBOSX.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#7TV7Z6JS.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#6UA2DSOU.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#259MBWT0.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#QL2NLNNK.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#6Q6YLZNM.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#LJOTD47Z.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#TGMEEJFQ.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#7OVJ90QL.MappingPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#QF2BYHJC.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#YKFJE06P.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#U0Y6U56G.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#01P1N42L.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#IFN3UZ74.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#SAC2JHHO.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#2LTVFGJW.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#T8RHOCLU.StylesheetPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#3ZG6DGLS.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#GS3000DA.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#1OFLHD5T.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#9U432YZN.ScriptPolicy_"/>
+</com.novell.designer.model:CObject>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?><xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+	<!-- Publisher command policy -->
+	<!-- filter out add-attr or modify-attr when any sibling has namespace=99 -->
+	<xsl:template match="add-attr[@attr-name='nadLoginName'][../add-attr[@attr-name='nadLoginName']/value/component[@name='nameSpace']/text()='99']"/>
+	<xsl:template match="modify-attr[@attr-name='nadLoginName'][../modify-attr[@attr-name='nadLoginName']/add-value/value/component[@name='nameSpace']/text()='99']"/>
+	<!-- identity transformation -->
+	<xsl:template match="@*|node()">
+		<xsl:copy>
+			<xsl:apply-templates select="@*|node()"/>
+		</xsl:copy>
+	</xsl:template>
+</xsl:stylesheet>

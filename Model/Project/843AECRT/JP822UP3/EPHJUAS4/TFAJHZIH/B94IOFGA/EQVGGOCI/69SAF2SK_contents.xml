@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><filter>
+	<filter-class class-name="User" publisher="ignore" subscriber="sync">
+		<filter-attr attr-name="Facsimile Telephone Number" publisher="ignore" subscriber="sync"/>
+		<filter-attr attr-name="Given Name" publisher="ignore" subscriber="sync"/>
+		<filter-attr attr-name="jpegPhoto" publisher="ignore" subscriber="sync"/>
+		<filter-attr attr-name="Login Disabled" publisher="ignore" subscriber="sync"/>
+		<filter-attr attr-name="Password Expiration Time" publisher="ignore" subscriber="sync"/>
+		<filter-attr attr-name="Password Minimum Length" publisher="ignore" subscriber="sync"/>
+		<filter-attr attr-name="Surname" publisher="ignore" subscriber="sync"/>
+		<filter-attr attr-name="Telephone Number" publisher="ignore" subscriber="sync"/>
+		<filter-attr attr-name="manager" publisher="ignore" subscriber="sync"/>
+		<filter-attr attr-name="Group Membership" publisher="ignore" subscriber="sync"/>
+		<filter-attr attr-name="nspmDistributionPassword" merge-authority="none" publisher="ignore" publisher-optimize-modify="false" subscriber="notify"/>
+	</filter-class>
+	<filter-class class-name="Group" publisher="ignore" subscriber="sync">
+		<filter-attr attr-name="Member" publisher="ignore" subscriber="sync"/>
+		<filter-attr attr-name="Owner" publisher="ignore" subscriber="sync"/>
+	</filter-class>
+</filter>

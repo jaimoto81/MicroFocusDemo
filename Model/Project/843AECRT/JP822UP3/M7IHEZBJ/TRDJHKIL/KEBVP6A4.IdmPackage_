@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.novell.designer.model:CObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:com.novell.designer.model="http://com.novell.designer.model" name="Active Directory Default Configuration">
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="license"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="change" extension="log"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="readme" extension="txt"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="fr" extension="properties"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="ja" extension="properties"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="zh_TW" extension="properties"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="zh_CN" extension="properties"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="de" extension="properties"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="en" extension="properties"/>
+  <attributes xsi:type="com.novell.designer.model:CBoolean" attrName="Idm:PackageImported" value="true"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:PackageGuid" value="5DRKWAWH_201009040020200702"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:PackageVersion" value="2.5.0.20150416143523"/>
+  <attributes xsi:type="com.novell.designer.model:CInteger" attrName="Idm:PackageType" value="2"/>
+  <attributes xsi:type="com.novell.designer.model:CBoolean" attrName="Idm:BasePackage" value="false"/>
+  <attributes xsi:type="com.novell.designer.model:CBoolean" attrName="Idm:Released" value="true"/>
+  <attributes xsi:type="com.novell.designer.model:CLong" attrName="Idm:ContentChecksum" value="1252024222"/>
+  <attributes xsi:type="com.novell.designer.model:CLong" attrName="Idm:DirectiveChecksum" value="3080017611"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:description" value="Active Directory driver base configuration."/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:shortName" value="NOVLADDCFG"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:BuildTime" value="20150416143523"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:BuildHost" value="BLR-L-KPANKAJ"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:BuildUser" value="KPankaj"/>
+  <attributes xsi:type="com.novell.designer.model:CBoolean" attrName="Idm:Protected" value="false"/>
+  <attributes xsi:type="com.novell.designer.model:CBoolean" attrName="Idm:newVersion" value="true"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:CreationTime" value="201504161434440823"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:vendorName" value="NetIQ Corporation"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:minIdmVersion" value="4.0.0"/>
+  <attributes xsi:type="com.novell.designer.model:CLong" attrName="Idm:InternalVersion" value="33"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:InstallationDirective" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&lt;installation-directive>&#xA;&#x9;&lt;packages/>&#xA;&#x9;&lt;features>&#xA;&#x9;&#x9;&lt;mandatory/>&#xA;&#x9;&#x9;&lt;optional>&#xA;&#x9;&#x9;&#x9;&lt;group display-name=&quot;Entitlements and Exchange Mailbox Support&quot; expanded=&quot;false&quot;>&#xA;&#x9;&#x9;&#x9;&#x9;&lt;package id=&quot;PJP89Z9R_201003031352370466&quot; name=&quot;Active Directory Entitlements and Exchange Mailbox Support&quot; selected=&quot;true&quot;/>&#xA;&#x9;&#x9;&#x9;&#x9;&lt;package id=&quot;DETECXTK_201004161538110582&quot; name=&quot;Audit Entitlements Common&quot; selected=&quot;true&quot;/>&#xA;&#x9;&#x9;&#x9;&#x9;&lt;package id=&quot;YMO9C1Y3_201006291302430386&quot; name=&quot;Active Directory Audit Entitlements&quot; selected=&quot;true&quot;/>&#xA;&#x9;&#x9;&#x9;&lt;/group>&#xA;&#x9;&#x9;&#x9;&lt;group display-name=&quot;Password Synchronization&quot; expanded=&quot;false&quot;>&#xA;&#x9;&#x9;&#x9;&#x9;&lt;package id=&quot;XTEF1YO3_201006231733410161&quot; name=&quot;Password Synchronization Common&quot; selected=&quot;true&quot;/>&#xA;&#x9;&#x9;&#x9;&#x9;&lt;package id=&quot;4EHOWL6T_201006291417220804&quot; name=&quot;Active Directory Password Synchronization&quot; selected=&quot;true&quot;/>&#xA;&#x9;&#x9;&#x9;&lt;/group>&#xA;&#x9;&#x9;&#x9;&lt;group display-name=&quot;Data Collection&quot; expanded=&quot;false&quot;>&#xA;&#x9;&#x9;&#x9;&#x9;&lt;package id=&quot;IJLG31AY_201006141353520247&quot; name=&quot;Managed System Information for AD&quot; selected=&quot;true&quot;/>&#xA;&#x9;&#x9;&#x9;&#x9;&lt;package id=&quot;S3NVESCX_201005251632080655&quot; name=&quot;Generic Data Collection Query Support&quot; selected=&quot;true&quot;/>&#xA;&#x9;&#x9;&#x9;&lt;/group>&#xA;&#x9;&#x9;&#x9;&lt;group display-name=&quot;Account Tracking&quot; expanded=&quot;false&quot;>&#xA;&#x9;&#x9;&#x9;&#x9;&lt;package id=&quot;WUHJYFNL_201003011427170743&quot; name=&quot;Account Tracking Common&quot; selected=&quot;true&quot;/>&#xA;&#x9;&#x9;&#x9;&#x9;&lt;package id=&quot;MMXLVRGT_201003011554580470&quot; name=&quot;Active Directory Account Tracking&quot; selected=&quot;true&quot;/>&#xA;&#x9;&#x9;&#x9;&lt;/group>&#xA;&#x9;&#x9;&lt;/optional>&#xA;&#x9;&lt;/features>&#xA;&#x9;&lt;dependencies>&#xA;&#x9;&#x9;&lt;dependency name=&quot;Common Settings&quot; package-id=&quot;4YGKJX0U_201006021536040516&quot; type=&quot;3&quot;/>&#xA;&#x9;&lt;/dependencies>&#xA;&#x9;&lt;ds-attributes/>&#xA;&#x9;&lt;policy-linkage/>&#xA;&#x9;&lt;supported-drivers>&#xA;&#x9;&#x9;&lt;definition display-name=&quot;Driver for Active Directory&quot; driver-id=&quot;AD-Driver&quot; id=&quot;AD&quot;/>&#xA;&#x9;&lt;/supported-drivers>&#xA;&lt;/installation-directive>"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#A4F8I3X8.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#SQ70VECC.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#YT3WC81U.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#MZFGEOI0.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#M7VRTILF.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#TQJVQGHA.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#9JFFH6MW.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#ZMCPCPZB.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#XU6V6HJL.IdmPackageFolder_"/>
+</com.novell.designer.model:CObject>

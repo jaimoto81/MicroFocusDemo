@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?><configuration-values>
+	<definitions display-name="Account Tracking">
+		<header display-name="xlfid(NOVLJDBCATRK.idmresource.NOVLJDBCATRKGCVsPrompt.gcv.header.AccountTracking)Account Tracking"/>
+		<definition display-name="xlfid(NOVLJDBCATRK.idmresource.NOVLJDBCATRKGCVsPrompt.gcv.jDatabase)Connected Database" name="jDatabase" type="enum">
+			<description>xlfid(NOVLJDBCATRK.idmresource.NOVLJDBCATRKGCVsPrompt.gcv.dscr.jDatabase)Select the connected database.</description>
+			<enum-choice display-name="xlfid(NOVLJDBCATRK.idmresource.NOVLJDBCATRKGCVsPrompt.gcv.choice.jDatabase.MySQL)MySQL">mysql</enum-choice>
+			<enum-choice display-name="xlfid(NOVLJDBCATRK.idmresource.NOVLJDBCATRKGCVsPrompt.gcv.choice.jDatabase.Oracle)Oracle">oracle</enum-choice>
+			<enum-choice display-name="xlfid(NOVLJDBCATRK.idmresource.NOVLJDBCATRKGCVsPrompt.gcv.choice.jDatabase.PostgreSQL)PostgreSQL">postgres</enum-choice>
+			<enum-choice display-name="xlfid(NOVLJDBCATRK.idmresource.NOVLJDBCATRKGCVsPrompt.gcv.choice.jDatabase.SQLServer)SQLServer">mssql</enum-choice>
+			<enum-choice display-name="xlfid(NOVLJDBCATRK.idmresource.NOVLJDBCATRKGCVsPrompt.gcv.choice.jDatabase.Sybase)Sybase">sybase</enum-choice>
+			<enum-choice display-name="xlfid(NOVLJDBCATRK.idmresource.NOVLJDBCATRKGCVsPrompt.gcv.choice.jDatabase.Informix)Informix">informix</enum-choice>
+			<enum-choice display-name="xlfid(NOVLJDBCATRK.idmresource.NOVLJDBCATRKGCVsPrompt.gcv.choice.jDatabase.DB2)DB2">db2</enum-choice>
+			<value>oracle</value>
+		</definition>
+		<group>
+			<definition display-name="xlfid(NOVLJDBCATRK.idmresource.NOVLJDBCATRKGCVsPrompt.gcv.jSyncMode)Synchronization Model" name="jSyncMode" type="enum">
+				<description>xlfid(NOVLJDBCATRK.idmresource.NOVLJDBCATRKGCVsPrompt.gcv.dscr.jSyncMode)Select the mode of synchronization.</description>
+				<enum-choice display-name="xlfid(NOVLJDBCATRK.idmresource.NOVLJDBCATRKGCVsPrompt.gcv.choice.jSyncMode.Indirect)Indirect">indirect</enum-choice>
+				<enum-choice display-name="xlfid(NOVLJDBCATRK.idmresource.NOVLJDBCATRKGCVsPrompt.gcv.choice.jSyncMode.Direct)Direct">direct</enum-choice>
+				<value>indirect</value>
+			</definition>
+			<subordinates active-value="indirect">
+				<definition display-name="xlfid(NOVLJDBCATRK.idmresource.NOVLJDBCATRKGCVsPrompt.gcv.drv.acctTrk.objectClass0)Object Class" name="drv.acctTrk.objectClass0" type="string">
+					<description>xlfid(NOVLJDBCATRK.idmresource.NOVLJDBCATRKGCVsPrompt.gcv.dscr.drv.acctTrk.objectClass0)Add the object classes to track. Class names must be in the application namespace.</description>
+					<value>usr</value>
+				</definition>
+			</subordinates>
+			<subordinates active-value="direct">
+				<definition display-name="xlfid(NOVLJDBCATRK.idmresource.NOVLJDBCATRKGCVsPrompt.gcv.drv.acctTrk.objectClass1)Object Class" name="drv.acctTrk.objectClass1" type="string">
+					<description>xlfid(NOVLJDBCATRK.idmresource.NOVLJDBCATRKGCVsPrompt.gcv.dscr.drv.acctTrk.objectClass1)Add the object classes to track. Class names must be in the application namespace.</description>
+					<value>view_usr</value>
+				</definition>
+			</subordinates>
+		</group>
+		<group>
+			<definition display-name="xlfid(NOVLJDBCATRK.idmresource.NOVLJDBCATRKGCVsPrompt.gcv.drv.acctTrk.mode)Mode Of Operation" hide="true" name="drv.acctTrk.mode" type="enum">
+				<description>xlfid(NOVLJDBCATRK.idmresource.NOVLJDBCATRKGCVsPrompt.gcv.dscr.drv.acctTrk.mode)Select whether this driver runs in standard (one-to-one) or in fanout (one-to-many) mode.</description>
+				<enum-choice display-name="xlfid(NOVLJDBCATRK.idmresource.NOVLJDBCATRKGCVsPrompt.gcv.choice.drv.acctTrk.mode.One-to-onestandard)One-to-one (standard)">121</enum-choice>
+				<enum-choice display-name="xlfid(NOVLJDBCATRK.idmresource.NOVLJDBCATRKGCVsPrompt.gcv.choice.drv.acctTrk.mode.Fanout)Fanout">fanout</enum-choice>
+				<value>121</value>
+			</definition>
+			<subordinates active-value="121">
+				<definition display-name="xlfid(NOVLJDBCATRK.idmresource.NOVLJDBCATRKGCVsPrompt.gcv.drv.acctTrk.realm)Realm" name="drv.acctTrk.realm" type="string">
+					<description>xlfid(NOVLJDBCATRK.idmresource.NOVLJDBCATRKGCVsPrompt.gcv.dscr.drv.acctTrk.realm)Name of Realm, Security Domain or Namespace in which the account name is unique in the connected database.</description>
+					<value/>
+				</definition>
+			</subordinates>
+			<subordinates active-value="fanout">
+				<definition display-name="xlfid(NOVLJDBCATRK.idmresource.NOVLJDBCATRKGCVsPrompt.gcv.drv.acctTrk.realmLookupKeySource)Realm Lookup-Key Source" name="drv.acctTrk.realmLookupKeySource" type="enum">
+					<description>xlfid(NOVLJDBCATRK.idmresource.NOVLJDBCATRKGCVsPrompt.gcv.dscr.drv.acctTrk.realmLookupKeySource)Specify the source of the key you want to use to lookup the realm.</description>
+					<enum-choice display-name="xlfid(NOVLJDBCATRK.idmresource.NOVLJDBCATRKGCVsPrompt.gcv.choice.drv.acctTrk.realmLookupKeySource.Association)Association">association</enum-choice>
+					<!-- <enum-choice display-name="Attribute">attribute</enum-choice> -->
+					<value>association</value>
+				</definition>
+				<definition display-name="xlfid(NOVLJDBCATRK.idmresource.NOVLJDBCATRKGCVsPrompt.gcv.drv.acctTrk.realmKeyExtractor)Realm Key Extractor" name="drv.acctTrk.realmKeyExtractor" type="string">
+					<description>xlfid(NOVLJDBCATRK.idmresource.NOVLJDBCATRKGCVsPrompt.gcv.dscr.drv.acctTrk.realmKeyExtractor)Specify a regular expression that extracts the key from the realm lookup key source.</description>
+					<value>.+</value>
+				</definition>
+				<group>
+					<definition display-name="xlfid(NOVLJDBCATRK.idmresource.NOVLJDBCATRKGCVsPrompt.gcv.drv.acctTrk.fanout.som.display)Show Subscriber Operation Mappings Configuration" name="drv.acctTrk.fanout.som.display" type="enum">
+						<enum-choice display-name="xlfid(NOVLJDBCATRK.idmresource.NOVLJDBCATRKGCVsPrompt.gcv.choice.drv.acctTrk.fanout.som.display.show)show">show</enum-choice>
+						<enum-choice display-name="xlfid(NOVLJDBCATRK.idmresource.NOVLJDBCATRKGCVsPrompt.gcv.choice.drv.acctTrk.fanout.som.display.hide)hide">hide</enum-choice>
+						<value>hide</value>
+					</definition>
+					<subordinates active-value="show">
+						<definition display-name="xlfid(NOVLJDBCATRK.idmresource.NOVLJDBCATRKGCVsPrompt.gcv.drv.acctTrk.fanout.som.repWaitTime)Replication Wait Time (in seconds)" name="drv.acctTrk.fanout.som.repWaitTime" range-hi="300" range-lo="0" type="integer">
+							<description>xlfid(NOVLJDBCATRK.idmresource.NOVLJDBCATRKGCVsPrompt.gcv.dscr.drv.acctTrk.fanout.som.repWaitTime)Specify the number of seconds the driver waits before expecting the application to have completed replication.</description>
+							<value>0</value>
+						</definition>
+						<definition display-name="xlfid(NOVLJDBCATRK.idmresource.NOVLJDBCATRKGCVsPrompt.gcv.drv.acctTrk.fanout.som)Subscriber Operation Mappings" name="drv.acctTrk.fanout.som" type="structured">
+							<template>
+								<definition display-name="Operation" name="operation" type="enum">
+									<description>Select the operation triggered by this mapping.</description>
+									<enum-choice display-name="Add Account">add</enum-choice>
+									<enum-choice display-name="Delete Account">delete</enum-choice>
+									<enum-choice display-name="Enable Account">enable</enum-choice>
+									<enum-choice display-name="Disable Account">disable</enum-choice>
+									<value>add</value>
+								</definition>
+								<definition display-name="Trigger" name="trigger" type="string">
+									<description>Specify an XPath 1.0 expression that identifies the operation you want to map to.</description>
+									<value/>
+								</definition>
+								<definition display-name="Realm Lookup-Key Source" name="realmLookupKeySourceExtractor" type="string">
+									<description>Specify an XPath 1.0 expression that extracts the source of the key you want to use to lookup the realm.</description>
+									<value/>
+								</definition>
+								<definition display-name="Realm Key Extractor" name="realmKeyExtractor" type="string">
+									<description>Specify a regular expression that extracts the key from the realm lookup key source.</description>
+									<value>(.+)</value>
+								</definition>
+							</template>
+							<value/>
+						</definition>
+					</subordinates>
+				</group>
+			</subordinates>
+		</group>
+	</definitions>
+</configuration-values>

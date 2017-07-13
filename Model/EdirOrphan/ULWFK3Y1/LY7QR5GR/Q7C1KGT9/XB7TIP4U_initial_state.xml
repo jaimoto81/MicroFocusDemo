@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?><ds-object ds-object-class="DirXML-Rule" ds-object-name="NOVLPWDSYNC-pub-ctp-CheckPwdGCV" name="NOVLPWDSYNC-pub-ctp-CheckPwdGCV">
+	<ds-attributes>
+		<ds-attribute ds-attr-name="XmlData">
+			<ds-value>
+				<policy>
+					<description>Publish Passwords</description>
+					<rule>
+						<description>Block publishing passwords to the Identity Vault when adding an object</description>
+						<conditions>
+							<and>
+								<if-global-variable mode="nocase" name="enable-password-publish" op="equal">false</if-global-variable>
+								<if-operation op="equal">add</if-operation>
+							</and>
+						</conditions>
+						<actions>
+							<!-- Remove all password elements from add -->
+							<do-strip-xpath expression="password"/>
+						</actions>
+					</rule>
+					<rule>
+						<description>Block sending modify-password changes to the Identity Vault</description>
+						<conditions>
+							<and>
+								<if-global-variable mode="nocase" name="enable-password-publish" op="equal">false</if-global-variable>
+								<if-operation op="equal">modify-password</if-operation>
+							</and>
+						</conditions>
+						<actions>
+							<!-- Block all modify-passwords -->
+							<do-veto/>
+						</actions>
+					</rule>
+				</policy>
+			</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-installationdirective">
+			<ds-value>PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48aW5zdGFsbGF0aW9uLWRpcmVjdGl2ZT4KCTxwbGFjZW1lbnQgbG9jYXRpb249InB1Ymxpc2hlciIvPgoJPGRzLWF0dHJpYnV0ZXMvPgoJPHBvbGljeS1saW5rYWdlLz4KPC9pbnN0YWxsYXRpb24tZGlyZWN0aXZlPg==</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-directivechecksum">
+			<ds-value>1231282833</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-packageassocguid">
+			<ds-value>K51N08RF_201006231754340016</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-packageguid">
+			<ds-value>XTEF1YO3_201006231733410161</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-contentchecksum">
+			<ds-value>3079139558</ds-value>
+		</ds-attribute>
+	</ds-attributes>
+</ds-object>

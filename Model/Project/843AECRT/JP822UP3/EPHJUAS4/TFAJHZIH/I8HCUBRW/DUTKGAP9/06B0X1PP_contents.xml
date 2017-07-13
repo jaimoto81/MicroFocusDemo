@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?><entitlement conflict-resolution="priority" description="Group Entitlement." display-name="Group">
+	<values multi-valued="true">
+		<query-app>
+			<query-xml>
+				<nds dtdversion="2.0">
+					<input>
+						<query class-name="Group" scope="">
+							<search-class class-name="Group"/>
+							<read-attr attr-name="Description"/>
+							<read-attr attr-name="idg"/>
+						</query>
+					</input>
+				</nds>
+			</query-xml>
+			<result-set>
+				<display-name>
+					<token-attr attr-name="idg"/>
+				</display-name>
+				<description>
+					<token-attr attr-name="Description"/>
+				</description>
+				<ent-value>
+					<token-attr attr-name="idg"/>
+				</ent-value>
+			</result-set>
+		</query-app>
+	</values>
+</entitlement>

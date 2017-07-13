@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><html xmlns:form="http://www.novell.com/dirxml/workflow/form">
+	<form:token-descriptions>
+		<form:token-description description="Полное имя пользователя" item-name="UserFullName"/>
+		<form:token-description description="Имя пользователя" item-name="UserGivenName"/>
+		<form:token-description description="Фамилия пользователя" item-name="UserLastName"/>
+		<form:token-description description="Имя внешнего приложения" item-name="ConnectedSystemName"/>
+		<form:token-description description="Причина отказа" item-name="FailureReason"/>
+	</form:token-descriptions>
+	<head>
+		<title>Оповещение об отказе сброса пароля</title>
+		<style>
+			<!-- body { font-family: Trebuchet MS } -->
+		</style>
+	</head>
+	<body BGCOLOR="#FFFFFF">
+		<p>Уважаемый(ая) $UserFullName$.</p>
+		<p>Невозможно сбросить Ваш пароль в системе $ConnectedSystemName$. Причина отказа указана ниже.</p>
+		<p>Причина: $FailureReason$</p>
+		<p>Если у Вас есть вопросы,
+     обращайтесь в службу поддержки по т. (012) 345-6789 или
+     по почте <a href="mailto:help.desk@mycompany.com">
+     help.desk@mycompany.com </a>
+		</p>
+		<p> - Автоматическая система безопасности</p>
+		<p>
+			<img ALT="Под управлением Novell" SRC="cid:powered_by_novell.gif" height="29" width="80"/>
+		</p>
+	</body>
+</html>

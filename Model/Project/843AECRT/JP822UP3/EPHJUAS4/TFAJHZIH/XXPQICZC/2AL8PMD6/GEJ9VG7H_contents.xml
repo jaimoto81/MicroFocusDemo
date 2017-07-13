@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?><configuration-values>
+	<definitions>
+		<header display-name="xlfid(NOVLJDBCMNSI.idmresource.NTQJDBCMSISystemClassificationPrompts.gcv.header.SystemClassification)System Classification"/>
+		<group>
+			<definition display-name="xlfid(NOVLJDBCMNSI.idmresource.NTQJDBCMSISystemClassificationPrompts.gcv.msysinfo.drv.ms.classification)Classification" name="msysinfo.drv.ms.classification" type="enum">
+				<description>xlfid(NOVLJDBCMNSI.idmresource.NTQJDBCMSISystemClassificationPrompts.gcv.dscr.msysinfo.drv.ms.classification)Specify the classification of the managed system.</description>
+				<enum-choice display-name="xlfid(NOVLJDBCMNSI.idmresource.NTQJDBCMSISystemClassificationPrompts.gcv.choice.msysinfo.drv.ms.classification.Mission-Critical)Mission-Critical">Mission-Critical</enum-choice>
+				<enum-choice display-name="xlfid(NOVLJDBCMNSI.idmresource.NTQJDBCMSISystemClassificationPrompts.gcv.choice.msysinfo.drv.ms.classification.Vital)Vital">Vital</enum-choice>
+				<enum-choice display-name="xlfid(NOVLJDBCMNSI.idmresource.NTQJDBCMSISystemClassificationPrompts.gcv.choice.msysinfo.drv.ms.classification.Not-Critical)Not-Critical">Not-Critical</enum-choice>
+				<enum-choice display-name="xlfid(NOVLJDBCMNSI.idmresource.NTQJDBCMSISystemClassificationPrompts.gcv.choice.msysinfo.drv.ms.classification.Other)Other">other</enum-choice>
+				<value>Vital</value>
+			</definition>
+			<subordinates active-value="other">
+				<definition display-name="xlfid(NOVLJDBCMNSI.idmresource.NTQJDBCMSISystemClassificationPrompts.gcv.msysinfo.drv.ms.classification.other)Custom Classification" name="msysinfo.drv.ms.classification.other" type="string">
+					<description>xlfid(NOVLJDBCMNSI.idmresource.NTQJDBCMSISystemClassificationPrompts.gcv.dscr.msysinfo.drv.ms.classification.other)Specify a custom classification for the managed system.</description>
+					<value/>
+				</definition>
+			</subordinates>
+		</group>
+		<group>
+			<definition display-name="xlfid(NOVLJDBCMNSI.idmresource.NTQJDBCMSISystemClassificationPrompts.gcv.msysinfo.drv.ms.environment)Environment" name="msysinfo.drv.ms.environment" type="enum">
+				<description>xlfid(NOVLJDBCMNSI.idmresource.NTQJDBCMSISystemClassificationPrompts.gcv.dscr.msysinfo.drv.ms.environment)Specify the type of environment the managed system provides.</description>
+				<enum-choice display-name="xlfid(NOVLJDBCMNSI.idmresource.NTQJDBCMSISystemClassificationPrompts.gcv.choice.msysinfo.drv.ms.environment.Development)Development">Development</enum-choice>
+				<enum-choice display-name="xlfid(NOVLJDBCMNSI.idmresource.NTQJDBCMSISystemClassificationPrompts.gcv.choice.msysinfo.drv.ms.environment.Test)Test">Test</enum-choice>
+				<enum-choice display-name="xlfid(NOVLJDBCMNSI.idmresource.NTQJDBCMSISystemClassificationPrompts.gcv.choice.msysinfo.drv.ms.environment.Staging)Staging">Staging</enum-choice>
+				<enum-choice display-name="xlfid(NOVLJDBCMNSI.idmresource.NTQJDBCMSISystemClassificationPrompts.gcv.choice.msysinfo.drv.ms.environment.Production)Production">Production</enum-choice>
+				<enum-choice display-name="xlfid(NOVLJDBCMNSI.idmresource.NTQJDBCMSISystemClassificationPrompts.gcv.choice.msysinfo.drv.ms.environment.Other)Other">other</enum-choice>
+				<value>Production</value>
+			</definition>
+			<subordinates active-value="other">
+				<definition display-name="xlfid(NOVLJDBCMNSI.idmresource.NTQJDBCMSISystemClassificationPrompts.gcv.msysinfo.drv.ms.environment.other)Custom Type Of Environment" name="msysinfo.drv.ms.environment.other" type="string">
+					<description>xlfid(NOVLJDBCMNSI.idmresource.NTQJDBCMSISystemClassificationPrompts.gcv.dscr.msysinfo.drv.ms.environment.other)Specify a custom type of environment the managed system provides.</description>
+					<value/>
+				</definition>
+			</subordinates>
+		</group>
+	</definitions>
+</configuration-values>

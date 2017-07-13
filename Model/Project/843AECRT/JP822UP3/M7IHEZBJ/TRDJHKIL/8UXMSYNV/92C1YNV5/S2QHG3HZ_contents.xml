@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?><configuration-values>
+	<definitions>
+		<header display-name="Account Tracking"/>
+		<definition display-name="Realm" mandatory="true" name="drv.acctTrk.realm" type="string">
+			<?referencePrompt name="drv.domain.dns.name"?>
+			<description>Name of Realm, the realm must be set to the Active Directory domain DNS name(e.g. yourcompany.com)</description>
+			<value/>
+		</definition>
+	</definitions>
+</configuration-values>

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?><attr-name-map>
+	<attr-name>
+		<nds-name>CN</nds-name>
+		<app-name>cn</app-name>
+	</attr-name>
+	<attr-name>
+		<nds-name>Description</nds-name>
+		<app-name>description</app-name>
+	</attr-name>
+	<attr-name>
+		<nds-name>DirXML-EntitlementRef</nds-name>
+		<app-name>DirXML-EntitlementRef</app-name>
+	</attr-name>
+	<attr-name>
+		<nds-name>DirXML-EntitlementResult</nds-name>
+		<app-name>DirXML-EntitlementResult</app-name>
+	</attr-name>
+	<attr-name>
+		<nds-name>DirXML-SPEntitlements</nds-name>
+		<app-name>DirXML-SPEntitlements</app-name>
+	</attr-name>
+	<attr-name>
+		<nds-name>Facsimile Telephone Number</nds-name>
+		<app-name>facsimileTelephoneNumber</app-name>
+	</attr-name>
+	<attr-name>
+		<nds-name>Full Name</nds-name>
+		<app-name>displayName</app-name>
+	</attr-name>
+	<attr-name>
+		<nds-name>Given Name</nds-name>
+		<app-name>givenName</app-name>
+	</attr-name>
+	<attr-name>
+		<nds-name>Group Membership</nds-name>
+		<app-name>memberOf</app-name>
+	</attr-name>
+	<attr-name>
+		<nds-name>Initials</nds-name>
+		<app-name>initials</app-name>
+	</attr-name>
+	<attr-name>
+		<nds-name>Internet EMail Address</nds-name>
+		<app-name>mail</app-name>
+	</attr-name>
+	<attr-name>
+		<nds-name>Login Allowed Time Map</nds-name>
+		<app-name>logonHours</app-name>
+	</attr-name>
+	<attr-name>
+		<nds-name>Login Disabled</nds-name>
+		<app-name>dirxml-uACAccountDisable</app-name>
+	</attr-name>
+	<attr-name>
+		<nds-name>Login Expiration Time</nds-name>
+		<app-name>accountExpires</app-name>
+	</attr-name>
+	<attr-name>
+		<nds-name>Login Intruder Reset Time</nds-name>
+		<app-name>lockoutTime</app-name>
+	</attr-name>
+	<attr-name>
+		<nds-name>Member</nds-name>
+		<app-name>member</app-name>
+	</attr-name>
+	<attr-name>
+		<nds-name>OU</nds-name>
+		<app-name>ou</app-name>
+	</attr-name>
+	<attr-name>
+		<nds-name>Owner</nds-name>
+		<app-name>managedBy</app-name>
+	</attr-name>
+	<attr-name>
+		<nds-name>Postal Code</nds-name>
+		<app-name>postalCode</app-name>
+	</attr-name>
+	<attr-name>
+		<nds-name>Postal Office Box</nds-name>
+		<app-name>postOfficeBox</app-name>
+	</attr-name>
+	<attr-name>
+		<nds-name>S</nds-name>
+		<app-name>st</app-name>
+	</attr-name>
+	<attr-name>
+		<nds-name>SA</nds-name>
+		<app-name>streetAddress</app-name>
+	</attr-name>
+	<attr-name>
+		<nds-name>See Also</nds-name>
+		<app-name>seeAlso</app-name>
+	</attr-name>
+	<attr-name>
+		<nds-name>Surname</nds-name>
+		<app-name>sn</app-name>
+	</attr-name>
+	<attr-name>
+		<nds-name>Telephone Number</nds-name>
+		<app-name>telephoneNumber</app-name>
+	</attr-name>
+	<attr-name>
+		<nds-name>Title</nds-name>
+		<app-name>title</app-name>
+	</attr-name>
+	<class-name>
+		<nds-name>Group</nds-name>
+		<app-name>group</app-name>
+	</class-name>
+	<attr-name class-name="Group">
+		<nds-name>DirXML-ADAliasName</nds-name>
+		<app-name>sAMAccountName</app-name>
+	</attr-name>
+	<class-name>
+		<nds-name>Locality</nds-name>
+		<app-name>locality</app-name>
+	</class-name>
+	<class-name>
+		<nds-name>Organization</nds-name>
+		<app-name>organization</app-name>
+	</class-name>
+	<attr-name class-name="Organization">
+		<nds-name>L</nds-name>
+		<app-name>physicalDeliveryOfficeName</app-name>
+	</attr-name>
+	<attr-name class-name="Organization">
+		<nds-name>Physical Delivery Office Name</nds-name>
+		<app-name>l</app-name>
+	</attr-name>
+	<class-name>
+		<nds-name>Organizational Unit</nds-name>
+		<app-name>organizationalUnit</app-name>
+	</class-name>
+	<attr-name class-name="Organizational Unit">
+		<nds-name>L</nds-name>
+		<app-name>physicalDeliveryOfficeName</app-name>
+	</attr-name>
+	<attr-name class-name="Organizational Unit">
+		<nds-name>Physical Delivery Office Name</nds-name>
+		<app-name>l</app-name>
+	</attr-name>
+	<class-name>
+		<nds-name>User</nds-name>
+		<app-name>user</app-name>
+	</class-name>
+	<attr-name class-name="User">
+		<nds-name>CN</nds-name>
+		<app-name>sAMAccountName</app-name>
+	</attr-name>
+	<attr-name class-name="User">
+		<nds-name>DirXML-ADAliasName</nds-name>
+		<app-name>userPrincipalName</app-name>
+	</attr-name>
+	<attr-name class-name="User">
+		<nds-name>L</nds-name>
+		<app-name>physicalDeliveryOfficeName</app-name>
+	</attr-name>
+	<attr-name class-name="User">
+		<nds-name>nspmDistributionPassword</nds-name>
+		<app-name>nspmDistributionPassword</app-name>
+	</attr-name>
+	<attr-name class-name="User">
+		<nds-name>Physical Delivery Office Name</nds-name>
+		<app-name>l</app-name>
+	</attr-name>
+</attr-name-map>

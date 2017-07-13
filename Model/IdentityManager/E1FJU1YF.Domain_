@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.novell.designer.model:CObject xmlns:com.novell.designer.model="http://com.novell.designer.model" name="Modeler Workspace" type="Domain">
+  <relations name="Idm:DomainItems" type="Child" key="#V19T1CN7.IdentityVault_"/>
+  <relations name="Idm:DomainItems" type="Child" key="#CFCSFWOV.Application_"/>
+  <relations name="Idm:DomainItems" type="Child" key="#EJPULPX1.Application_"/>
+  <relations name="Idm:DomainItems" type="Child" key="#JVRTN8WT.Application_"/>
+</com.novell.designer.model:CObject>

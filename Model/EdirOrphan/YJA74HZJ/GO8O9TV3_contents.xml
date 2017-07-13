@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?><html xmlns:form="http://www.novell.com/dirxml/workflow/form">
+	<form:token-descriptions>
+		<form:token-description description="使用者的全名" item-name="UserFullName"/>
+		<form:token-description description="使用者的名" item-name="UserGivenName"/>
+		<form:token-description description="使用者的姓" item-name="UserLastName"/>
+		<form:token-description description="外部應用程式名稱" item-name="ConnectedSystemName"/>
+		<form:token-description description="失敗原因" item-name="FailureReason"/>
+	</form:token-descriptions>
+	<head>
+		<title>密碼設定失敗的通知</title>
+		<style>
+			<!-- body { font-family: Trebuchet MS } -->
+		</style>
+	</head>
+	<body BGCOLOR="#FFFFFF">
+		<p>尊敬的 $UserFullName$︰</p>
+		<p>這是一則關於您無法在 $ConnectedSystemName$ 系統中設定密碼的通知。失敗的原因如下︰</p>
+		<p>原因︰$FailureReason$</p>
+		<p>若有任何其他疑問，
+     請致電 (012) 345-6789 或傳送電子郵件至
+      <a href="mailto:help.desk@mycompany.com">
+     help.desk@mycompany.com </a> 聯絡服務台</p>
+		<p> - 自動化安全性</p>
+		<p>
+			<img ALT="由 Novell 提供技術" SRC="cid:powered_by_novell.gif" height="29" width="80"/>
+		</p>
+	</body>
+</html>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><html xmlns:form="http://www.novell.com/dirxml/workflow/form">
+	<form:token-descriptions>
+		<form:token-description description="Vollständiger Name des Benutzers" item-name="UserFullName"/>
+		<form:token-description description="Vorname des Benutzers" item-name="UserGivenName"/>
+		<form:token-description description="Nachname des Benutzers" item-name="UserLastName"/>
+		<form:token-description description="Name der externen Anwendung" item-name="ConnectedSystemName"/>
+		<form:token-description description="Die Fehlerursache" item-name="FailureReason"/>
+	</form:token-descriptions>
+	<head>
+		<title>Fehler beim Synchronisieren des Passworts</title>
+		<style>
+			<!-- body { font-family: Trebuchet MS } -->
+		</style>
+	</head>
+	<body BGCOLOR="#FFFFFF">
+		<p>Sehr geehrte(r) $UserFullName$,</p>
+		<p>Ihr Passwort konnte nicht in dem $ConnectedSystemName$-System synchronisiert werden. Die Fehlerursache finden Sie unten:</p>
+		<p>Ursache: $FailureReason$</p>
+		<p>Falls Sie noch Fragen haben,
+     wenden Sie sich an den Helpdesk unter (012) 345-6789 oder senden Sie eine Email
+     an <a href="mailto:help.desk@mycompany.com">
+     help.desk@mycompany.com </a>
+		</p>
+		<p> - Automatisierte Sicherheit</p>
+		<p>
+			<img ALT="Powered by Novell" SRC="cid:powered_by_novell.gif" height="29" width="80"/>
+		</p>
+	</body>
+</html>

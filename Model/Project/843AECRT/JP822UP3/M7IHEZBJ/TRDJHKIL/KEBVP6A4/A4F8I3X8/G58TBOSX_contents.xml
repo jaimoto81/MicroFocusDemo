@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?><policy xmlns:jadutil="http://www.novell.com/nxsl/java/com.novell.nds.dirxml.driver.ad.util.Utilities">
+	<description>Convert selected attributes to a form most commonly used in the Identity Vault.</description>
+	<rule>
+		<description>streetAddress: Convert CR-LF to LF</description>
+		<comment xml:space="preserve">The Identity Vault Street Address typically uses the Unix end-of-line convention (a single new line character) while Active Directory uses the Windows convention (carriage return plus new line characters). This rule converts values to the Identity Vault format so that the synchronized values display properly in both systems.</comment>
+		<conditions>
+			<and/>
+		</conditions>
+		<actions>
+			<do-reformat-op-attr name="streetAddress">
+				<arg-value type="string">
+					<token-replace-all regex="\r\n" replace-with="\r">
+						<token-local-variable name="current-value"/>
+					</token-replace-all>
+				</arg-value>
+			</do-reformat-op-attr>
+		</actions>
+	</rule>
+	<rule>
+		<description>logonHours: Convert to Login Allowed Time Map form</description>
+		<comment xml:space="preserve">The Identity Vault Login Allowed Time Map is an octet string holding one bit for each half-hour period in a week. Users can logon when the bit representing the current half-hour is a 1.  The Active Directory logonHours works similarly except that there is one bit for each 1 hour period in a week. This rule converts to the Login Allowed Time Map format.</comment>
+		<conditions>
+			<and/>
+		</conditions>
+		<actions>
+			<do-reformat-op-attr name="logonHours">
+				<arg-value type="octet">
+					<token-xpath expression="jadutil:translateTimeMap2eDir($current-value)"/>
+				</arg-value>
+			</do-reformat-op-attr>
+		</actions>
+	</rule>
+	<rule>
+		<description>accountExpires: Convert to Identity Vault time format</description>
+		<comment xml:space="preserve">The Identity Vault uses a 32 bit value to store certain time values while Active Directory uses a 64 bit time value. Reformat the 64 bit value to fit within the vault's 32 bit syntax.</comment>
+		<conditions>
+			<and/>
+		</conditions>
+		<actions>
+			<do-reformat-op-attr name="accountExpires">
+				<arg-value type="time">
+					<token-xpath expression="jadutil:translateFileTime2Epoch($current-value)"/>
+				</arg-value>
+			</do-reformat-op-attr>
+		</actions>
+	</rule>
+	<rule>
+		<description>lockedByIntruder: Enable Locked By Intruder</description>
+		<conditions>
+			<and>
+				<if-operation mode="case" op="equal">modify</if-operation>
+				<if-op-attr name="lockoutTime" op="available"/>
+				<if-op-attr mode="numeric" name="lockoutTime" op="not-equal">0</if-op-attr>
+			</and>
+		</conditions>
+		<actions>
+			<do-append-xml-element expression="." name="modify-attr"/>
+			<do-set-xml-attr expression="./modify-attr[last()]" name="attr-name">
+				<arg-string>
+					<token-text xml:space="preserve">Locked By Intruder</token-text>
+				</arg-string>
+			</do-set-xml-attr>
+			<do-append-xml-element expression="./modify-attr[last()]" name="remove-value"/>
+			<do-append-xml-element expression="./modify-attr[last()]/remove-value" name="value"/>
+			<do-append-xml-text expression="./modify-attr[last()]/remove-value/value">
+				<arg-string>
+					<token-text xml:space="preserve">false</token-text>
+				</arg-string>
+			</do-append-xml-text>
+			<do-append-xml-element expression="./modify-attr[last()]" name="add-value"/>
+			<do-append-xml-element expression="./modify-attr[last()]/add-value" name="value"/>
+			<do-append-xml-text expression="./modify-attr[last()]/add-value/value">
+				<arg-string>
+					<token-text xml:space="preserve">true</token-text>
+				</arg-string>
+			</do-append-xml-text>
+		</actions>
+	</rule>
+	<rule>
+		<description>lockedByIntruder: Disable Locked By Intruder</description>
+		<conditions>
+			<and>
+				<if-operation mode="case" op="equal">modify</if-operation>
+				<if-op-attr name="lockoutTime" op="available"/>
+				<if-op-attr mode="numeric" name="lockoutTime" op="equal">0</if-op-attr>
+			</and>
+		</conditions>
+		<actions>
+			<do-append-xml-element expression="." name="modify-attr"/>
+			<do-set-xml-attr expression="./modify-attr[last()]" name="attr-name">
+				<arg-string>
+					<token-text xml:space="preserve">Locked By Intruder</token-text>
+				</arg-string>
+			</do-set-xml-attr>
+			<do-append-xml-element expression="./modify-attr[last()]" name="remove-value"/>
+			<do-append-xml-element expression="./modify-attr[last()]/remove-value" name="value"/>
+			<do-append-xml-text expression="./modify-attr[last()]/remove-value/value">
+				<arg-string>
+					<token-text xml:space="preserve">true</token-text>
+				</arg-string>
+			</do-append-xml-text>
+			<do-append-xml-element expression="./modify-attr[last()]" name="add-value"/>
+			<do-append-xml-element expression="./modify-attr[last()]/add-value" name="value"/>
+			<do-append-xml-text expression="./modify-attr[last()]/add-value/value">
+				<arg-string>
+					<token-text xml:space="preserve">false</token-text>
+				</arg-string>
+			</do-append-xml-text>
+		</actions>
+	</rule>
+	<rule>
+		<description>lockoutTime: Convert to Identity Vault time format</description>
+		<comment xml:space="preserve">The Identity Vault uses a 32 bit value to store certain time values while Active Directory uses a 64 bit time value. Reformat the 64 bit value to fit within the vault's 32 bit syntax.</comment>
+		<conditions>
+			<and/>
+		</conditions>
+		<actions>
+			<do-reformat-op-attr name="lockoutTime">
+				<arg-value type="time">
+					<token-xpath expression="jadutil:translateFileTime2Epoch($current-value)"/>
+				</arg-value>
+			</do-reformat-op-attr>
+		</actions>
+	</rule>
+</policy>

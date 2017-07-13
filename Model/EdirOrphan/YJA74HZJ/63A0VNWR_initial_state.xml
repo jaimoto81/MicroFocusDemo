@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><ds-object ds-object-class="notfMergeTemplate" ds-object-name="Password Reset Fail_ja" name="Password Reset Fail_ja">
+	<ds-attributes>
+		<ds-attribute ds-attr-name="XmlData">
+			<ds-value>
+				<html xmlns:form="http://www.novell.com/dirxml/workflow/form">
+					<form:token-descriptions>
+						<form:token-description description="The user's full name" item-name="UserFullName"/>
+						<form:token-description description="The user's given name" item-name="UserGivenName"/>
+						<form:token-description description="The user's last name" item-name="UserLastName"/>
+						<form:token-description description="The external applicaton name" item-name="ConnectedSystemName"/>
+						<form:token-description description="The failure reason" item-name="FailureReason"/>
+					</form:token-descriptions>
+					<head>
+						<title>パスワードリセット障害の通知</title>
+						<style>
+							<!-- body { font-family: Trebuchet MS } -->
+						</style>
+					</head>
+					<body BGCOLOR="#FFFFFF">
+						<p>$UserFullName$、</p>
+						<p>これは、$ConnectedSystemName$システムでパスワードをリセットできなかったことについての通知です。理由は次のとおりです:</p>
+						<p>理由: $FailureReason$</p>
+						<p>疑問点については、
+     (012) 345-6789または
+     <a href="mailto:help.desk@mycompany.com">
+     help.desk@mycompany.com </a>のヘルプデスクにお問い合わせください。</p>
+						<p> - 自動化セキュリティ</p>
+						<p>
+							<img ALT="Powered by Novell" SRC="cid:powered_by_novell.gif" height="29" width="80"/>
+						</p>
+					</body>
+				</html>
+			</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="notfMergeTemplateSubject">
+			<ds-value>パスワードリセット障害の通知</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-installationdirective">
+			<ds-value>PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48aW5zdGFsbGF0aW9uLWRpcmVjdGl2ZT4KCTxwbGFjZW1lbnQgbG9jYXRpb249Im5vdGYtY29sbGVjdGlvbiIvPgoJPGRzLWF0dHJpYnV0ZXMvPgo8L2luc3RhbGxhdGlvbi1kaXJlY3RpdmU+</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-directivechecksum">
+			<ds-value>2483156663</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-packageassocguid">
+			<ds-value>S39GRQUW_201007271209080142</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-packageguid">
+			<ds-value>FWSFLGUH_201007271204040551</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-contentchecksum">
+			<ds-value>2780554622</ds-value>
+		</ds-attribute>
+	</ds-attributes>
+</ds-object>

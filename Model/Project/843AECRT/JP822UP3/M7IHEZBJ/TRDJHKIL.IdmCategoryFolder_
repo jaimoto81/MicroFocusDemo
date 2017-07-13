@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.novell.designer.model:CObject xmlns:com.novell.designer.model="http://com.novell.designer.model" name="Active Directory">
+  <relations name="Idm:Packages" type="Child" key="#KEBVP6A4.IdmPackage_"/>
+  <relations name="Idm:Packages" type="Child" key="#8PXX4WFL.IdmPackage_"/>
+  <relations name="Idm:Packages" type="Child" key="#414JTZYJ.IdmPackage_"/>
+  <relations name="Idm:Packages" type="Child" key="#ID6HXLB3.IdmPackage_"/>
+  <relations name="Idm:Packages" type="Child" key="#TE1S7ZZZ.IdmPackage_"/>
+  <relations name="Idm:Packages" type="Child" key="#8UXMSYNV.IdmPackage_"/>
+  <relations name="Idm:Packages" type="Child" key="#LVNOLHYJ.IdmPackage_"/>
+</com.novell.designer.model:CObject>

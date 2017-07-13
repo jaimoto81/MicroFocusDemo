@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.novell.designer.model:CObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:com.novell.designer.model="http://com.novell.designer.model" name="Policies">
+  <attributes xsi:type="com.novell.designer.model:CInteger" attrName="Idm:FolderId" value="1"/>
+  <relations name="Idm:Policies" type="Child" key="#XW3X7OUR.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#1E1IHWQS.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#IOT388F9.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#K2Y0SE9P.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#8K552QGS.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#49PM8K91.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#8C9GCSA9.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#MFY5IWSY.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#NV4CXSLD.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#9OBEYGPY.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#A34LQQU3.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#3YZDM9A9.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#JTO5FMLX.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#J1CU9QPG.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#17QGDDOR.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#VGC6GHUU.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#KVWXVS1O.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#NLMT09YP.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#C8E71RMZ.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#WHCTTV8I.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#LH24K6C7.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#P6L97T3S.MappingPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#XJE7UERH.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#44O6FTP3.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#BMSY3421.ScriptPolicy_"/>
+</com.novell.designer.model:CObject>

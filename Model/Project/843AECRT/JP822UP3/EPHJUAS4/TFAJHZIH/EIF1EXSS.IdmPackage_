@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.novell.designer.model:CObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:com.novell.designer.model="http://com.novell.designer.model" name="JDBC Audit Entitlement">
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="license"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="change" extension="log"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="readme" extension="txt"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="en" extension="properties"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="de" extension="properties"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="fr" extension="properties"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="ja" extension="properties"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="zh_CN" extension="properties"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="zh_TW" extension="properties"/>
+  <attributes xsi:type="com.novell.designer.model:CBoolean" attrName="Idm:PackageImported" value="true"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:PackageGuid" value="DYXAW44Y_201109241831360453"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:PackageVersion" value="2.1.0.20161211003809"/>
+  <attributes xsi:type="com.novell.designer.model:CInteger" attrName="Idm:PackageType" value="2"/>
+  <attributes xsi:type="com.novell.designer.model:CBoolean" attrName="Idm:BasePackage" value="false"/>
+  <attributes xsi:type="com.novell.designer.model:CBoolean" attrName="Idm:Released" value="true"/>
+  <attributes xsi:type="com.novell.designer.model:CLong" attrName="Idm:ContentChecksum" value="1653806695"/>
+  <attributes xsi:type="com.novell.designer.model:CLong" attrName="Idm:DirectiveChecksum" value="2208715720"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:description" value="The Audit Entitlements package contains policies to send entitlement events to Event Audit Service."/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:shortName" value="NOVLJDBCADEN"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:BuildTime" value="20161211003809"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:BuildHost" value="BLR-L-MVIGNESHW"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:BuildUser" value="MVigneshwaran"/>
+  <attributes xsi:type="com.novell.designer.model:CBoolean" attrName="Idm:Protected" value="false"/>
+  <attributes xsi:type="com.novell.designer.model:CBoolean" attrName="Idm:newVersion" value="true"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:CreationTime" value="201612110037500329"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:vendorName" value="Novell, Inc."/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:minIdmVersion" value="4.0.0"/>
+  <attributes xsi:type="com.novell.designer.model:CLong" attrName="Idm:InternalVersion" value="8"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:InstallationDirective" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&lt;installation-directive>&#xA;&#x9;&lt;ds-attributes/>&#xA;&#x9;&lt;dependencies>&#xA;&#x9;&#x9;&lt;dependency name=&quot;Audit Entitlements Common&quot; package-id=&quot;DETECXTK_201004161538110582&quot; type=&quot;2&quot;/>&#xA;&#x9;&lt;/dependencies>&#xA;&#x9;&lt;supported-drivers>&#xA;&#x9;&#x9;&lt;definition display-name=&quot;Driver for JDBC DB2&quot; driver-id=&quot;JDBC-DB2-Driver&quot; id=&quot;JDBC&quot;/>&#xA;&#x9;&#x9;&lt;definition display-name=&quot;Driver for JDBC Generic&quot; driver-id=&quot;JDBC-Generic-Driver&quot; id=&quot;JDBC&quot;/>&#xA;&#x9;&#x9;&lt;definition display-name=&quot;Driver for JDBC Informix&quot; driver-id=&quot;JDBC-Informix-Driver&quot; id=&quot;JDBC&quot;/>&#xA;&#x9;&#x9;&lt;definition display-name=&quot;Driver for JDBC MySQL&quot; driver-id=&quot;JDBC-MySQL-Driver&quot; id=&quot;JDBC&quot;/>&#xA;&#x9;&#x9;&lt;definition display-name=&quot;Driver for JDBC Oracle&quot; driver-id=&quot;JDBC-Oracle-Driver&quot; id=&quot;JDBC&quot;/>&#xA;&#x9;&#x9;&lt;definition display-name=&quot;Driver for JDBC Postgres&quot; driver-id=&quot;JDBC-Postgres-Driver&quot; id=&quot;JDBC&quot;/>&#xA;&#x9;&#x9;&lt;definition display-name=&quot;Driver for JDBC SQLServer&quot; driver-id=&quot;JDBC-SQLServer-Driver&quot; id=&quot;JDBC&quot;/>&#xA;&#x9;&#x9;&lt;definition display-name=&quot;Driver for JDBC Sybase&quot; driver-id=&quot;JDBC-Sybase-Driver&quot; id=&quot;JDBC&quot;/>&#xA;&#x9;&lt;/supported-drivers>&#xA;&lt;/installation-directive>"/>
+  <relations name="Idm:InstalledPackageDriverRefs" type="BackReference" key="#LY7QR5GR.Driver_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#FMWC8JM4.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#PMD1F480.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#EHGFDA43.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#7MJ4FGK2.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#C6FV48BK.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#JZ8PW5QH.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#KY8V9MUQ.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#CF38VIDM.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#PROGJSEM.IdmPackageFolder_"/>
+</com.novell.designer.model:CObject>

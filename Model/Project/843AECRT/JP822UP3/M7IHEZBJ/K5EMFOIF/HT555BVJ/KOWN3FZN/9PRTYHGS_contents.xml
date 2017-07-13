@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?><configuration-values>
+	<definitions>
+		<definition display-name="xlfid(NOVLEDIRBASE.idmresource.NOVLEDIRBASEConnectionPrompts.gcv.shim-auth-server)Remote Tree Address and Port" mandatory="true" name="shim-auth-server" type="string">
+			<description>xlfid(NOVLEDIRBASE.idmresource.NOVLEDIRBASEConnectionPrompts.gcv.dscr.shim-auth-server)Enter the DNS host name or IP address, and communication port of the Identity Manager server in the remote tree. For example: 192.168.12.47:8196 or hostname:8196</description>
+			<value/>
+		</definition>
+	</definitions>
+</configuration-values>

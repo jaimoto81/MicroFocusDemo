@@ -1,0 +1,11 @@
+About
+---------
+
+eDirectory-specific Password Synchronization settings and configuration. This package rquires the 'Password Synchronization Common' (NOVLPWDSYNC) package.
+
+
+What's New
+-----------------
+
+1.0.0
+- Novell Identity Manager 4.0 ISO release

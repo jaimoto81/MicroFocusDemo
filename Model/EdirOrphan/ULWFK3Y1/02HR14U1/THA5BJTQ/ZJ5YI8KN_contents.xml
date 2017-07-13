@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?><policy xmlns:nrf="urn:dirxml:nrf">
+	<description>Role Events Policy</description>
+	<rule disabled="true">
+		<description>Trace Operation</description>
+		<comment xml:space="preserve">Trace Operation used for debugging purposes.</comment>
+		<conditions>
+			<and/>
+		</conditions>
+		<actions>
+			<do-trace-message color="brpurple">
+				<arg-string>
+					<token-text xml:space="preserve">***************   Operation = </token-text>
+					<token-operation/>
+					<token-text xml:space="preserve">   Class = </token-text>
+					<token-class-name/>
+				</arg-string>
+			</do-trace-message>
+		</actions>
+	</rule>
+	<rule>
+		<description>Ignore everything except add, modify, and sync for all classes</description>
+		<comment xml:space="preserve">The only interesting events for this driver to process are add, modify, and sync of the object classes in the filter</comment>
+		<conditions>
+			<and>
+				<if-operation mode="regex" op="not-equal">add|modify|sync</if-operation>
+			</and>
+		</conditions>
+		<actions>
+			<do-trace-message color="brpurple" disabled="true">
+				<arg-string>
+					<token-text xml:space="preserve">Improper Operation. Not add, modify, sync</token-text>
+				</arg-string>
+			</do-trace-message>
+			<do-veto/>
+		</actions>
+	</rule>
+	<rule>
+		<description>Cleanup the entitlement results for entitlements granted by NRF</description>
+		<comment xml:space="preserve">An entitlement agent is responsible for cleaning up the entitlement results corresponding to entitlements that it grants or revokes. If a change to entitlement results is detected, loop through and delete all the results that belong to the NRF agent. If the only change in this event is entitlement results, then veto the operation so no commands are generated to the driver shim</comment>
+		<conditions>
+			<and>
+				<if-operation mode="case" op="equal">modify</if-operation>
+				<if-op-attr name="DirXML-EntitlementResult" op="changing"/>
+			</and>
+		</conditions>
+		<actions>
+			<do-for-each>
+				<arg-node-set>
+					<token-src-attr name="DirXML-EntitlementResult"/>
+				</arg-node-set>
+				<arg-actions>
+					<do-if>
+						<arg-conditions>
+							<and>
+								<if-xpath op="true">$current-node/result/src = 'NRF'</if-xpath>
+							</and>
+						</arg-conditions>
+						<arg-actions>
+							<do-remove-src-attr-value name="DirXML-EntitlementResult">
+								<arg-value>
+									<token-text xml:space="preserve">"placeholder"</token-text>
+								</arg-value>
+							</do-remove-src-attr-value>
+							<do-strip-xpath expression="../modify[last()]/modify-attr[last()]/remove-value[last()]/value[last()]/text()"/>
+							<do-clone-xpath dest-expression="../modify[last()]/modify-attr[last()]/remove-value[last()]/value[last()]" src-expression="$current-node/node()"/>
+							<do-set-xml-attr expression="../modify[last()]/modify-attr[last()]/remove-value[last()]/value[last()]" name="type">
+								<arg-string>
+									<token-text xml:space="preserve">xml</token-text>
+								</arg-string>
+							</do-set-xml-attr>
+						</arg-actions>
+					</do-if>
+				</arg-actions>
+			</do-for-each>
+			<do-strip-op-attr name="DirXML-EntitlementResult"/>
+			<do-if>
+				<arg-conditions>
+					<and>
+						<if-xpath op="not-true">modify-attr</if-xpath>
+					</and>
+				</arg-conditions>
+				<arg-actions>
+					<do-veto/>
+				</arg-actions>
+			</do-if>
+		</actions>
+	</rule>
+	<rule>
+		<description>Convert the event into a custom command to send to the driver</description>
+		<comment xml:space="preserve">Generate a custom command to the driver shim based on the class of the source object.</comment>
+		<conditions/>
+		<actions>
+			<do-set-local-variable name="command" scope="policy">
+				<arg-string>
+					<token-map dest="command" src="class-name" table="NOVLRSERVB-sub-CommandMappingTable">
+						<token-class-name/>
+					</token-map>
+				</arg-string>
+			</do-set-local-variable>
+			<do-append-xml-element expression=".." name="$command$"/>
+			<do-set-xml-attr expression="../nrf:*" name="dn">
+				<arg-string>
+					<token-xpath expression="@qualified-src-dn"/>
+				</arg-string>
+			</do-set-xml-attr>
+			<do-if>
+				<arg-conditions>
+					<and>
+						<if-op-attr name="nrfChildRoles" op="changing"/>
+					</and>
+				</arg-conditions>
+				<arg-actions>
+					<do-set-xml-attr expression="../nrf:role" name="hierarchical">
+						<arg-string>
+							<token-text xml:space="preserve">true</token-text>
+						</arg-string>
+					</do-set-xml-attr>
+				</arg-actions>
+			</do-if>
+			<do-if>
+				<arg-conditions>
+					<and>
+						<if-op-attr name="nrfAssignedResources" op="changing"/>
+					</and>
+				</arg-conditions>
+				<arg-actions>
+					<do-set-xml-attr expression="../nrf:identity" name="changingAttribute">
+						<arg-string>
+							<token-text xml:space="preserve">nrfAssignedResources</token-text>
+						</arg-string>
+					</do-set-xml-attr>
+				</arg-actions>
+				<arg-actions/>
+			</do-if>
+		</actions>
+	</rule>
+	<rule>
+		<description>Get rid of any association that might be there and veto the original event</description>
+		<comment xml:space="preserve">Clean up any association attribute associated with the source object because this driver doesn't need associations and in large numbers they cause a lot of overhead.</comment>
+		<conditions/>
+		<actions>
+			<do-if>
+				<arg-conditions>
+					<and>
+						<if-association op="available"/>
+					</and>
+				</arg-conditions>
+				<arg-actions>
+					<do-remove-association>
+						<arg-association>
+							<token-association/>
+						</arg-association>
+					</do-remove-association>
+				</arg-actions>
+				<arg-actions>
+					<do-if>
+						<arg-conditions>
+							<and>
+								<if-xpath op="true">association/@state='migrate'</if-xpath>
+							</and>
+						</arg-conditions>
+						<arg-actions>
+							<do-remove-src-attr-value name="DirXML-Associations">
+								<arg-value type="structured">
+									<arg-component name="volume">
+										<token-text xml:space="preserve">~dirxml.auto.driverdn~</token-text>
+									</arg-component>
+									<arg-component name="nameSpace">
+										<token-text xml:space="preserve">4</token-text>
+									</arg-component>
+									<arg-component name="path">
+										<token-xpath expression="''"/>
+									</arg-component>
+								</arg-value>
+							</do-remove-src-attr-value>
+						</arg-actions>
+					</do-if>
+				</arg-actions>
+			</do-if>
+			<do-veto/>
+		</actions>
+	</rule>
+</policy>

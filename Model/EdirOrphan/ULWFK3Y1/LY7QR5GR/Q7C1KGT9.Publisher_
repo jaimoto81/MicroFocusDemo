@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.novell.designer.model:CObject xmlns:com.novell.designer.model="http://com.novell.designer.model" name="Publisher" type="Publisher">
+  <relations name="Idm:CommandPolicies" type="Reference" key="#ICT929R6.ScriptPolicy_"/>
+  <relations name="Idm:CommandPolicies" type="Reference" key="#XB7TIP4U.ScriptPolicy_"/>
+  <relations name="Idm:CommandPolicies" type="Reference" key="#7CEGL6ZP.ScriptPolicy_"/>
+  <relations name="Idm:CommandPolicies" type="Reference" key="#T36YB4QD.ScriptPolicy_"/>
+  <relations name="Idm:CommandPolicies" type="Reference" key="#DL66JD67.ScriptPolicy_"/>
+  <relations name="Idm:CreatePolicies" type="Reference" key="#AC82XPB6.ScriptPolicy_"/>
+  <relations name="Idm:MatchingPolicies" type="Reference" key="#1YMYXL2M.ScriptPolicy_"/>
+  <relations name="Idm:PlacementPolicies" type="Reference" key="#1CA1GQ1F.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#DL66JD67.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#XB7TIP4U.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#ICT929R6.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#7CEGL6ZP.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#T36YB4QD.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#AC82XPB6.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#1YMYXL2M.ScriptPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#1CA1GQ1F.ScriptPolicy_"/>
+</com.novell.designer.model:CObject>

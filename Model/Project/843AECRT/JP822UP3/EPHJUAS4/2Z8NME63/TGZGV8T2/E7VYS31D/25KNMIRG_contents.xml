@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?><xsl:stylesheet exclude-result-prefixes="query cmd dncv" version="1.0" xmlns:cmd="http://www.novell.com/nxsl/java/com.novell.nds.dirxml.driver.XdsCommandProcessor" xmlns:dncv="http://www.novell.com/nxsl/java/com.novell.nds.dirxml.driver.DNConverter" xmlns:exslt="http://exslt.org/common" xmlns:jdbc="urn:dirxml:jdbc" xmlns:query="http://www.novell.com/nxsl/java/com.novell.nds.dirxml.driver.XdsQueryProcessor" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+	<!-- parameters passed in from the DirXML engine -->
+	<xsl:param name="srcQueryProcessor"/>
+	<xsl:param name="destQueryProcessor"/>
+	<xsl:param name="srcCommandProcessor"/>
+	<xsl:param name="destCommandProcessor"/>
+	<xsl:param name="dnConverter"/>
+	<xsl:param name="fromNds"/>
+	<!-- identity transformation template -->
+	<!-- in the absence of any other templates this will cause -->
+	<!-- the stylesheet to copy the input through unchanged to the output -->
+	<xsl:template match="node()|@*">
+		<xsl:copy>
+			<xsl:apply-templates select="@*|node()"/>
+		</xsl:copy>
+	</xsl:template>
+	<!-- BEGIN Policy Declaration -->
+	<xsl:variable name="pkColumn">idu</xsl:variable>
+	<xsl:variable name="namingAttribute">Surname</xsl:variable>
+	<!-- END Policy Declaration -->
+	<!-- BEGIN Policy Selection -->
+	<!-- END Policy Selection -->
+	<!-- BEGIN Policy Implementation -->
+	<!-- END Policy Implementation -->
+	<xsl:template name="namingAttributeValue">
+		<xsl:value-of select="*[@attr-name=$namingAttribute]/value[1]"/>
+	</xsl:template>
+	<xsl:template name="namingPolicy">
+		<!-- username/loginame = naming attribute + unique primary key value -->
+		<!--
+                  because an association value is not yet available, you can reference association fields
+                  using XSLT attribute value template notation (e.g., {$id}) and the driver will replace
+                  the variable with it's corresponding value once it becomes available
+              -->
+		<xsl:variable name="value">
+			<xsl:call-template name="namingAttributeValue"/>
+		</xsl:variable>
+		<xsl:value-of select="concat($value, '{$', $pkColumn, '}')"/>
+	</xsl:template>
+	<xsl:template name="queryForAccountInfo">
+		<xsl:variable name="query">
+			<jdbc:statement>
+				<xsl:copy-of select="association"/>
+				<jdbc:sql>
+					<xsl:text>SELECT loginame, username FROM </xsl:text>
+					<xsl:text>indirect.</xsl:text>
+					<xsl:text>usr</xsl:text>
+					<xsl:text> WHERE </xsl:text>
+					<xsl:text>idu</xsl:text>
+					<xsl:text> = {$</xsl:text>
+					<xsl:text>idu</xsl:text>
+					<xsl:text>}</xsl:text>
+				</jdbc:sql>
+			</jdbc:statement>
+		</xsl:variable>
+		<xsl:variable name="result" select="query:query($destQueryProcessor,$query)"/>
+		<xsl:variable name="loginame" select="$result//jdbc:result-set[1]/jdbc:row[1]/jdbc:column[1]/jdbc:value[1]"/>
+		<xsl:variable name="username" select="$result//jdbc:result-set[1]/jdbc:row[1]/jdbc:column[2]/jdbc:value[1]"/>
+		<xsl:choose>
+			<xsl:when test="not($loginame and $username)">
+				<xsl:message>
+					<status level="error" type="password-set-operation">
+						<xsl:text>Unable to retrieve user account information.</xsl:text>
+					</status>
+				</xsl:message>
+			</xsl:when>
+			<xsl:otherwise>
+				<result>
+					<loginame>
+						<xsl:value-of select="$loginame"/>
+					</loginame>
+					<username>
+						<xsl:value-of select="$username"/>
+					</username>
+				</result>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	<!-- Match check-object-password to retrieve user login account name. -->
+	<xsl:template match="input/check-object-password[@class-name='User']">
+		<xsl:message>
+			<status level="warning" type="password-set-operation">
+				<xsl:text>Password check is not supported.</xsl:text>
+			</status>
+		</xsl:message>
+	</xsl:template>
+	<!-- Match add to embed DDL that creates database user/login account. -->
+	<xsl:template match="input/add[@class-name='User']">
+		<xsl:choose>
+			<xsl:when test="'~enable-password-subscribe~' = 'true'">
+				<xsl:variable name="name">
+					<xsl:call-template name="namingAttributeValue"/>
+				</xsl:variable>
+				<xsl:variable name="password" select="password/text()"/>
+				<xsl:choose>
+					<xsl:when test="not($name)">
+						<xsl:message>
+							<status level="error" type="password-set-operation">
+								<xsl:text>Unable to create user/login account.  </xsl:text>
+								<xsl:text>Missing required '</xsl:text>
+								<xsl:value-of select="$namingAttribute"/>
+								<xsl:text>' attribute value.</xsl:text>
+							</status>
+						</xsl:message>
+					</xsl:when>
+					<xsl:when test="not($password)">
+						<xsl:message>
+							<status level="error" type="password-set-operation">
+								<xsl:text>Unable to create user/login account.  </xsl:text>
+								<xsl:text>Missing required password value.</xsl:text>
+							</status>
+						</xsl:message>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:call-template name="add-create-sql"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:message>
+					<status level="warning" type="password-set-operation">
+						<xsl:text>Password subscribe is disabled.</xsl:text>
+					</status>
+				</xsl:message>
+				<xsl:copy>
+					<xsl:apply-templates select="node() | @*"/>
+				</xsl:copy>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	<!-- Appends SQL to add a database user/login account. -->
+	<xsl:template name="add-create-sql">
+		<xsl:copy>
+			<xsl:attribute name="jdbc:transaction-id">0</xsl:attribute>
+			<xsl:attribute name="jdbc:op-id">0</xsl:attribute>
+			<xsl:attribute name="jdbc:op-type">password-set-operation</xsl:attribute>
+			<xsl:apply-templates select="node() | @*"/>
+		</xsl:copy>
+		<xsl:variable name="commonName">
+			<xsl:call-template name="namingPolicy"/>
+		</xsl:variable>
+		<jdbc:statement jdbc:op-id="0" jdbc:transaction-id="0" jdbc:transaction-type="manual">
+			<jdbc:sql>
+				<xsl:text>UPDATE </xsl:text>
+				<xsl:text>indirect.</xsl:text>
+				<xsl:text>usr</xsl:text>
+				<xsl:text> SET username = '</xsl:text>
+				<xsl:value-of select="$commonName"/>
+				<xsl:text>', loginame = '</xsl:text>
+				<xsl:value-of select="$commonName"/>
+				<xsl:text>' WHERE </xsl:text>
+				<xsl:text>idu</xsl:text>
+				<xsl:text> = {$</xsl:text>
+				<xsl:text>idu</xsl:text>
+				<xsl:text>}</xsl:text>
+			</jdbc:sql>
+		</jdbc:statement>
+		<xsl:call-template name="grant-privileges">
+			<xsl:with-param name="name" select="$commonName"/>
+		</xsl:call-template>
+	</xsl:template>
+	<xsl:template name="grant-privileges">
+		<xsl:param name="name"/>
+		<!--                NOTE:  it isn't possible to grant session privileges; to do this, you must                manually add entries to the '/usr/local/pgsql/data/pg_hba.conf' file on the               database server.              -->
+		<jdbc:statement jdbc:op-id="0">
+			<jdbc:sql>
+				<xsl:text>CREATE USER </xsl:text>
+				<xsl:value-of select="$name"/>
+				<xsl:text> PASSWORD '{$$password}'</xsl:text>
+			</jdbc:sql>
+		</jdbc:statement>
+	</xsl:template>
+	<!-- Match delete to embed DDL to drop database user/login account. -->
+	<xsl:template match="input/delete[@class-name='User']">
+		<xsl:choose>
+			<xsl:when test="'~enable-password-subscribe~' = 'true'">
+				<xsl:call-template name="add-drop-sql"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:message>
+					<status level="warning" type="password-set-operation">
+						<xsl:text>Password subscribe is disabled.</xsl:text>
+					</status>
+				</xsl:message>
+			</xsl:otherwise>
+		</xsl:choose>
+		<xsl:copy>
+			<xsl:attribute name="jdbc:op-id">0</xsl:attribute>
+			<xsl:attribute name="jdbc:transaction-id">0</xsl:attribute>
+			<xsl:apply-templates select="@* | node()"/>
+		</xsl:copy>
+	</xsl:template>
+	<xsl:template name="add-drop-sql">
+		<xsl:variable name="rtf">
+			<xsl:call-template name="queryForAccountInfo"/>
+		</xsl:variable>
+		<xsl:variable name="query" select="exslt:node-set($rtf)"/>
+		<xsl:variable name="loginame" select="$query/result/loginame"/>
+		<xsl:variable name="username" select="$query/result/username"/>
+		<xsl:choose>
+			<xsl:when test="$loginame and $username">
+				<xsl:call-template name="drop-user">
+					<xsl:with-param name="loginame" select="$loginame"/>
+					<xsl:with-param name="username" select="$username"/>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:message>
+					<status level="error" type="password-set-operation">
+						<xsl:text>Unable to drop database login/user account(s) for user </xsl:text>
+						<xsl:value-of select="@qualified-src-dn"/>
+						<xsl:text>.  The login/username(s) for this user are unavailable.</xsl:text>
+					</status>
+				</xsl:message>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	<!-- Adds SQL to drop user/login account -->
+	<xsl:template name="drop-user">
+		<xsl:param name="loginame"/>
+		<xsl:param name="username"/>
+		<xsl:call-template name="revoke-privileges">
+			<xsl:with-param name="loginame" select="$loginame"/>
+			<xsl:with-param name="username" select="$username"/>
+		</xsl:call-template>
+	</xsl:template>
+	<xsl:template name="revoke-privileges">
+		<xsl:param name="loginame"/>
+		<xsl:param name="username"/>
+		<jdbc:statement jdbc:op-id="0">
+			<jdbc:sql>
+				<xsl:text>DROP USER </xsl:text>
+				<xsl:value-of select="$username"/>
+			</jdbc:sql>
+		</jdbc:statement>
+	</xsl:template>
+	<!-- Match modify-password to embed DDL that modifies database user/login account password. -->
+	<xsl:template match="input/modify-password[@class-name='User']">
+		<xsl:choose>
+			<xsl:when test="'~enable-password-subscribe~' = 'true'">
+				<xsl:call-template name="modify-user-password"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:message>
+					<status level="warning" type="password-set-operation">
+						<xsl:text>Unable to modify user account password.  </xsl:text>
+						<xsl:text>Password subscribe is disabled.</xsl:text>
+					</status>
+				</xsl:message>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	<xsl:template name="modify-user-password">
+		<xsl:choose>
+			<xsl:when test="password">
+				<xsl:copy>
+					<xsl:attribute name="jdbc:op-id">0</xsl:attribute>
+					<xsl:apply-templates select="node() | @*"/>
+				</xsl:copy>
+				<xsl:variable name="query">
+					<xsl:call-template name="queryForAccountInfo"/>
+				</xsl:variable>
+				<xsl:call-template name="modify-password">
+					<xsl:with-param name="name" select="exslt:node-set($query)/result/loginame"/>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:message>
+					<status level="error" type="password-set-operation">
+						<xsl:text>Unable to modify user account password.  </xsl:text>
+						<xsl:text>Missing required password element or password element value.</xsl:text>
+					</status>
+				</xsl:message>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	<xsl:template name="modify-password">
+		<xsl:param name="name"/>
+		<jdbc:statement jdbc:op-id="0">
+			<jdbc:sql>
+				<xsl:text>ALTER USER </xsl:text>
+				<xsl:value-of select="$name"/>
+				<xsl:text> WITH PASSWORD '{$$password}'</xsl:text>
+			</jdbc:sql>
+		</jdbc:statement>
+	</xsl:template>
+</xsl:stylesheet>

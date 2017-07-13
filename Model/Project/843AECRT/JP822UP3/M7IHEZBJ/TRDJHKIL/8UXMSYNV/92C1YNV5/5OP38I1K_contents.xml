@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?><mapping-table>
+	<col-def name="IdentifierAttribute" type="nocase"/>
+	<col-def name="IDVAttribute" type="nocase"/>
+	<row>
+		<col>sAMAccountName</col>
+		<col>CN</col>
+	</row>
+	<row>
+		<col>userPrincipalName</col>
+		<col>DirXML-ADAliasName</col>
+	</row>
+</mapping-table>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?><configuration-values>
+	<definitions display-name="Entitlements">
+		<header display-name="Entitlements"/>
+		<definition display-name="Account Entitlement Value" name="drv.entitlement.accvalue" type="string">
+			<description>The Entitlement value to assign for account during the user account creation. The value will be shown to the user during account provisioning in RBPM.</description>
+			<value>DBACCOUNT</value>
+		</definition>
+	</definitions>
+</configuration-values>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><filter>
+	<filter-class class-name="User" publisher="sync" publisher-create-homedir="true" publisher-track-template-member="true" subscriber="sync">
+		<filter-attr attr-name="nspmDistributionPassword" merge-authority="default" publisher="ignore" publisher-optimize-modify="true" subscriber="notify"/>
+		<filter-attr attr-name="Facsimile Telephone Number" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="Given Name" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="jpegPhoto" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="Login Disabled" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="Password Expiration Time" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="Password Minimum Length" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="Surname" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="Telephone Number" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="manager" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="Group Membership" publisher="sync" subscriber="sync"/>
+	</filter-class>
+	<filter-class class-name="Group" publisher="sync" subscriber="sync">
+		<filter-attr attr-name="Member" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="Owner" publisher="sync" subscriber="sync"/>
+	</filter-class>
+</filter>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><policy>
+	<description>Payloads for subscribe to password changes</description>
+	<rule>
+		<description>Add operation-data element to password subscribe operations</description>
+		<conditions>
+			<and>
+				<if-operation op="equal">add</if-operation>
+				<if-password op="available"/>
+				<if-xpath op="not-true">operation-data</if-xpath>
+			</and>
+			<and>
+				<if-operation op="equal">modify-password</if-operation>
+				<if-xpath op="not-true">operation-data</if-xpath>
+			</and>
+		</conditions>
+		<actions>
+			<!-- Add a operation data payload element to pick up result of a password operation -->
+			<do-append-xml-element expression="." name="operation-data"/>
+		</actions>
+	</rule>
+	<rule>
+		<description>Add payload data to a reset password from a failed password publish operation</description>
+		<conditions>
+			<and>
+				<if-operation op="equal">modify-password</if-operation>
+				<if-xpath op="true">self::modify-password[@event-id = 'pwd-publish-failed']</if-xpath>
+			</and>
+		</conditions>
+		<actions>
+			<!-- Add a operation data payload element to pick up result of a password operation -->
+			<do-append-xml-element expression="operation-data" name="password-reset-status"/>
+			<do-append-xml-element expression="operation-data/password-reset-status" name="association"/>
+			<do-append-xml-text expression="operation-data/password-reset-status/association">
+				<arg-string>
+					<token-association/>
+				</arg-string>
+			</do-append-xml-text>
+		</actions>
+	</rule>
+	<rule>
+		<description>Add payload data to password subscribe operations</description>
+		<conditions>
+			<and>
+				<if-operation op="equal">add</if-operation>
+				<if-password op="available"/>
+			</and>
+			<and>
+				<if-operation op="equal">modify-password</if-operation>
+				<if-xpath op="true">self::modify-password[@event-id != 'pwd-publish-failed']</if-xpath>
+			</and>
+		</conditions>
+		<actions>
+			<!-- Add a operation data payload element to pick up result of a password operation -->
+			<do-append-xml-element expression="operation-data" name="password-subscribe-status"/>
+			<do-append-xml-element expression="operation-data/password-subscribe-status" name="association"/>
+			<do-append-xml-text expression="operation-data/password-subscribe-status/association">
+				<arg-string>
+					<token-association/>
+				</arg-string>
+			</do-append-xml-text>
+		</actions>
+	</rule>
+</policy>

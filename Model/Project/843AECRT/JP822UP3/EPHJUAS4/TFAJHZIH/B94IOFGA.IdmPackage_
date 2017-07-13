@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.novell.designer.model:CObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:com.novell.designer.model="http://com.novell.designer.model" name="JDBC Subscriber Sync Sample">
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="license"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="change" extension="log"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="readme" extension="txt"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="de" extension="properties"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="fr" extension="properties"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="ja" extension="properties"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="zh_CN" extension="properties"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="zh_TW" extension="properties"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="en" extension="properties"/>
+  <attributes xsi:type="com.novell.designer.model:CBoolean" attrName="Idm:PackageImported" value="true"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:PackageGuid" value="REG36ALY_201109241936460593"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:PackageVersion" value="2.0.0.20161211004617"/>
+  <attributes xsi:type="com.novell.designer.model:CInteger" attrName="Idm:PackageType" value="2"/>
+  <attributes xsi:type="com.novell.designer.model:CBoolean" attrName="Idm:BasePackage" value="false"/>
+  <attributes xsi:type="com.novell.designer.model:CBoolean" attrName="Idm:Released" value="true"/>
+  <attributes xsi:type="com.novell.designer.model:CLong" attrName="Idm:ContentChecksum" value="2999072734"/>
+  <attributes xsi:type="com.novell.designer.model:CLong" attrName="Idm:DirectiveChecksum" value="3583918009"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:description" value="The JDBC Subscriber Synchronization package contains filter which enables synchronization of identities only on subscriber channel.&#xA;"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:shortName" value="NOVLJDBCSBSN"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:BuildTime" value="20161211004617"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:BuildHost" value="BLR-L-MVIGNESHW"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:BuildUser" value="MVigneshwaran"/>
+  <attributes xsi:type="com.novell.designer.model:CBoolean" attrName="Idm:Protected" value="false"/>
+  <attributes xsi:type="com.novell.designer.model:CBoolean" attrName="Idm:newVersion" value="true"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:CreationTime" value="201612110046100747"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:vendorName" value="Novell, Inc."/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:minIdmVersion" value="4.0.0"/>
+  <attributes xsi:type="com.novell.designer.model:CLong" attrName="Idm:InternalVersion" value="3"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:InstallationDirective" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&lt;installation-directive>&#xA;&#x9;&lt;ds-attributes/>&#xA;&#x9;&lt;dependencies/>&#xA;&#x9;&lt;policy-linkage/>&#xA;&#x9;&lt;supported-drivers>&#xA;&#x9;&#x9;&lt;definition display-name=&quot;Driver for JDBC DB2&quot; driver-id=&quot;JDBC-DB2-Driver&quot; id=&quot;JDBC&quot;/>&#xA;&#x9;&#x9;&lt;definition display-name=&quot;Driver for JDBC Generic&quot; driver-id=&quot;JDBC-Generic-Driver&quot; id=&quot;JDBC&quot;/>&#xA;&#x9;&#x9;&lt;definition display-name=&quot;Driver for JDBC Informix&quot; driver-id=&quot;JDBC-Informix-Driver&quot; id=&quot;JDBC&quot;/>&#xA;&#x9;&#x9;&lt;definition display-name=&quot;Driver for JDBC MySQL&quot; driver-id=&quot;JDBC-MySQL-Driver&quot; id=&quot;JDBC&quot;/>&#xA;&#x9;&#x9;&lt;definition display-name=&quot;Driver for JDBC Oracle&quot; driver-id=&quot;JDBC-Oracle-Driver&quot; id=&quot;JDBC&quot;/>&#xA;&#x9;&#x9;&lt;definition display-name=&quot;Driver for JDBC Postgres&quot; driver-id=&quot;JDBC-Postgres-Driver&quot; id=&quot;JDBC&quot;/>&#xA;&#x9;&#x9;&lt;definition display-name=&quot;Driver for JDBC SQLServer&quot; driver-id=&quot;JDBC-SQLServer-Driver&quot; id=&quot;JDBC&quot;/>&#xA;&#x9;&#x9;&lt;definition display-name=&quot;Driver for JDBC Sybase&quot; driver-id=&quot;JDBC-Sybase-Driver&quot; id=&quot;JDBC&quot;/>&#xA;&#x9;&lt;/supported-drivers>&#xA;&lt;/installation-directive>"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#PYXR5ZCY.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#LJGTKVY1.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#EQVGGOCI.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#6B9REFSH.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#PTUQYT8F.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#L2HVKM6L.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#R1WDMM5C.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#ZTQNNUL3.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#TVQHAU0P.IdmPackageFolder_"/>
+</com.novell.designer.model:CObject>

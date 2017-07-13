@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?><configuration-values>
+	<definitions display-name="Common Settings">
+		<header display-name="Common Settings"/>
+		<definition display-name="User Container" dn-space="dirxml" dn-type="slash" name="idv.dit.data.users" type="dn">
+			<value>data\users</value>
+		</definition>
+		<definition display-name="Group Container" dn-space="dirxml" dn-type="slash" name="idv.dit.data.groups" type="dn">
+			<value>data\groups</value>
+		</definition>
+	</definitions>
+</configuration-values>

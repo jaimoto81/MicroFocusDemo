@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><policy>
+	<rule>
+		<description>Strip Login Disabled from operation if using UserAccount entitlement</description>
+		<comment xml:space="preserve">At this point, all resource assignment related to Login Disabled have been achieved. Strip the attribute from the event</comment>
+		<conditions>
+			<and>
+				<if-class-name op="equal">User</if-class-name>
+				<if-global-variable mode="nocase" name="drv.entitlement.UserAccount" op="equal">true</if-global-variable>
+				<if-global-variable mode="nocase" name="drv.entitlement.remove" op="equal">disable</if-global-variable>
+				<if-global-variable mode="nocase" name="drv.entitlement.onboarding" op="not-equal">true</if-global-variable>
+				<if-op-attr name="Login Disabled" op="available"/>
+			</and>
+			<and>
+				<if-class-name op="equal">User</if-class-name>
+				<if-global-variable mode="nocase" name="drv.entitlement.UserAccount" op="equal">true</if-global-variable>
+				<if-global-variable mode="nocase" name="drv.entitlement.remove" op="equal">disable</if-global-variable>
+				<if-global-variable mode="nocase" name="drv.entitlement.UserAccount.onboard" op="not-equal">true</if-global-variable>
+				<if-op-attr name="Login Disabled" op="available"/>
+			</and>
+		</conditions>
+		<actions>
+			<do-strip-op-attr name="Login Disabled"/>
+		</actions>
+	</rule>
+	<rule>
+		<description>Veto User delete if using UserAccount entitlement</description>
+		<comment xml:space="preserve">By this point, all procession of the UserAccount entitlement is complete. veto the User Delete event</comment>
+		<conditions>
+			<and>
+				<if-global-variable mode="nocase" name="drv.entitlement.UserAccount" op="equal">true</if-global-variable>
+				<if-class-name mode="nocase" op="equal">User</if-class-name>
+				<if-operation mode="nocase" op="equal">delete</if-operation>
+			</and>
+		</conditions>
+		<actions>
+			<do-remove-association when="after">
+				<arg-association>
+					<token-association/>
+				</arg-association>
+			</do-remove-association>
+			<do-veto/>
+		</actions>
+	</rule>
+	<rule>
+		<description>Veto Group events if using Group entitlement</description>
+		<conditions>
+			<and>
+				<if-class-name mode="nocase" op="equal">Group</if-class-name>
+				<if-global-variable mode="nocase" name="drv.entitlement.Group" op="equal">true</if-global-variable>
+			</and>
+		</conditions>
+		<actions>
+			<do-veto/>
+		</actions>
+	</rule>
+</policy>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?><xsl:stylesheet exclude-result-prefixes="query cmd dncv" version="1.0" xmlns:cmd="http://www.novell.com/nxsl/java/com.novell.nds.dirxml.driver.XdsCommandProcessor" xmlns:dncv="http://www.novell.com/nxsl/java/com.novell.nds.dirxml.driver.DNConverter" xmlns:mapping="http://www.novell.com/nxsl/java/com.novell.nds.dirxml.driver.jdbc.util.MappingPolicy" xmlns:query="http://www.novell.com/nxsl/java/com.novell.nds.dirxml.driver.XdsQueryProcessor" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+	<!-- parameters passed in from the DirXML engine -->
+	<xsl:param name="srcQueryProcessor"/>
+	<xsl:param name="destQueryProcessor"/>
+	<xsl:param name="srcCommandProcessor"/>
+	<xsl:param name="destCommandProcessor"/>
+	<xsl:param name="dnConverter"/>
+	<xsl:param name="fromNds"/>
+	<!-- identity transformation template -->
+	<!-- in the absence of any other templates this will cause -->
+	<!-- the stylesheet to copy the input through unchanged to the output -->
+	<xsl:template match="node()|@*">
+		<xsl:copy>
+			<xsl:apply-templates select="@*|node()"/>
+		</xsl:copy>
+	</xsl:template>
+	<!-- Always sync first replica value of Surname and Given Name. -->
+	<xsl:template match="input/*[(name() = 'add' or name() = 'modify') and @class-name='User']">
+		<xsl:copy>
+			<xsl:apply-templates select="@*"/>
+			<xsl:variable name="attrs" select="*[@attr-name='Surname' or @attr-name='Given Name']"/>
+			<xsl:apply-templates select="*[not(@attr-name=$attrs/@attr-name)]"/>
+			<xsl:choose>
+				<xsl:when test="'~replica-value~' = 'first'">
+					<xsl:copy-of select="mapping:FirstPerReplica(., $attrs, $srcQueryProcessor)"/>
+				</xsl:when>
+				<xsl:when test="'~replica-value~' = 'last'">
+					<xsl:copy-of select="mapping:LastPerReplica(., $attrs, $srcQueryProcessor)"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:message>
+						<status level="error">
+							<xsl:text>Global variable 'replica-value' is undefined or is set to an illegal value '~replica-value~'.</xsl:text>
+						</status>
+					</xsl:message>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:copy>
+	</xsl:template>
+</xsl:stylesheet>

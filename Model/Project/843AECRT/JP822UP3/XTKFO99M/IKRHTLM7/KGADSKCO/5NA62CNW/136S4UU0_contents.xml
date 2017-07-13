@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><html xmlns:form="http://www.novell.com/dirxml/workflow/form">
+	<form:token-descriptions>
+		<form:token-description description="Nombre completo del usuario" item-name="UserFullName"/>
+		<form:token-description description="Nombre asignado al usuario" item-name="UserGivenName"/>
+		<form:token-description description="Apellido del usuario" item-name="UserLastName"/>
+		<form:token-description description="Nombre de la aplicación externa" item-name="ConnectedSystemName"/>
+		<form:token-description description="Motivo del error" item-name="FailureReason"/>
+	</form:token-descriptions>
+	<head>
+		<title>Aviso de error de sincronización de contraseña</title>
+		<style>
+			<!-- body { font-family: Trebuchet MS } -->
+		</style>
+	</head>
+	<body BGCOLOR="#FFFFFF">
+		<p>Estimado/a $UserFullName$:</p>
+		<p>Este aviso indica que su contraseña de $ConnectedSystemName$ no ha logrado sincronizarse con otros sistemas conectados. El motivo del error se indica a continuación:</p>
+		<p>Motivo: $FailureReason$</p>
+		<p>Si tiene alguna pregunta,
+     llame al servicio de ayuda técnica al (012) 345-6789 o envíe un mensaje
+     a <a href="mailto:ayuda.técnica@miempresa.com">
+     ayuda.técnica@miempresa.com </a>
+		</p>
+		<p> - Seguridad automatizada</p>
+		<p>
+			<img ALT="Con tecnología Novell" SRC="cid:powered_by_novell.gif" height="29" width="80"/>
+		</p>
+	</body>
+</html>

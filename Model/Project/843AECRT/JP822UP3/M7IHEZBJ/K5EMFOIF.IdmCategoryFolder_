@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.novell.designer.model:CObject xmlns:com.novell.designer.model="http://com.novell.designer.model" name="eDirectory">
+  <relations name="Idm:Packages" type="Child" key="#N3XTREC5.IdmPackage_"/>
+  <relations name="Idm:Packages" type="Child" key="#57552X89.IdmPackage_"/>
+  <relations name="Idm:Packages" type="Child" key="#CZCZT09N.IdmPackage_"/>
+  <relations name="Idm:Packages" type="Child" key="#ZOPMWTDV.IdmPackage_"/>
+  <relations name="Idm:Packages" type="Child" key="#HT555BVJ.IdmPackage_"/>
+</com.novell.designer.model:CObject>

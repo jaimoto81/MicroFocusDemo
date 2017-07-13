@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?><configuration-values>
+	<definitions>
+		<header display-name="Application Authentication:"/>
+		<definition display-name="Authentication ID:" mandatory="true" name="shim-auth-id" type="string">
+			<description>Enter the Authentication Id for the driver to connect to the Database.</description>
+			<value>idm</value>
+		</definition>
+		<definition display-name="Password:" mandatory="true" name="shim-auth-password" type="password-ref">
+			<description>Specify the password used by the driver to connect to the Database.</description>
+			<value>shim-auth-password</value>
+		</definition>
+		<header display-name="JDBC Connection Details:"/>
+		<group>
+			<definition display-name="JDBC implementation:" name="pgclassName" type="enum">
+				<description>Select the third-party JDBC implementation.</description>
+				<enum-choice display-name="PostgreSQL JDBC Driver (filename: postgresql-&lt;db-ver>.&lt;jdbc-drv-ver>.jdbc&lt;jdbc-ver>.jar)">org.postgresql.Driver</enum-choice>
+				<enum-choice display-name="Some Other JDBC Implementation">_custom</enum-choice>
+				<value>org.postgresql.Driver</value>
+			</definition>
+			<subordinates active-value="org.postgresql.Driver">
+				<definition display-name="PostgreSQL host IP address: *" name="jdbc.Host" type="string">
+					<description>Specify the IP Address of the MySQL database host.  [IP Address; ###.###.###.###]</description>
+					<value>127.0.0.1</value>
+				</definition>
+				<definition display-name="PostgreSQL Port: *" name="jdbc.Port" type="string">
+					<description>Specify the port number.</description>
+					<value>5432</value>
+				</definition>
+				<definition display-name="PostgreSQL Database Name: *" name="jdbc.DBName" type="string">
+					<description>Specify the connected database name.</description>
+					<value>idm</value>
+				</definition>
+			</subordinates>
+			<subordinates active-value="_custom">
+				<definition display-name="Third-party JDBC driver class name:" name="jdbc.ClassName" type="string">
+					<description>Specify the class name of your third-party JDBC driver.  Verify that the jar or zip file containing this class is version compatible with the target database.</description>
+					<value/>
+				</definition>
+				<definition display-name="JDBC URL: *" name="jdbc.URL" type="string">
+					<description>The JDBC URL of the target database.  This value is analogous to this driver's Authentication context parameter value.  Consult your third-party JDBC driver documentation for the correct URL format.</description>
+					<value>jdbc:&lt;vendor>://&lt;ip address>:&lt;port>/&lt;database></value>
+				</definition>
+			</subordinates>
+		</group>
+	</definitions>
+</configuration-values>

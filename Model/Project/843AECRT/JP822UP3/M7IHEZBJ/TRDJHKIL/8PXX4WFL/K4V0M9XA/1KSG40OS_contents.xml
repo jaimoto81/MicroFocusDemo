@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><job-aggregation>
+	<job-definition auto-delete="false" disabled="false" display-name="Onboard Resources" scope-required="false" type="java">
+		<description>This job initializes IDM nrfResourceAssociations for users migrated into the IDV from an application.</description>
+		<containment>DirXML-Driver</containment>
+		<java-class>com.netiq.resources.job.UpdateEntitlementJob</java-class>
+		<configuration-values>
+			<definitions>
+				<definition display-name="Enable Dynamic Resource Creation and Permission OnBoarding" name="onboarding-gcv" type="string">
+					<description>Enable Dynamic Resource Creation and Permission OnBoarding</description>
+					<value/>
+				</definition>
+				<definition display-name="xlfid(mapping-obj)Permission to Entitlement Mapping Object:" dn-type="slash" name="mapping-obj" type="dn">
+					<description>Permission to Entitlement and CSV File Mapping object</description>
+					<value/>
+				</definition>
+				<definition display-name="xlfid(ua-url)User Application Provisioning Service URL:" name="ua-url" type="string">
+					<description>User Application URL</description>
+					<value xml:space="preserve"/>
+				</definition>
+				<definition display-name="xlfid(ua-user)User Application Provisioning Administrator:" name="ua-user" type="string">
+					<description>User Application Provisioning Administrator Name</description>
+					<value xml:space="preserve"/>
+				</definition>
+				<definition display-name="xlfid(ua-password)User Application Provisioning Administrator Password:" name="ua-password" pwd-exists="true" type="password-ref">
+					<description>The password of the User Application stored as a named password.</description>
+					<value>ua-password</value>
+				</definition>
+			</definitions>
+		</configuration-values>
+	</job-definition>
+	<xliff version="1.0">
+		<file datatype="xliff" original="Trigger.xml" source-language="en" xml:space="preserve">
+                <header/>
+                <body>
+                	<trans-unit id="ua-url">
+                        <source>User Application Provisioning Service URL:</source>
+                    </trans-unit>
+                    <trans-unit id="ua-user">
+                        <source>User Application Provisioning Administrator Name:</source>
+                    </trans-unit>
+                    <trans-unit id="mapping-obj">
+                        <source>Permission to Entitlement Mapping Object:</source>
+                    </trans-unit>
+                    <trans-unit id="ua-password">
+                        <source>User Application Provisioning Administrator Password:</source>
+                    </trans-unit>
+                </body>
+            </file>
+	</xliff>
+</job-aggregation>

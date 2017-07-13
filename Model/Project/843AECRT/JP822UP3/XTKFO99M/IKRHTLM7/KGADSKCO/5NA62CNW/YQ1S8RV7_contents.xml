@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?><html xmlns:form="http://www.novell.com/dirxml/workflow/form">
+	<form:token-descriptions>
+		<form:token-description description="用户全名" item-name="UserFullName"/>
+		<form:token-description description="用户的名字" item-name="UserGivenName"/>
+		<form:token-description description="用户的姓" item-name="UserLastName"/>
+		<form:token-description description="外部应用程序名称" item-name="ConnectedSystemName"/>
+		<form:token-description description="失败原因" item-name="FailureReason"/>
+	</form:token-descriptions>
+	<head>
+		<title>口令重设置失败通知</title>
+		<style>
+			<!-- body { font-family: Trebuchet MS } -->
+		</style>
+	</head>
+	<body BGCOLOR="#FFFFFF">
+		<p>亲爱的 $UserFullName$：</p>
+		<p>本通知是告诉您，您在 $ConnectedSystemName$ 系统中的口令无法重设置..  失败原因指示如下：</p>
+		<p>原因：$FailureReason$</p>
+		<p>如果您还有问题，
+     请致电咨询台 (012) 345-6789 或发送电子邮件到 <a href="mailto:help.desk@mycompany.com">
+     help.desk@mycompany.com </a>
+		</p>
+		<p> - 自动化安全</p>
+		<p>
+			<img ALT="Powered by Novell" SRC="cid:powered_by_novell.gif" height="29" width="80"/>
+		</p>
+	</body>
+</html>

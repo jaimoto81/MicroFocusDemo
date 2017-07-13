@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?><policy>
+	<description>Find a matching unassociated object in the Identity Vault.</description>
+	<rule>
+		<description>Veto out-of-scope events</description>
+		<comment xml:space="preserve">When scoping by container, events outside of the Active Directory containers defined in the above rule will not have a unmatched-src-dn operational property and will be vetoed. If you do not want to use container based scoping, this rule should be modified or removed.</comment>
+		<conditions>
+			<or>
+				<if-op-property name="attempt-to-match" op="not-available"/>
+				<if-op-property mode="nocase" name="attempt-to-match" op="equal">false</if-op-property>
+			</or>
+		</conditions>
+		<actions>
+			<do-veto/>
+		</actions>
+	</rule>
+	<rule>
+		<description>Perform flat matching in user subtree</description>
+		<comment xml:space="preserve">Match objects coming from the remote eDirectory.</comment>
+		<conditions>
+			<and>
+				<if-class-name mode="nocase" op="equal">User</if-class-name>
+				<if-global-variable mode="nocase" name="drv.publisher.placement.type" op="equal">flat</if-global-variable>
+				<if-src-dn op="in-subtree">$drv.remote.dit.data.users$</if-src-dn>
+			</and>
+		</conditions>
+		<actions>
+			<do-find-matching-object scope="entry">
+				<arg-dn>
+					<token-global-variable name="idv.dit.data.users"/>
+					<token-text xml:space="preserve">\</token-text>
+					<token-src-name/>
+				</arg-dn>
+			</do-find-matching-object>
+		</actions>
+	</rule>
+	<rule>
+		<description>Perform flat matching in group subtree</description>
+		<comment xml:space="preserve">Match objects coming from the remote eDirectory.</comment>
+		<conditions>
+			<and>
+				<if-class-name mode="nocase" op="equal">Group</if-class-name>
+				<if-global-variable mode="nocase" name="drv.publisher.placement.type" op="equal">flat</if-global-variable>
+				<if-src-dn op="in-subtree">$drv.remote.dit.data.groups$</if-src-dn>
+			</and>
+		</conditions>
+		<actions>
+			<do-find-matching-object scope="entry">
+				<arg-dn>
+					<token-global-variable name="idv.dit.data.groups"/>
+					<token-text xml:space="preserve">\</token-text>
+					<token-src-name/>
+				</arg-dn>
+			</do-find-matching-object>
+		</actions>
+	</rule>
+	<rule>
+		<description>Perform departmental matching</description>
+		<comment xml:space="preserve">Match objects coming from the remote eDirectory based on department and object name.</comment>
+		<conditions>
+			<and>
+				<if-class-name mode="nocase" op="equal">User</if-class-name>
+				<if-global-variable mode="nocase" name="drv.publisher.placement.type" op="equal">department</if-global-variable>
+			</and>
+		</conditions>
+		<actions>
+			<do-find-matching-object scope="entry">
+				<arg-dn>
+					<token-global-variable name="idv.dit.data.users"/>
+					<token-text xml:space="preserve">\</token-text>
+					<token-escape-for-dest-dn>
+						<token-op-attr name="OU"/>
+					</token-escape-for-dest-dn>
+					<token-text xml:space="preserve">\</token-text>
+					<token-src-name/>
+				</arg-dn>
+			</do-find-matching-object>
+		</actions>
+	</rule>
+	<rule>
+		<description>Perform mirrored matching in user subtree</description>
+		<comment xml:space="preserve">Match objects coming from the remote eDirectory based on relative source location and object name.</comment>
+		<conditions>
+			<and>
+				<if-global-variable mode="nocase" name="drv.publisher.placement.type" op="equal">mirrored</if-global-variable>
+				<if-src-dn op="in-subtree">$drv.remote.dit.data.users$</if-src-dn>
+			</and>
+		</conditions>
+		<actions>
+			<do-find-matching-object scope="entry">
+				<arg-dn>
+					<token-global-variable name="idv.dit.data.users"/>
+					<token-text xml:space="preserve">\</token-text>
+					<token-op-property name="unmatched-src-dn"/>
+				</arg-dn>
+			</do-find-matching-object>
+		</actions>
+	</rule>
+	<rule>
+		<description>Perform mirrored matching in group subtree</description>
+		<comment xml:space="preserve">Match objects coming from the remote eDirectory based on relative source location and object name.</comment>
+		<conditions>
+			<and>
+				<if-global-variable mode="nocase" name="drv.publisher.placement.type" op="equal">mirrored</if-global-variable>
+				<if-src-dn op="in-subtree">$drv.remote.dit.data.groups$</if-src-dn>
+			</and>
+		</conditions>
+		<actions>
+			<do-find-matching-object scope="entry">
+				<arg-dn>
+					<token-global-variable name="idv.dit.data.users"/>
+					<token-text xml:space="preserve">\</token-text>
+					<token-op-property name="unmatched-src-dn"/>
+				</arg-dn>
+			</do-find-matching-object>
+		</actions>
+	</rule>
+</policy>

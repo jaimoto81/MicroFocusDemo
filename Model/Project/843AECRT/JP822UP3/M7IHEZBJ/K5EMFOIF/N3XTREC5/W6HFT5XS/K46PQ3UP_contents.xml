@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?><filter>
+	<filter-class class-name="Country" publisher="sync" subscriber="sync">
+		<filter-attr attr-name="C" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="Description" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="GUID" merge-authority="none" subscriber="sync"/>
+	</filter-class>
+	<filter-class class-name="Group" publisher="sync" subscriber="sync">
+		<filter-attr attr-name="CN" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="Description" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="GUID" merge-authority="none" subscriber="sync"/>
+	</filter-class>
+	<filter-class class-name="Organization" publisher="sync" subscriber="sync">
+		<filter-attr attr-name="Description" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="GUID" merge-authority="none" subscriber="sync"/>
+		<filter-attr attr-name="O" publisher="sync" subscriber="sync"/>
+	</filter-class>
+	<filter-class class-name="Organizational Unit" publisher="sync" subscriber="sync">
+		<filter-attr attr-name="Description" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="GUID" merge-authority="none" subscriber="sync"/>
+		<filter-attr attr-name="OU" publisher="sync" subscriber="sync"/>
+	</filter-class>
+	<filter-class class-name="User" publisher="sync" subscriber="sync">
+		<filter-attr attr-name="assistant" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="assistantPhone" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="businessCategory" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="children" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="city" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="CN" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="co" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="company" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="costCenter" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="costCenterDescription" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="departmentNumber" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="Description" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="directReports" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="EMail Address" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="employeeStatus" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="employeeType" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="Equivalent To Me" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="Facsimile Telephone Number" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="Full Name" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="Generational Qualifier" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="Given Name" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="Group Membership" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="GUID" merge-authority="none" subscriber="sync"/>
+		<filter-attr attr-name="homeCity" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="homeEmailAddress" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="homeFax" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="homePhone" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="homePostalAddress" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="homeState" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="homeZipCode" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="Initials" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="instantMessagingID" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="Internet EMail Address" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="jackNumber" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="jobCode" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="L" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="Language" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="Login Disabled" merge-authority="default" publisher="sync" publisher-optimize-modify="true" subscriber="sync"/>
+		<filter-attr attr-name="Mailbox ID" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="Mailbox Location" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="mailstop" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="manager" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="managerWorkforceID" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="mobile" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="NSCP:employeeNumber" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="O" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="otherPhoneNumber" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="OU" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="pager" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="personalMobile" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="personalTitle" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="photo" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="Physical Delivery Office Name" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="Postal Address" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="Postal Code" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="Postal Office Box" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="preferredDeliveryMethod" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="preferredName" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="registeredAddress" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="roomNumber" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="S" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="SA" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="Security Equals" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="See Also" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="siteLocation" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="spouse" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="Surname" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="Telephone Number" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="teletexTerminalIdentifier" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="telexNumber" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="Timezone" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="Title" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="tollFreePhoneNumber" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="UID" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="uniqueID" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="vehicleInformation" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="workforceID" publisher="sync" subscriber="sync"/>
+		<filter-attr attr-name="DirXML-PasswordSyncStatus" publisher="sync" subscriber="sync"/>
+	</filter-class>
+	<filter-class class-name="domain" publisher="sync" publisher-create-homedir="true" publisher-track-template-member="true" subscriber="sync">
+		<filter-attr attr-name="dc" merge-authority="default" publisher="sync" publisher-optimize-modify="true" subscriber="sync"/>
+		<filter-attr attr-name="GUID" merge-authority="default" publisher="ignore" publisher-optimize-modify="true" subscriber="sync"/>
+		<filter-attr attr-name="Description" merge-authority="default" publisher="sync" publisher-optimize-modify="true" subscriber="sync"/>
+	</filter-class>
+	<filter-class class-name="Locality" publisher="sync" publisher-create-homedir="true" publisher-track-template-member="true" subscriber="sync">
+		<filter-attr attr-name="L" merge-authority="default" publisher="sync" publisher-optimize-modify="true" subscriber="sync"/>
+		<filter-attr attr-name="GUID" merge-authority="default" publisher="ignore" publisher-optimize-modify="true" subscriber="sync"/>
+		<filter-attr attr-name="Description" merge-authority="default" publisher="sync" publisher-optimize-modify="true" subscriber="sync"/>
+	</filter-class>
+</filter>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?><configuration-values>
+	<definitions display-name="Default Configuration">
+		<header display-name="Base Config GCVs"/>
+		<definition display-name="UserName Column" name="column.username" type="string">
+			<description>Provide the exact column name of usr table which store the usernames.</description>
+			<value xml:space="preserve">nombres</value>
+		</definition>
+	</definitions>
+</configuration-values>

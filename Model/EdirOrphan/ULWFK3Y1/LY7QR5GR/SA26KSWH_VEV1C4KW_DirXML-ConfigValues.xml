@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?><configuration-values>
+	<definitions display-name="Publication Mode">
+		<definition display-name="Publication mode:" name="publication-mode" type="enum">
+			<description>Select whether you want to use triggered or triggerless publication.  Triggered publication uses database triggers to capture events and log them in a table.  Triggerless publication derives events by inspecting database tables or views.  Triggered publication is more efficient, but requires substantial database-side configuration.  Triggerless publication is less efficient, but requires minimal database-side configuration.</description>
+			<enum-choice display-name="triggered">_</enum-choice>
+			<enum-choice display-name="triggerless">2</enum-choice>
+			<value>_</value>
+		</definition>
+		<definition display-name="Post polling statements:" name="post-poll-stmt" type="string">
+			<description>Specify the statements, if any, that are executed after an active polling cycle.  This parameter is useful for calling a stored procedure or function that moves processed rows from the event log table into a history table and rebuilds indexes on the event log table.  Use semicolon as the delimiter for multiple values.</description>
+			<value>SELECT direct.proc_directlog();DELETE FROM indirect.indirect_process</value>
+		</definition>
+	</definitions>
+</configuration-values>

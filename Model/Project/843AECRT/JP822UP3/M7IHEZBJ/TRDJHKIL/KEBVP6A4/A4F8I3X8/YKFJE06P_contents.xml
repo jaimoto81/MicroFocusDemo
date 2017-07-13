@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><policy xmlns:query="http://www.novell.com/nxsl/java/com.novell.nds.dirxml.driver.XdsQueryProcessor">
+	<rule>
+		<description>set cached context value on merge</description>
+		<conditions>
+			<and>
+				<if-operation op="equal">modify</if-operation>
+				<if-xpath op="true">@from-merge='true'</if-xpath>
+			</and>
+		</conditions>
+		<actions>
+			<do-add-dest-attr-value name="Object Class">
+				<arg-value type="string">
+					<token-text xml:space="preserve">DirXML-ApplicationAttrs</token-text>
+				</arg-value>
+			</do-add-dest-attr-value>
+			<do-set-dest-attr-value name="DirXML-ADContext">
+				<arg-value type="string">
+					<token-src-dn/>
+				</arg-value>
+			</do-set-dest-attr-value>
+		</actions>
+	</rule>
+	<rule>
+		<description>remove managed attributes when object disassociated</description>
+		<comment>Remove the attributes used to manage the state of the object for this driver when it is disassociated. Since the driver does not maintain the state of a disassociated object, these values are not reliable.</comment>
+		<conditions>
+			<and>
+				<if-operation op="equal">remove-association</if-operation>
+			</and>
+		</conditions>
+		<actions>
+			<do-clear-dest-attr-value name="DirXML-ADAliasName" when="before">
+				<arg-association>
+					<token-xpath expression="./text()"/>
+				</arg-association>
+			</do-clear-dest-attr-value>
+			<do-clear-dest-attr-value name="DirXML-ADContext" when="before">
+				<arg-association>
+					<token-xpath expression="./text()"/>
+				</arg-association>
+			</do-clear-dest-attr-value>
+		</actions>
+	</rule>
+	<rule>
+		<description>Prevent unassociated users from being removed from groups</description>
+		<conditions>
+			<and>
+				<if-operation op="equal">modify</if-operation>
+				<if-class-name op="equal">Group</if-class-name>
+				<if-op-attr name="Member" op="changing"/>
+			</and>
+		</conditions>
+		<actions>
+			<do-for-each>
+				<arg-node-set>
+					<token-removed-attr name="Member"/>
+				</arg-node-set>
+				<arg-actions>
+					<do-set-local-variable name="memberDN">
+						<arg-node-set>
+							<token-local-variable name="current-node"/>
+						</arg-node-set>
+					</do-set-local-variable>
+					<do-for-each>
+						<arg-node-set>
+							<token-xpath expression="query:readObject($destQueryProcessor, '', $memberDN, '', '')[not(association[. != ''])]"/>
+						</arg-node-set>
+						<arg-actions>
+							<do-strip-xpath expression="$memberDN"/>
+						</arg-actions>
+					</do-for-each>
+				</arg-actions>
+			</do-for-each>
+			<do-strip-xpath expression="modify-attr/remove-value[not(value)]"/>
+			<do-strip-xpath expression="modify-attr[not(*)]"/>
+		</actions>
+	</rule>
+	<rule>
+		<description>Set Equivalent To Me when group members change</description>
+		<comment xml:space="preserve">The Identity Vault gives group members the rights of the group by adding the object to the "Equivalent to Me" attribute.</comment>
+		<conditions>
+			<and>
+				<if-class-name mode="case" op="equal">Group</if-class-name>
+				<if-op-attr name="Member" op="changing"/>
+			</and>
+		</conditions>
+		<actions>
+			<do-clone-op-attr dest-name="Equivalent To Me" src-name="Member"/>
+		</actions>
+	</rule>
+</policy>

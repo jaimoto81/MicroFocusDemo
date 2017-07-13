@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?><ds-object ds-object-class="DirXML-Rule" ds-object-name="NOVLPWDSYNC-sub-ctp-CheckPwdGCV" name="NOVLPWDSYNC-sub-ctp-CheckPwdGCV">
+	<ds-attributes>
+		<ds-attribute ds-attr-name="XmlData">
+			<ds-value>
+				<policy>
+					<description>Subscribe to password changes</description>
+					<rule>
+						<description>Block subscribing to passwords when objects are added</description>
+						<conditions>
+							<and>
+								<if-global-variable mode="nocase" name="enable-password-subscribe" op="equal">false</if-global-variable>
+								<if-operation op="equal">add</if-operation>
+							</and>
+						</conditions>
+						<actions>
+							<!-- Remove all password elements from add -->
+							<do-strip-xpath expression="password"/>
+						</actions>
+					</rule>
+					<rule>
+						<description>Block subscribing to password modifications</description>
+						<conditions>
+							<and>
+								<if-global-variable mode="nocase" name="enable-password-subscribe" op="equal">false</if-global-variable>
+								<if-operation op="equal">modify-password</if-operation>
+							</and>
+						</conditions>
+						<actions>
+							<!-- Block all modify-passwords -->
+							<do-veto/>
+						</actions>
+					</rule>
+				</policy>
+			</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-installationdirective">
+			<ds-value>PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48aW5zdGFsbGF0aW9uLWRpcmVjdGl2ZT4KCTxwbGFjZW1lbnQgbG9jYXRpb249InN1YnNjcmliZXIiLz4KCTxkcy1hdHRyaWJ1dGVzLz4KCTxwb2xpY3ktbGlua2FnZS8+CjwvaW5zdGFsbGF0aW9uLWRpcmVjdGl2ZT4=</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-directivechecksum">
+			<ds-value>496379836</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-packageassocguid">
+			<ds-value>YX3KVQAI_201006231802110178</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-packageguid">
+			<ds-value>XTEF1YO3_201006231733410161</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-contentchecksum">
+			<ds-value>1575588694</ds-value>
+		</ds-attribute>
+	</ds-attributes>
+</ds-object>

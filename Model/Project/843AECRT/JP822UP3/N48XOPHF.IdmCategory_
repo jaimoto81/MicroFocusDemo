@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.novell.designer.model:CObject xmlns:com.novell.designer.model="http://com.novell.designer.model" name="Common">
+  <relations name="Idm:CategoryFolders" type="Child" key="#B84JP6VD.IdmCategoryFolder_"/>
+  <relations name="Idm:CategoryFolders" type="Child" key="#FRT7TNQS.IdmCategoryFolder_"/>
+  <relations name="Idm:CategoryFolders" type="Child" key="#6LLTC02Z.IdmCategoryFolder_"/>
+  <relations name="Idm:CategoryFolders" type="Child" key="#4STK0TCE.IdmCategoryFolder_"/>
+  <relations name="Idm:CategoryFolders" type="Child" key="#LDI3WACA.IdmCategoryFolder_"/>
+  <relations name="Idm:CategoryFolders" type="Child" key="#GM75CQRS.IdmCategoryFolder_"/>
+</com.novell.designer.model:CObject>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.novell.designer.model:CObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:com.novell.designer.model="http://com.novell.designer.model" name="JDBC Account Tracking">
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="license"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="change" extension="log"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="readme" extension="txt"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="en" extension="properties"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="de" extension="properties"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="fr" extension="properties"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="ja" extension="properties"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="zh_CN" extension="properties"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="zh_TW" extension="properties"/>
+  <attributes xsi:type="com.novell.designer.model:CBoolean" attrName="Idm:PackageImported" value="true"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:PackageGuid" value="EGP57VZX_201109241829290000"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:PackageVersion" value="2.3.0.20170109130926"/>
+  <attributes xsi:type="com.novell.designer.model:CInteger" attrName="Idm:PackageType" value="2"/>
+  <attributes xsi:type="com.novell.designer.model:CBoolean" attrName="Idm:BasePackage" value="false"/>
+  <attributes xsi:type="com.novell.designer.model:CBoolean" attrName="Idm:Released" value="true"/>
+  <attributes xsi:type="com.novell.designer.model:CLong" attrName="Idm:ContentChecksum" value="1288412349"/>
+  <attributes xsi:type="com.novell.designer.model:CLong" attrName="Idm:DirectiveChecksum" value="3854985048"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:description" value="The JDBC Account Tracking package contains policies and global configuration settings for identity tracking. The add on package enables the monitoring capabilities on the user account status."/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:shortName" value="NOVLJDBCATRK"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:BuildTime" value="20170112190246"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:BuildHost" value="BLR-L-MVIGNESHW"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:BuildUser" value="MVigneshwaran"/>
+  <attributes xsi:type="com.novell.designer.model:CBoolean" attrName="Idm:Protected" value="false"/>
+  <attributes xsi:type="com.novell.designer.model:CBoolean" attrName="Idm:newVersion" value="true"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:CreationTime" value="201701091304400881"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:vendorName" value="NetIQ Corporation"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:vendorURL" value="http://www.netiq.com"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:minIdmVersion" value="4.0.0"/>
+  <attributes xsi:type="com.novell.designer.model:CLong" attrName="Idm:InternalVersion" value="33"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:InstallationDirective" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&lt;installation-directive>&#xA;&#x9;&lt;ds-attributes/>&#xA;&#x9;&lt;dependencies/>&#xA;&#x9;&lt;policy-linkage>&#xA;&#x9;&#x9;&lt;policy-set name=&quot;input&quot; order=&quot;weight&quot; package-id=&quot;WUHJYFNL_201003011427170743&quot; pkg-assoc-id=&quot;QWUH6NV2_201003011535170082&quot; pkg-assoc-name=&quot;NOVLATRKBASE-itp-Publish&quot;/>&#xA;&#x9;&#x9;&lt;policy-set name=&quot;input&quot; order=&quot;weight&quot; package-id=&quot;WUHJYFNL_201003011427170743&quot; pkg-assoc-id=&quot;07ZTKM6Z_201003011536360714&quot; pkg-assoc-name=&quot;NOVLATRKBASE-itp-WriteAccounts&quot;/>&#xA;&#x9;&#x9;&lt;policy-set name=&quot;output&quot; order=&quot;weight&quot; package-id=&quot;WUHJYFNL_201003011427170743&quot; pkg-assoc-id=&quot;DCEHAT9Z_201003011530180801&quot; pkg-assoc-name=&quot;NOVLATRKBASE-otp-Subscribe&quot;/>&#xA;&#x9;&#x9;&lt;policy-set channel=&quot;publisher&quot; name=&quot;command&quot; order=&quot;weight&quot; package-id=&quot;WUHJYFNL_201003011427170743&quot; pkg-assoc-id=&quot;KLTH2XSK_201003011538240658&quot; pkg-assoc-name=&quot;NOVLATRKBASE-pub-ctp-WriteAccountsOnAdds&quot;/>&#xA;&#x9;&lt;/policy-linkage>&#xA;&#x9;&lt;supported-drivers>&#xA;&#x9;&#x9;&lt;definition display-name=&quot;Driver for JDBC DB2&quot; driver-id=&quot;JDBC-DB2-Driver&quot; id=&quot;JDBC&quot;/>&#xA;&#x9;&#x9;&lt;definition display-name=&quot;Driver for JDBC Generic&quot; driver-id=&quot;JDBC-Generic-Driver&quot; id=&quot;JDBC&quot;/>&#xA;&#x9;&#x9;&lt;definition display-name=&quot;Driver for JDBC Informix&quot; driver-id=&quot;JDBC-Informix-Driver&quot; id=&quot;JDBC&quot;/>&#xA;&#x9;&#x9;&lt;definition display-name=&quot;Driver for JDBC MySQL&quot; driver-id=&quot;JDBC-MySQL-Driver&quot; id=&quot;JDBC&quot;/>&#xA;&#x9;&#x9;&lt;definition display-name=&quot;Driver for JDBC Oracle&quot; driver-id=&quot;JDBC-Oracle-Driver&quot; id=&quot;JDBC&quot;/>&#xA;&#x9;&#x9;&lt;definition display-name=&quot;Driver for JDBC Postgres&quot; driver-id=&quot;JDBC-Postgres-Driver&quot; id=&quot;JDBC&quot;/>&#xA;&#x9;&#x9;&lt;definition display-name=&quot;Driver for JDBC SQLServer&quot; driver-id=&quot;JDBC-SQLServer-Driver&quot; id=&quot;JDBC&quot;/>&#xA;&#x9;&#x9;&lt;definition display-name=&quot;Driver for JDBC Sybase&quot; driver-id=&quot;JDBC-Sybase-Driver&quot; id=&quot;JDBC&quot;/>&#xA;&#x9;&lt;/supported-drivers>&#xA;&lt;/installation-directive>"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#56B2AQQE.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#XHT24D5Y.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#S4MN0TMV.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#B1GKCVT8.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#BJ42PJ2E.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#BV0YCSZZ.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#1Z8IYTYY.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#BW1XP2OO.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#3ONZCE72.IdmPackageFolder_"/>
+</com.novell.designer.model:CObject>

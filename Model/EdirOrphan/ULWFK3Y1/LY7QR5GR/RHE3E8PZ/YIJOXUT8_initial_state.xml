@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?><ds-object ds-object-class="DirXML-Rule" ds-object-name="NOVLPWDSYNC-sub-ctp-TransformDistPwd" name="NOVLPWDSYNC-sub-ctp-TransformDistPwd">
+	<ds-attributes>
+		<ds-attribute ds-attr-name="XmlData">
+			<ds-value>
+				<policy>
+					<description>Transform NMAS attribute to password elements</description>
+					<rule>
+						<description>Convert adds of the nspmDistributionPassword attribute to password elements</description>
+						<conditions>
+							<and>
+								<if-operation op="equal">add</if-operation>
+								<if-op-attr name="nspmDistributionPassword" op="available"/>
+							</and>
+						</conditions>
+						<actions>
+							<!-- Change all add-attr elements for the nspmDistributionPassword attribute to password elements-->
+							<do-set-dest-password>
+								<arg-string>
+									<token-xpath expression="add-attr[@attr-name='nspmDistributionPassword']//value"/>
+								</arg-string>
+							</do-set-dest-password>
+							<!-- Remove all add-attr elements for the nspmDistributionPassword attribute -->
+							<do-strip-op-attr name="nspmDistributionPassword"/>
+						</actions>
+					</rule>
+					<rule>
+						<description>Block modifies for failed password publish operations if reset password is false</description>
+						<conditions>
+							<and>
+								<if-global-variable mode="nocase" name="reset-external-password-on-failure" op="equal">false</if-global-variable>
+								<if-operation op="equal">modify</if-operation>
+								<if-xpath op="true">modify-attr[@attr-name='nspmDistributionPassword' and @failed-sync='true']</if-xpath>
+							</and>
+						</conditions>
+						<actions>
+							<!-- Block a password reset -->
+							<do-veto/>
+						</actions>
+					</rule>
+					<rule>
+						<description>Convert modifies of a nspmDistributionPassword attribute to a modify password operation</description>
+						<conditions>
+							<and>
+								<if-operation op="equal">modify</if-operation>
+								<if-op-attr name="nspmDistributionPassword" op="available"/>
+							</and>
+						</conditions>
+						<actions>
+							<!-- Change all modify-attr elements for the nspmDistributionPassword attribute to modify-password elements-->
+							<do-set-dest-password>
+								<arg-string>
+									<token-xpath expression="modify-attr[@attr-name='nspmDistributionPassword']//add-value//value"/>
+								</arg-string>
+							</do-set-dest-password>
+							<!-- Remove all add-attr elements for the nspmDistributionPassword attribute -->
+							<do-if>
+								<arg-conditions>
+									<and>
+										<if-op-attr mode="regex" name="nspmDistributionPassword" op="changing-from">.+</if-op-attr>
+									</and>
+								</arg-conditions>
+								<arg-actions>
+									<do-append-xml-element before="../modify-password/password" expression="../modify-password" name="old-password"/>
+									<do-append-xml-text expression="../modify-password/old-password">
+										<arg-string>
+											<token-removed-attr name="nspmDistributionPassword"/>
+										</arg-string>
+									</do-append-xml-text>
+								</arg-actions>
+							</do-if>
+							<!-- Retain failed-sync status in the modify-password event-->
+							<do-if>
+								<arg-conditions>
+									<and>
+										<if-xpath op="true">modify-attr[@attr-name='nspmDistributionPassword' and @failed-sync='true']</if-xpath>
+									</and>
+								</arg-conditions>
+								<arg-actions>
+									<do-set-xml-attr expression="../modify-password" name="failed-sync">
+										<arg-string>
+											<token-text xml:space="preserve">true</token-text>
+										</arg-string>
+									</do-set-xml-attr>
+								</arg-actions>
+								<arg-actions/>
+							</do-if>
+							<do-strip-op-attr name="nspmDistributionPassword"/>
+							<!-- Add an event-id attribute to the modify-password command we just added, required for operation data -->
+							<do-set-xml-attr expression="../modify-password" name="event-id">
+								<arg-string>
+									<token-text>pwd-subscribe</token-text>
+								</arg-string>
+							</do-set-xml-attr>
+						</actions>
+					</rule>
+					<rule>
+						<description>Block empty modify operations</description>
+						<conditions>
+							<and>
+								<if-operation op="equal">modify</if-operation>
+								<if-xpath op="not-true">modify-attr</if-xpath>
+							</and>
+						</conditions>
+						<actions>
+							<!-- Veto empty modify -->
+							<do-veto/>
+						</actions>
+					</rule>
+				</policy>
+			</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-installationdirective">
+			<ds-value>PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48aW5zdGFsbGF0aW9uLWRpcmVjdGl2ZT4KCTxwbGFjZW1lbnQgbG9jYXRpb249InN1YnNjcmliZXIiLz4KCTxkcy1hdHRyaWJ1dGVzLz4KCTxwb2xpY3ktbGlua2FnZS8+CjwvaW5zdGFsbGF0aW9uLWRpcmVjdGl2ZT4=</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-directivechecksum">
+			<ds-value>496379836</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-packageassocguid">
+			<ds-value>8CK6CZJW_201006231804290701</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-packageguid">
+			<ds-value>XTEF1YO3_201006231733410161</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-contentchecksum">
+			<ds-value>2437770921</ds-value>
+		</ds-attribute>
+	</ds-attributes>
+</ds-object>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<item cn="cn=Role Approval" filename="RoleApproval.prd"
+    hasContainment="false" modstamp="1499820861743" protected="true"
+    readonly="true" type="srvprvRequest"
+        visible="true">
+    <guid>996CBNTC</guid>
+    <display
+        xml:lang="de">Genehmigung der Rollenzuweisung/-zurücknahme</display>
+    <display
+        xml:lang="ru">Утверждение назначения/аннулирования роли</display>
+    <display
+        xml:lang="sv">Godkännande av rolltilldelning/-återkallelse</display>
+    <display
+        xml:lang="pt">Aprovação de Atribuição/Revogação de Função</display>
+    <display
+        xml:lang="zh-TW">角色指定/撤銷核准</display>
+    <display
+        xml:lang="en">Role Assignment/Revocation Approval</display>
+    <display
+        xml:lang="it">Approvazione assegnazione/revoca ruolo</display>
+    <display
+        xml:lang="fr">Approbation d'assignation/révocation de rôle</display>
+    <display
+        xml:lang="zh-CN">角色指派/撤消批准</display>
+    <display
+        xml:lang="es">Aprobación de asignación o revocación de función</display>
+    <display
+        xml:lang="ja">役割の割り当て/取り消しの承認</display>
+    <display
+        xml:lang="da">Godkendelse af rolletildeling/tilbagekaldelse</display>
+    <display
+        xml:lang="nl">Goedkeuring voor roltoewijzing/-intrekking</display>
+    <descr
+        xml:lang="de">Genehmigung der Rollenzuweisung/-zurücknahme</descr>
+    <descr
+        xml:lang="ru">Утверждение назначения/аннулирования роли</descr>
+    <descr
+        xml:lang="sv">Godkännande av rolltilldelning/-återkallelse</descr>
+    <descr
+        xml:lang="pt">Aprovação de Atribuição/Revogação de Função</descr>
+    <descr
+        xml:lang="zh-TW">角色指定/撤銷核准</descr>
+    <descr
+        xml:lang="en">Role Assignment/Revocation Approval</descr>
+    <descr
+        xml:lang="it">Approvazione assegnazione/revoca ruolo</descr>
+    <descr
+        xml:lang="fr">Approbation d'assignation/révocation de rôle</descr>
+    <descr
+        xml:lang="zh-CN">角色指派/撤消批准</descr>
+    <descr
+        xml:lang="es">Aprobación de asignación o revocación de función</descr>
+    <descr
+        xml:lang="ja">役割の割り当て/取り消しの承認</descr>
+    <descr
+        xml:lang="da">Godkendelse af rolletildeling/tilbagekaldelse</descr>
+    <descr xml:lang="nl">Goedkeuring voor roltoewijzing/-intrekking</descr>
+    <keys>
+        <key>nrf</key>
+    </keys>
+    <package-id>B5PAGQ5E_201005261601510810</package-id>
+    <pkg-assoc-id>EKTXBZPQ_201112271032220875</pkg-assoc-id>
+    <pkg-checksum>1830997420</pkg-checksum></item>

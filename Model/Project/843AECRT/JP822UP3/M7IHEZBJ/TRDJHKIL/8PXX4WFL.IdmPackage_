@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.novell.designer.model:CObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:com.novell.designer.model="http://com.novell.designer.model" name="Active Directory Entitlements and Exchange Mailbox Support">
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="license"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="change" extension="log"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="readme" extension="txt"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="ja" extension="properties"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="fr" extension="properties"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="zh_TW" extension="properties"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="zh_CN" extension="properties"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="de" extension="properties"/>
+  <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="en" extension="properties"/>
+  <attributes xsi:type="com.novell.designer.model:CBoolean" attrName="Idm:PackageImported" value="true"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:PackageGuid" value="PJP89Z9R_201003031352370466"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:PackageVersion" value="2.5.2.20151005143003"/>
+  <attributes xsi:type="com.novell.designer.model:CInteger" attrName="Idm:PackageType" value="2"/>
+  <attributes xsi:type="com.novell.designer.model:CBoolean" attrName="Idm:BasePackage" value="false"/>
+  <attributes xsi:type="com.novell.designer.model:CBoolean" attrName="Idm:Released" value="true"/>
+  <attributes xsi:type="com.novell.designer.model:CLong" attrName="Idm:ContentChecksum" value="1277814743"/>
+  <attributes xsi:type="com.novell.designer.model:CLong" attrName="Idm:DirectiveChecksum" value="3100222860"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:description" value="Entitlements implementation and Exchange Mailbox support for the Active Directory driver.&#xA;&#xA;"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:shortName" value="NOVLADENTEX"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:BuildTime" value="20151005143003"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:BuildHost" value="BLR-L-KPANKAJ"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:BuildUser" value="KPankaj"/>
+  <attributes xsi:type="com.novell.designer.model:CBoolean" attrName="Idm:Protected" value="false"/>
+  <attributes xsi:type="com.novell.designer.model:CBoolean" attrName="Idm:newVersion" value="true"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:CreationTime" value="201510051126210461"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:vendorName" value="NetIQ Corporation"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:minIdmVersion" value="4.0.0"/>
+  <attributes xsi:type="com.novell.designer.model:CLong" attrName="Idm:InternalVersion" value="115"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:InstallationDirective" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&lt;installation-directive>&#xA;&#x9;&lt;ds-attributes/>&#xA;&#x9;&lt;policy-linkage>&#xA;&#x9;&#x9;&lt;policy-set channel=&quot;publisher&quot; name=&quot;ecma-script&quot; order=&quot;weight&quot; package-id=&quot;L24GR3S2_201004011133330053&quot; pkg-assoc-id=&quot;AG7O65ME_201004011133540084&quot;/>&#xA;&#x9;&lt;/policy-linkage>&#xA;&#x9;&lt;dependencies>&#xA;&#x9;&#x9;&lt;dependency name=&quot;Advanced Java Class&quot; package-id=&quot;L24GR3S2_201004011133330053&quot; type=&quot;3&quot;/>&#xA;&#x9;&#x9;&lt;dependency name=&quot;Common Settings Advanced Edition&quot; package-id=&quot;9VMR2GM8_201309101410450593&quot; type=&quot;3&quot;/>&#xA;&#x9;&lt;/dependencies>&#xA;&#x9;&lt;supported-drivers>&#xA;&#x9;&#x9;&lt;definition display-name=&quot;Driver for Active Directory&quot; driver-id=&quot;AD-Driver&quot; id=&quot;AD&quot;/>&#xA;&#x9;&lt;/supported-drivers>&#xA;&lt;/installation-directive>"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#13Z7XCGB.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#G0MZIMXI.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#IKCR0ZQT.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#BOP04K53.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#K4V0M9XA.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#BP94WY8W.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#3D1032YI.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#X30ARTL7.IdmPackageFolder_"/>
+  <relations name="Idm:PackageFolders" type="Child" key="#RXLAHYD8.IdmPackageFolder_"/>
+</com.novell.designer.model:CObject>

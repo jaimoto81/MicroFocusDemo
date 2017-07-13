@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?><configuration-values>
+	<definitions>
+		<header display-name="xlfid(NOVLEDIRBASE.idmresource.NOVLEDIRBASEDriverNamePrompt.gcv.header.DriverInformation)Driver Information" driver-name="true"/>
+		<definition display-name="xlfid(NOVLEDIRBASE.idmresource.NOVLEDIRBASEDriverNamePrompt.gcv.name)Driver Name" driver-name="true" mandatory="true" name="name" type="string">
+			<description>xlfid(NOVLEDIRBASE.idmresource.NOVLEDIRBASEDriverNamePrompt.gcv.dscr.name)Enter the driver name.</description>
+			<value>eDirectory Driver</value>
+		</definition>
+	</definitions>
+</configuration-values>

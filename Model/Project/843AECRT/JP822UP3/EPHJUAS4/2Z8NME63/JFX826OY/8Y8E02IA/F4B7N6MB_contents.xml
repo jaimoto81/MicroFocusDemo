@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?><configuration-values>
+	<definitions display-name="SQL Script Info Pmpt">
+		<header display-name="Note:- Please refer the TID:5117930 to get the updated SQL Scripts"/>
+	</definitions>
+	<definition display-name="test1" hide="true" name="test11" type="string">
+		<description>Dummy Text</description>
+		<value>Dummy</value>
+	</definition>
+</configuration-values>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?><configuration-values>
+	<definitions>
+		<header display-name="xlfid(NOVLJDBCMNSI.idmresource.NTQJDBCMSIGeneralInformationPrompts.gcv.header.GeneralInformation)General Information"/>
+		<definition display-name="xlfid(NOVLJDBCMNSI.idmresource.NTQJDBCMSIGeneralInformationPrompts.gcv.msysinfo.drv.ms.name)Name" mandatory="true" name="msysinfo.drv.ms.name" type="string">
+			<description>xlfid(NOVLJDBCMNSI.idmresource.NTQJDBCMSIGeneralInformationPrompts.gcv.dscr.msysinfo.drv.ms.name)Specify a descriptive name for the managed system.</description>
+			<value/>
+		</definition>
+		<definition display-name="xlfid(NOVLJDBCMNSI.idmresource.NTQJDBCMSIGeneralInformationPrompts.gcv.msysinfo.drv.ms.description)Description" multi-line="true" name="msysinfo.drv.ms.description" type="string">
+			<description>xlfid(NOVLJDBCMNSI.idmresource.NTQJDBCMSIGeneralInformationPrompts.gcv.dscr.msysinfo.drv.ms.description)Specify a brief description of the managed system</description>
+			<value/>
+		</definition>
+		<definition display-name="xlfid(NOVLJDBCMNSI.idmresource.NTQJDBCMSIGeneralInformationPrompts.gcv.msysinfo.drv.ms.location)Location" name="msysinfo.drv.ms.location" type="string">
+			<description>xlfid(NOVLJDBCMNSI.idmresource.NTQJDBCMSIGeneralInformationPrompts.gcv.dscr.msysinfo.drv.ms.location)Specify the location of the managed system.</description>
+			<value/>
+		</definition>
+		<group>
+			<definition display-name="xlfid(NOVLJDBCMNSI.idmresource.NTQJDBCMSIGeneralInformationPrompts.gcv.msysinfo.drv.ms.vendor)Vendor" name="msysinfo.drv.ms.vendor" type="enum">
+				<description>xlfid(NOVLJDBCMNSI.idmresource.NTQJDBCMSIGeneralInformationPrompts.gcv.dscr.msysinfo.drv.ms.vendor)Specify the vendor of the managed system.</description>
+				<enum-choice display-name="xlfid(NOVLJDBCMNSI.idmresource.NTQJDBCMSIGeneralInformationPrompts.gcv.choice.msysinfo.drv.ms.vendor.Microsoft)Microsoft">Microsoft</enum-choice>
+				<enum-choice display-name="xlfid(NOVLJDBCMNSI.idmresource.NTQJDBCMSIGeneralInformationPrompts.gcv.choice.msysinfo.drv.ms.vendor.Oracle)Oracle">Oracle</enum-choice>
+				<enum-choice display-name="xlfid(NOVLJDBCMNSI.idmresource.NTQJDBCMSIGeneralInformationPrompts.gcv.choice.msysinfo.drv.ms.vendor.IBM)IBM">IBM</enum-choice>
+				<enum-choice display-name="xlfid(NOVLJDBCMNSI.idmresource.NTQJDBCMSIGeneralInformationPrompts.gcv.choice.msysinfo.drv.ms.vendor.SAP)SAP">SAP</enum-choice>
+				<enum-choice display-name="xlfid(NOVLJDBCMNSI.idmresource.NTQJDBCMSIGeneralInformationPrompts.gcv.choice.msysinfo.drv.ms.vendor.Other..)Other..">Other</enum-choice>
+				<value>Microsoft</value>
+			</definition>
+			<subordinates active-value="Other">
+				<definition display-name="xlfid(NOVLJDBCMNSI.idmresource.NTQJDBCMSIGeneralInformationPrompts.gcv.ms.other.vendor.name)Vendor Name:" name="ms.other.vendor.name" type="string">
+					<description>xlfid(NOVLJDBCMNSI.idmresource.NTQJDBCMSIGeneralInformationPrompts.gcv.dscr.ms.other.vendor.name)Specify the vendor name of the managed system</description>
+					<value/>
+				</definition>
+			</subordinates>
+		</group>
+		<definition display-name="xlfid(NOVLJDBCMNSI.idmresource.NTQJDBCMSIGeneralInformationPrompts.gcv.msysinfo.drv.ms.version)Version" name="msysinfo.drv.ms.version" type="string">
+			<description>xlfid(NOVLJDBCMNSI.idmresource.NTQJDBCMSIGeneralInformationPrompts.gcv.dscr.msysinfo.drv.ms.version)Specify the version of the managed system.</description>
+			<value/>
+		</definition>
+	</definitions>
+</configuration-values>

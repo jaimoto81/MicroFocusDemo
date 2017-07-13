@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?><ds-object ds-object-class="DirXML-Rule" ds-object-name="NOVLPWDSYNC-itp-EmailOnFailedPwdSub" name="NOVLPWDSYNC-itp-EmailOnFailedPwdSub">
+	<ds-attributes>
+		<ds-attribute ds-attr-name="XmlData">
+			<ds-value>
+				<policy>
+					<description>Email notifications for failed password subscriptions</description>
+					<rule>
+						<description>Send e-mail on a failure when subscribing to passwords</description>
+						<conditions>
+							<and>
+								<if-global-variable mode="nocase" name="notify-user-on-password-dist-failure" op="equal">true</if-global-variable>
+								<if-operation op="equal">status</if-operation>
+								<if-xpath op="true">self::status[@level != 'success'][text() != '']/operation-data/password-subscribe-status/association[text() != '']</if-xpath>
+							</and>
+						</conditions>
+						<actions>
+							<do-send-email-from-template notification-dn="cn=security\cn=Default Notification Collection" template-dn="cn=security\cn=Default Notification Collection\cn=Password Set Fail">
+								<arg-string name="UserFullName">
+									<token-dest-attr name="Full Name">
+										<arg-association>
+											<token-xpath expression="self::status/operation-data/password-subscribe-status/association"/>
+										</arg-association>
+									</token-dest-attr>
+								</arg-string>
+								<arg-string name="UserGivenName">
+									<token-dest-attr name="Given Name">
+										<arg-association>
+											<token-xpath expression="self::status/operation-data/password-subscribe-status/association"/>
+										</arg-association>
+									</token-dest-attr>
+								</arg-string>
+								<arg-string name="UserLastName">
+									<token-dest-attr name="Surname">
+										<arg-association>
+											<token-xpath expression="self::status/operation-data/password-subscribe-status/association"/>
+										</arg-association>
+									</token-dest-attr>
+								</arg-string>
+								<arg-string name="ConnectedSystemName">
+									<token-global-variable name="ConnectedSystemName"/>
+								</arg-string>
+								<arg-string name="FailureReason">
+									<token-text/>
+									<token-xpath expression="self::status/child::text()"/>
+								</arg-string>
+								<arg-string name="to">
+									<token-dest-attr name="Internet EMail Address">
+										<arg-association>
+											<token-xpath expression="self::status/operation-data/password-subscribe-status/association"/>
+										</arg-association>
+									</token-dest-attr>
+								</arg-string>
+							</do-send-email-from-template>
+						</actions>
+					</rule>
+					<rule>
+						<description>Send e-mail on failure to reset connected system password using the Identity Vault password</description>
+						<conditions>
+							<and>
+								<if-global-variable mode="nocase" name="notify-user-on-password-dist-failure" op="equal">true</if-global-variable>
+								<if-operation op="equal">status</if-operation>
+								<if-xpath op="true">self::status[@level != 'success']/operation-data/password-reset-status</if-xpath>
+							</and>
+						</conditions>
+						<actions>
+							<do-send-email-from-template notification-dn="cn=security\cn=Default Notification Collection" template-dn="cn=security\cn=Default Notification Collection\cn=Password Reset Fail">
+								<arg-string name="UserFullName">
+									<token-dest-attr name="Full Name">
+										<arg-association>
+											<token-xpath expression="self::status/operation-data/password-reset-status/association"/>
+										</arg-association>
+									</token-dest-attr>
+								</arg-string>
+								<arg-string name="UserGivenName">
+									<token-dest-attr name="Given Name">
+										<arg-association>
+											<token-xpath expression="self::status/operation-data/password-reset-status/association"/>
+										</arg-association>
+									</token-dest-attr>
+								</arg-string>
+								<arg-string name="UserLastName">
+									<token-dest-attr name="Surname">
+										<arg-association>
+											<token-xpath expression="self::status/operation-data/password-reset-status/association"/>
+										</arg-association>
+									</token-dest-attr>
+								</arg-string>
+								<arg-string name="ConnectedSystemName">
+									<token-global-variable name="ConnectedSystemName"/>
+								</arg-string>
+								<arg-string name="FailureReason">
+									<token-text/>
+									<token-xpath expression="self::status/child::text()"/>
+								</arg-string>
+								<arg-string name="to">
+									<token-dest-attr name="Internet EMail Address">
+										<arg-association>
+											<token-xpath expression="self::status/operation-data/password-reset-status/association"/>
+										</arg-association>
+									</token-dest-attr>
+								</arg-string>
+							</do-send-email-from-template>
+						</actions>
+					</rule>
+				</policy>
+			</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-installationdirective">
+			<ds-value>PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48aW5zdGFsbGF0aW9uLWRpcmVjdGl2ZT4KCTxwbGFjZW1lbnQgbG9jYXRpb249ImRlZmF1bHQiLz4KCTxkcy1hdHRyaWJ1dGVzLz4KCTxwb2xpY3ktbGlua2FnZS8+CjwvaW5zdGFsbGF0aW9uLWRpcmVjdGl2ZT4=</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-directivechecksum">
+			<ds-value>3757137401</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-packageassocguid">
+			<ds-value>P3E27K73_201006231751340034</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-packageguid">
+			<ds-value>XTEF1YO3_201006231733410161</ds-value>
+		</ds-attribute>
+		<ds-attribute ds-attr-name="idm-contentchecksum">
+			<ds-value>1083959102</ds-value>
+		</ds-attribute>
+	</ds-attributes>
+</ds-object>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><configuration-values>
+	<definitions>
+		<header display-name="xlfid(NOVLADENTEX.idmresource.PermissionNameToFilePrompt.gcv.header.EntitlementNametoCSVFileMappings)Entitlement Name to CSV File Mappings"/>
+		<definition display-name="xlfid(NOVLADENTEX.idmresource.PermissionNameToFilePrompt.gcv.NameToFileMapping)Add Name to file mapping" instance-separator="&#xa;" name="NameToFileMapping" type="structured" value-separator=",">
+			<template>
+				<definition display-name="Entitlement Name" name="entitlementName" type="string">
+					<description>Entitlement name</description>
+					<value/>
+				</definition>
+				<definition display-name="Entitlement Assignment Attribute" name="assignmentAttribute" type="string">
+					<description>Name of attribute containing Entitlement values</description>
+					<value/>
+				</definition>
+				<definition display-name="CSV File" name="csvFile" type="string">
+					<description>Path to csv file on local system</description>
+					<value/>
+				</definition>
+				<definition display-name="Multi-valued?" name="multivalued" type="string">
+					<description>Can multiple values be assigned for this entitlement? ('true' or 'false')</description>
+					<value>true</value>
+				</definition>
+			</template>
+			<value/>
+			<description>xlfid(NOVLADENTEX.idmresource.PermissionNameToFilePrompt.gcv.dscr.NameToFileMapping)Add a value for each entitlement and assignment attribute, and specify the associated CSV file by selecting the '+' button. </description>
+		</definition>
+	</definitions>
+</configuration-values>

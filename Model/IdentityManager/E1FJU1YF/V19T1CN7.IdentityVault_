@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.novell.designer.model:CObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:com.novell.designer.model="http://com.novell.designer.model" name="MICROFOCUS-TREE" type="IdentityVault">
+  <attributes xsi:type="com.novell.designer.model:CStructure" attrName="ContactInfo"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="IdentityVaultHost" value="192.168.10.249"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="IdentityVaultUsername" value="cn=admin,ou=sa,o=services"/>
+  <attributes xsi:type="com.novell.designer.model:CBoolean" attrName="IdentityVaultSavePassword" value="true"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="IdentityVaultPassword" value="^[]jBbM22xs"/>
+  <attributes xsi:type="com.novell.designer.model:CBoolean" attrName="IdentityVaultPkgBuilderEnabled" value="false"/>
+  <relations name="Idm:DriverSets" type="ContainedReference" key="#ULWFK3Y1.DriverSet_"/>
+  <relations name="Idm:InstalledPackages" type="Reference" key="#KGADSKCO.IdmPackage_"/>
+  <relations name="Idm:Schema" type="Child" key="#5XXDXWI6.SchemaDef_"/>
+  <relations name="Idm:Servers" type="ContainedReference" key="#VEV1C4KW.Server_"/>
+  <relations name="Idm:TemplateCollections" type="ContainedReference" key="#YJA74HZJ.NotfTemplateCollection_"/>
+</com.novell.designer.model:CObject>

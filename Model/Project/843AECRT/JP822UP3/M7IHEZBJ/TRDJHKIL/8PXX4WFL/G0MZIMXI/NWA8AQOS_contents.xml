@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?><mapping-table>
+	<col-def name="entitlementName" type="case"/>
+	<col-def name="entitlementDN" type="case"/>
+	<col-def name="resourceDN" type="case"/>
+	<col-def name="csvFile" type="case"/>
+	<col-def name="multivalued" type="case"/>
+	<col-def name="assignmentAttribute" type="case"/>
+</mapping-table>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.novell.designer.model:CObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:com.novell.designer.model="http://com.novell.designer.model" name="linux-g1a2">
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="ServerEngineID" value="4.5.4"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="ServerEDirID" value="8.8"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="ServerContext" value="ou=servers,o=services"/>
+  <attributes xsi:type="com.novell.designer.model:CInteger" attrName="ServerEngineEdition" value="3"/>
+  <attributes xsi:type="com.novell.designer.model:CInteger" attrName="ServerEnginePatchRevision" value="0"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="ServerEngineBuild" value="0"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="ServerEDirVersion" value="eDirectory for Linux x86_64 v9.0.3 [DS]"/>
+  <relations name="Idm:DriverSets" type="BackReference" key="#ULWFK3Y1.DriverSet_"/>
+  <relations name="Idm:IdentityVaults" type="BackReference" key="#V19T1CN7.IdentityVault_"/>
+  <relations name="Idm:JobServerRefs" type="BackReference" key="#IM662UIR.Job_"/>
+  <relations name="Idm:Jobs" type="Reference" key="#IM662UIR.Job_"/>
+</com.novell.designer.model:CObject>

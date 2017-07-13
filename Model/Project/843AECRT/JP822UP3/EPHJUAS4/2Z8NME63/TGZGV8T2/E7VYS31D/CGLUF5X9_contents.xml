@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><attr-name-map>
+	<class-name>
+		<nds-name>Group</nds-name>
+		<app-name>indirect.grp</app-name>
+	</class-name>
+	<class-name>
+		<nds-name>User</nds-name>
+		<app-name>indirect.usr</app-name>
+	</class-name>
+	<attr-name class-name="User">
+		<nds-name>Given Name</nds-name>
+		<app-name>fname</app-name>
+	</attr-name>
+	<attr-name class-name="User">
+		<nds-name>Surname</nds-name>
+		<app-name>lname</app-name>
+	</attr-name>
+	<attr-name class-name="User">
+		<nds-name>Password Expiration Time</nds-name>
+		<app-name>pwdexptime</app-name>
+	</attr-name>
+	<attr-name class-name="User">
+		<nds-name>jpegPhoto</nds-name>
+		<app-name>photo</app-name>
+	</attr-name>
+	<attr-name class-name="User">
+		<nds-name>Password Minimum Length</nds-name>
+		<app-name>pwdminlen</app-name>
+	</attr-name>
+	<attr-name class-name="User">
+		<nds-name>Facsimile Telephone Number</nds-name>
+		<app-name>usr_fax.faxno</app-name>
+	</attr-name>
+	<attr-name class-name="User">
+		<nds-name>Telephone Number</nds-name>
+		<app-name>usr_phone.phoneno</app-name>
+	</attr-name>
+	<attr-name class-name="User">
+		<nds-name>Login Disabled</nds-name>
+		<app-name>disabled</app-name>
+	</attr-name>
+	<attr-name class-name="User">
+		<nds-name>Group Membership</nds-name>
+		<app-name>usr_mbr_of.idg</app-name>
+	</attr-name>
+	<attr-name class-name="User">
+		<nds-name>manager</nds-name>
+		<app-name>manager</app-name>
+	</attr-name>
+	<attr-name class-name="Group">
+		<nds-name>Owner</nds-name>
+		<app-name>grp_owner.idu</app-name>
+	</attr-name>
+	<attr-name class-name="Group">
+		<nds-name>Member</nds-name>
+		<app-name>grp_member.idu</app-name>
+	</attr-name>
+</attr-name-map>

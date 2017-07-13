@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?><xsl:stylesheet exclude-result-prefixes="query cmd dncv" version="1.0" xmlns:cmd="http://www.novell.com/nxsl/java/com.novell.nds.dirxml.driver.XdsCommandProcessor" xmlns:dncv="http://www.novell.com/nxsl/java/com.novell.nds.dirxml.driver.DNConverter" xmlns:es="http://www.novell.com/nxsl/ecmascript" xmlns:query="http://www.novell.com/nxsl/java/com.novell.nds.dirxml.driver.XdsQueryProcessor" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+	<!-- parameters passed in from the DirXML engine -->
+	<xsl:param name="srcQueryProcessor"/>
+	<xsl:param name="destQueryProcessor"/>
+	<xsl:param name="srcCommandProcessor"/>
+	<xsl:param name="destCommandProcessor"/>
+	<xsl:param name="dnConverter"/>
+	<xsl:param name="fromNds"/>
+	<!-- identity transformation template -->
+	<!-- in the absence of any other templates this will cause -->
+	<!-- the stylesheet to copy the input through unchanged to the output -->
+	<xsl:template match="node()|@*">
+		<xsl:copy>
+			<xsl:apply-templates select="@*|node()"/>
+		</xsl:copy>
+	</xsl:template>
+	<xsl:template name="getGroupIdValue">
+		<xsl:param name="idgStr"/>
+		<xsl:choose>
+			<xsl:when test="'~drv.entitlement.format.Account~' = 'idm4'">
+				<xsl:value-of select="es:getIDM4EntParamField($idgStr, 'ID')"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$idgStr"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	<!-- The Template to add Group Entitlement to Users. The JDBC Insert and Delete Statements are constructed -->
+	<!-- based on the number of group entitlements granted to user. The statements will be added to the XDS event -->
+	<!-- and finally executed by the JDBC Driver. -->
+	<xsl:template match="input/modify[@class-name='User']">
+		<xsl:copy>
+			<xsl:apply-templates select="node() | @*"/>
+		</xsl:copy>
+		<xsl:if test="operation-data[@groupAddAction='groupModifyByEntitlementAdd']">
+			<xsl:variable name="var-IDU" select="./operation-data/@Entitlement-IDU"/>
+			<xsl:for-each select="operation-data/entitlement-impl[@name='Group']">
+				<xsl:variable name="state" select="./@state"/>
+				<xsl:if test="$state = 1">
+					<xsl:variable name="idg">
+						<xsl:call-template name="getGroupIdValue">
+							<xsl:with-param name="idgStr" select="./text()"/>
+						</xsl:call-template>
+					</xsl:variable>
+					<xsl:if test="fn:string-length($idg) > 0 and fn:number($idg) and fn:string-length($var-IDU) > 0 and fn:number($var-IDU)">
+						<jdbc:statement event-id="100" jdbc:op-id="100" jdbc:transaction-id="0" jdbc:transaction-type="manual" xmlns:exslt="http://exslt.org/common" xmlns:jdbc="urn:dirxml:jdbc">
+							<jdbc:sql>
+								<xsl:text>INSERT INTO </xsl:text>
+								<xsl:text>indirect.grp_member</xsl:text>
+								<xsl:text>(idg,idu) VALUES(</xsl:text>
+								<xsl:value-of select="$idg"/>
+								<xsl:text>,</xsl:text>
+								<xsl:value-of select="$var-IDU"/>
+								<xsl:text>)</xsl:text>
+							</jdbc:sql>
+						</jdbc:statement>
+						<jdbc:statement event-id="100" jdbc:op-id="100" jdbc:transaction-id="0" jdbc:transaction-type="manual" xmlns:exslt="http://exslt.org/common" xmlns:jdbc="urn:dirxml:jdbc">
+							<jdbc:sql>
+								<xsl:text>INSERT INTO </xsl:text>
+								<xsl:text>indirect.usr_mbr_of</xsl:text>
+								<xsl:text>(idg,idu) VALUES(</xsl:text>
+								<xsl:value-of select="$idg"/>
+								<xsl:text>,</xsl:text>
+								<xsl:value-of select="$var-IDU"/>
+								<xsl:text>)</xsl:text>
+							</jdbc:sql>
+						</jdbc:statement>
+					</xsl:if>
+				</xsl:if>
+			</xsl:for-each>
+		</xsl:if>
+		<xsl:if test="operation-data[@groupDeleteAction='groupModifyByEntitlementDelete']">
+			<xsl:variable name="var-IDU" select="./operation-data/@Entitlement-IDU"/>
+			<xsl:for-each select="operation-data/entitlement-impl[@name='Group']">
+				<xsl:variable name="state" select="./@state"/>
+				<xsl:if test="$state = 0">
+					<xsl:variable name="idg">
+						<xsl:call-template name="getGroupIdValue">
+							<xsl:with-param name="idgStr" select="./text()"/>
+						</xsl:call-template>
+					</xsl:variable>
+					<xsl:if test="fn:string-length($idg) > 0 and fn:number($idg)">
+						<jdbc:statement event-id="100" jdbc:op-id="100" jdbc:transaction-id="0" jdbc:transaction-type="manual" xmlns:exslt="http://exslt.org/common" xmlns:jdbc="urn:dirxml:jdbc">
+							<jdbc:sql>
+								<xsl:text>DELETE FROM </xsl:text>
+								<xsl:text>indirect.grp_member</xsl:text>
+								<xsl:text> WHERE idg = </xsl:text>
+								<xsl:value-of select="$idg"/>
+								<xsl:text> AND idu = </xsl:text>
+								<xsl:value-of select="$var-IDU"/>
+							</jdbc:sql>
+						</jdbc:statement>
+						<jdbc:statement event-id="100" jdbc:op-id="100" jdbc:transaction-id="0" jdbc:transaction-type="manual" xmlns:exslt="http://exslt.org/common" xmlns:jdbc="urn:dirxml:jdbc">
+							<jdbc:sql>
+								<xsl:text>DELETE FROM </xsl:text>
+								<xsl:text>indirect.usr_mbr_of</xsl:text>
+								<xsl:text> WHERE idg = </xsl:text>
+								<xsl:value-of select="$idg"/>
+								<xsl:text> AND idu = </xsl:text>
+								<xsl:value-of select="$var-IDU"/>
+							</jdbc:sql>
+						</jdbc:statement>
+					</xsl:if>
+				</xsl:if>
+			</xsl:for-each>
+		</xsl:if>
+	</xsl:template>
+	<xsl:template match="input/add[@class-name='User']">
+		<xsl:copy>
+			<xsl:apply-templates select="node() | @*"/>
+		</xsl:copy>
+		<xsl:if test="operation-data[@groupAddAction='groupModifyByEntitlementAdd']">
+			<xsl:for-each select="operation-data/entitlement-impl[@name='Group']">
+				<xsl:variable name="state" select="./@state"/>
+				<xsl:if test="$state = 1">
+					<xsl:variable name="idg">
+						<xsl:call-template name="getGroupIdValue">
+							<xsl:with-param name="idgStr" select="./text()"/>
+						</xsl:call-template>
+					</xsl:variable>
+					<xsl:if test="fn:string-length($idg) > 0 and fn:number($idg)">
+						<jdbc:statement event-id="100" jdbc:op-id="100" jdbc:transaction-id="0" jdbc:transaction-type="manual" xmlns:exslt="http://exslt.org/common" xmlns:jdbc="urn:dirxml:jdbc">
+							<jdbc:sql>
+								<xsl:text>INSERT INTO </xsl:text>
+								<xsl:text>indirect.grp_member</xsl:text>
+								<xsl:text>(idg,idu) VALUES(</xsl:text>
+								<xsl:value-of select="$idg"/>
+								<xsl:text>,</xsl:text>
+								<xsl:text>{$</xsl:text>
+								<xsl:text>idu</xsl:text>
+								<xsl:text>}</xsl:text>
+								<xsl:text>)</xsl:text>
+							</jdbc:sql>
+						</jdbc:statement>
+						<jdbc:statement event-id="100" jdbc:op-id="100" jdbc:transaction-id="0" jdbc:transaction-type="manual" xmlns:exslt="http://exslt.org/common" xmlns:jdbc="urn:dirxml:jdbc">
+							<jdbc:sql>
+								<xsl:text>INSERT INTO </xsl:text>
+								<xsl:text>indirect.usr_mbr_of</xsl:text>
+								<xsl:text>(idg,idu) VALUES(</xsl:text>
+								<xsl:value-of select="$idg"/>
+								<xsl:text>,</xsl:text>
+								<xsl:text>{$</xsl:text>
+								<xsl:text>idu</xsl:text>
+								<xsl:text>}</xsl:text>
+								<xsl:text>)</xsl:text>
+							</jdbc:sql>
+						</jdbc:statement>
+					</xsl:if>
+				</xsl:if>
+			</xsl:for-each>
+		</xsl:if>
+		<xsl:if test="operation-data[@groupDeleteAction='groupModifyByEntitlementDelete']">
+			<xsl:for-each select="operation-data/entitlement-impl[@name='Group']">
+				<xsl:variable name="state" select="./@state"/>
+				<xsl:if test="$state = 0">
+					<xsl:variable name="idg">
+						<xsl:call-template name="getGroupIdValue">
+							<xsl:with-param name="idgStr" select="./text()"/>
+						</xsl:call-template>
+					</xsl:variable>
+					<xsl:if test="fn:string-length($idg) > 0 and fn:number($idg)">
+						<jdbc:statement event-id="100" jdbc:op-id="100" jdbc:transaction-id="0" jdbc:transaction-type="manual" xmlns:exslt="http://exslt.org/common" xmlns:jdbc="urn:dirxml:jdbc">
+							<jdbc:sql>
+								<xsl:text>DELETE FROM </xsl:text>
+								<xsl:text>indirect.grp_member</xsl:text>
+								<xsl:text> WHERE idg = </xsl:text>
+								<xsl:value-of select="$idg"/>
+								<xsl:text> AND idu = </xsl:text>
+								<xsl:text>{$</xsl:text>
+								<xsl:text>idu</xsl:text>
+								<xsl:text>}</xsl:text>
+							</jdbc:sql>
+						</jdbc:statement>
+						<jdbc:statement event-id="100" jdbc:op-id="100" jdbc:transaction-id="0" jdbc:transaction-type="manual" xmlns:exslt="http://exslt.org/common" xmlns:jdbc="urn:dirxml:jdbc">
+							<jdbc:sql>
+								<xsl:text>DELETE FROM </xsl:text>
+								<xsl:text>indirect.usr_mbr_of</xsl:text>
+								<xsl:text> WHERE idg = </xsl:text>
+								<xsl:value-of select="$idg"/>
+								<xsl:text> AND idu = </xsl:text>
+								<xsl:text>{$</xsl:text>
+								<xsl:text>idu</xsl:text>
+								<xsl:text>}</xsl:text>
+							</jdbc:sql>
+						</jdbc:statement>
+					</xsl:if>
+				</xsl:if>
+			</xsl:for-each>
+		</xsl:if>
+	</xsl:template>
+</xsl:stylesheet>

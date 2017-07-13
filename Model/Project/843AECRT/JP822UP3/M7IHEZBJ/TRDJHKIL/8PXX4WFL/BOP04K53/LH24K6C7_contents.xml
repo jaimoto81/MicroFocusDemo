@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?><policy>
+	<rule>
+		<description>Handle Entitlement Refresh Queries for Extended Entitlements</description>
+		<conditions>
+			<or>
+				<if-operation mode="case" op="equal">query</if-operation>
+			</or>
+			<or>
+				<if-xml-attr mode="nocase" name="class-name" op="equal">Entitlement</if-xml-attr>
+			</or>
+		</conditions>
+		<actions>
+			<!--
+			initialize local variable 'resXml' with the contents of a query reply
+			-->
+			<do-set-xml-attr expression="." name="event-id">
+				<arg-string>
+					<token-text xml:space="preserve">ENTITLEMENT:</token-text>
+					<token-local-variable name="entValuesId"/>
+					<token-xpath expression="$current-op/search-class/@class-name"/>
+				</arg-string>
+			</do-set-xml-attr>
+			<!--
+			set local variable 'valuesXml' with resource DirXML-Data content
+			-->
+		</actions>
+	</rule>
+</policy>

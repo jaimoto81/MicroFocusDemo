@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?><policy>
+	<description>A set of rules that are executed when any one of the user name mapping options are selected.</description>
+	<rule>
+		<description>consider user objects when name mapping is enabled</description>
+		<comment xml:space="preserve">Skip processing if event is not of interest to name mapping policy.</comment>
+		<conditions>
+			<and>
+				<if-class-name mode="case" op="not-equal">User</if-class-name>
+			</and>
+			<and>
+				<if-global-variable mode="case" name="FullNameMap" op="equal">false</if-global-variable>
+				<if-global-variable mode="case" name="LogonNameMap" op="equal">false</if-global-variable>
+				<if-global-variable mode="case" name="UpnMap" op="equal">none</if-global-variable>
+			</and>
+		</conditions>
+		<actions>
+			<do-break/>
+		</actions>
+	</rule>
+	<rule>
+		<description>generate full name on merge</description>
+		<comment xml:space="preserve">Full name policy: This policy option requires a Full Name in the Identity Vault to be used as the object name in Active Directory. If one is not present during a merge operation, generate it by concatenating Given Name (if present) with Surname.</comment>
+		<conditions>
+			<and>
+				<if-global-variable mode="case" name="FullNameMap" op="equal">true</if-global-variable>
+				<if-xpath op="true">.[@from-merge='true']</if-xpath>
+				<if-attr name="Full Name" op="not-available"/>
+			</and>
+		</conditions>
+		<actions>
+			<do-set-local-variable name="gen-full-name">
+				<arg-string>
+					<token-escape-for-dest-dn>
+						<token-src-attr name="Given Name"/>
+						<token-text xml:space="preserve"> </token-text>
+						<token-src-attr name="Surname"/>
+					</token-escape-for-dest-dn>
+				</arg-string>
+			</do-set-local-variable>
+			<do-set-local-variable name="gen-full-name-normalized">
+				<arg-string>
+					<token-xpath expression="normalize-space($gen-full-name)"/>
+				</arg-string>
+			</do-set-local-variable>
+			<do-add-src-attr-value name="Full Name">
+				<arg-value>
+					<token-local-variable name="gen-full-name-normalized"/>
+				</arg-value>
+			</do-add-src-attr-value>
+			<do-set-dest-attr-value name="Full Name">
+				<arg-value>
+					<token-local-variable name="gen-full-name-normalized"/>
+				</arg-value>
+			</do-set-dest-attr-value>
+		</actions>
+	</rule>
+	<rule>
+		<description>map full name to destination object name</description>
+		<comment xml:space="preserve">Full name policy: Keep destination object name in sync when Full Name changes.</comment>
+		<conditions>
+			<and>
+				<if-global-variable mode="case" name="FullNameMap" op="equal">true</if-global-variable>
+				<if-operation op="equal">modify</if-operation>
+				<if-op-attr name="Full Name" op="available"/>
+			</and>
+		</conditions>
+		<actions>
+			<do-rename-dest-object when="after">
+				<arg-string>
+					<token-escape-for-dest-dn>
+						<token-op-attr name="Full Name"/>
+					</token-escape-for-dest-dn>
+				</arg-string>
+			</do-rename-dest-object>
+		</actions>
+	</rule>
+	<rule>
+		<description>escape source object name</description>
+		<comment xml:space="preserve">Logon name policy: Remove characters unsuitable for Active Directory logon name from source object name.</comment>
+		<conditions>
+			<and>
+				<if-operation op="equal">rename</if-operation>
+			</and>
+		</conditions>
+		<actions>
+			<do-set-local-variable name="object-name">
+				<arg-string>
+					<token-replace-all regex="[^a-zA-Z0-9\x21\x23-\x29\x2d\x2e\x40\x5e-\x60\x7b\x7d\x7e\xc0-\xf6\xf8-\xff\u0410-\u044f]" replace-with="">
+						<token-src-name/>
+					</token-replace-all>
+				</arg-string>
+			</do-set-local-variable>
+		</actions>
+	</rule>
+	<rule>
+		<description>map rename to NT logon name</description>
+		<comment xml:space="preserve">Logon name policy: Keep destination sAMAccountName in sync with source object name.</comment>
+		<conditions>
+			<and>
+				<if-global-variable mode="case" name="LogonNameMap" op="equal">true</if-global-variable>
+				<if-operation op="equal">rename</if-operation>
+			</and>
+		</conditions>
+		<actions>
+			<do-set-dest-attr-value name="CN">
+				<arg-value>
+					<token-substring length="20">
+						<token-local-variable name="object-name"/>
+					</token-substring>
+				</arg-value>
+			</do-set-dest-attr-value>
+		</actions>
+	</rule>
+	<rule>
+		<description>map rename to Active Directory logon name</description>
+		<comment xml:space="preserve">Active Directory logon name  (userPrincipalName) policy: keep destination userPrincipalName in sync with source object name.</comment>
+		<conditions>
+			<and>
+				<if-global-variable mode="case" name="UpnMap" op="equal">edir-name-auth</if-global-variable>
+				<if-operation op="equal">rename</if-operation>
+			</and>
+		</conditions>
+		<actions>
+			<do-set-dest-attr-value name="DirXML-ADAliasName">
+				<arg-value>
+					<token-local-variable name="object-name"/>
+					<token-text xml:space="preserve">@</token-text>
+					<token-global-variable name="drv.domain.dns.name"/>
+				</arg-value>
+			</do-set-dest-attr-value>
+			<do-set-src-attr-value name="DirXML-ADAliasName">
+				<arg-value>
+					<token-local-variable name="object-name"/>
+					<token-text xml:space="preserve">@</token-text>
+					<token-global-variable name="drv.domain.dns.name"/>
+				</arg-value>
+			</do-set-src-attr-value>
+		</actions>
+	</rule>
+	<rule>
+		<description>map e-mail address to Active Directory logon name</description>
+		<comment>Active Directory logon name (userPrincipalName) policy</comment>
+		<conditions>
+			<and>
+				<if-global-variable mode="case" name="UpnMap" op="equal">edir-mail-auth</if-global-variable>
+				<if-op-attr name="Internet EMail Address" op="available"/>
+			</and>
+		</conditions>
+		<actions>
+			<do-set-dest-attr-value name="DirXML-ADAliasName">
+				<arg-value>
+					<token-attr name="Internet EMail Address"/>
+				</arg-value>
+			</do-set-dest-attr-value>
+			<do-set-src-attr-value name="DirXML-ADAliasName">
+				<arg-value>
+					<token-attr name="Internet EMail Address"/>
+				</arg-value>
+			</do-set-src-attr-value>
+		</actions>
+	</rule>
+	<rule>
+		<description>unmap e-mail address from Active Directory logon name</description>
+		<comment>Active Directory logon name (userPrincipalName) policy</comment>
+		<conditions>
+			<and>
+				<if-global-variable mode="case" name="UpnMap" op="equal">edir-mail-auth</if-global-variable>
+				<if-op-attr mode="regex" name="Internet EMail Address" op="changing-from">.+</if-op-attr>
+			</and>
+		</conditions>
+		<actions>
+			<do-remove-dest-attr-value name="DirXML-ADAliasName">
+				<arg-value>
+					<token-removed-attr name="Internet EMail Address"/>
+				</arg-value>
+			</do-remove-dest-attr-value>
+			<do-remove-src-attr-value name="DirXML-ADAliasName">
+				<arg-value>
+					<token-removed-attr name="Internet EMail Address"/>
+				</arg-value>
+			</do-remove-src-attr-value>
+		</actions>
+	</rule>
+	<rule>
+		<description>map e-mail address to Active Directory logon name on merge</description>
+		<conditions>
+			<and>
+				<if-global-variable mode="case" name="UpnMap" op="equal">edir-mail-auth</if-global-variable>
+				<if-xpath op="true">.[@from-merge='true']</if-xpath>
+				<if-op-attr name="Internet EMail Address" op="not-available"/>
+				<if-src-attr name="Internet EMail Address" op="available"/>
+			</and>
+		</conditions>
+		<actions>
+			<do-set-dest-attr-value name="DirXML-ADAliasName">
+				<arg-value>
+					<token-src-attr name="Internet EMail Address"/>
+				</arg-value>
+			</do-set-dest-attr-value>
+			<do-set-src-attr-value name="DirXML-ADAliasName">
+				<arg-value>
+					<token-src-attr name="Internet EMail Address"/>
+				</arg-value>
+			</do-set-src-attr-value>
+		</actions>
+	</rule>
+	<rule>
+		<description>unmap e-mail address from Active Directory logon name on merge</description>
+		<conditions>
+			<and>
+				<if-global-variable mode="case" name="UpnMap" op="equal">edir-mail-auth</if-global-variable>
+				<if-xpath op="true">.[@from-merge='true']</if-xpath>
+				<if-op-attr name="Internet EMail Address" op="not-available"/>
+				<if-src-attr name="Internet EMail Address" op="not-available"/>
+			</and>
+		</conditions>
+		<actions>
+			<do-clear-dest-attr-value name="DirXML-ADAliasName"/>
+		</actions>
+	</rule>
+	<rule>
+		<description>discard unwanted renames</description>
+		<comment xml:space="preserve">When mapping Full Name, the original rename is vetoed after all rename-triggered policy completes.</comment>
+		<conditions>
+			<and>
+				<if-global-variable mode="case" name="FullNameMap" op="equal">true</if-global-variable>
+				<if-operation op="equal">rename</if-operation>
+			</and>
+		</conditions>
+		<actions>
+			<do-veto/>
+		</actions>
+	</rule>
+</policy>

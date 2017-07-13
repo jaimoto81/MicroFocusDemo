@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><entitlement conflict-resolution="union" description="The User Account entitlement grants or denies an account in Active Directory for the user. When granted, the user is given an enabled logon account. When revoked, the logon account is either disabled or deleted depeding on how the drive is configured." display-name="User Account Entitlement">
+	<values multi-valued="false">
+		<query-app>
+			<query-xml>
+				<nds dtdversion="2.0">
+					<input>
+						<query class-name="ADDomain" scope="subtree">
+							<search-class class-name="ADDomain"/>
+							<read-attr attr-name="ADDomainValue"/>
+							<read-attr attr-name="ADDomainDisplayName"/>
+							<read-attr attr-name="ADDomainDescription"/>
+						</query>
+					</input>
+				</nds>
+			</query-xml>
+			<result-set>
+				<display-name>
+					<token-attr attr-name="ADDomainDisplayName"/>
+				</display-name>
+				<description>
+					<token-attr attr-name="ADDomainDescription"/>
+				</description>
+				<ent-value>
+					<token-attr attr-name="ADDomainValue"/>
+				</ent-value>
+			</result-set>
+		</query-app>
+	</values>
+</entitlement>

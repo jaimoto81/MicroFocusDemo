@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?><configuration-values>
+	<definitions>
+		<header display-name="xlfid(NOVLADBASE.idmresource.NOVLADBASEConnectionPrompts.gcv.header.AuthenticationParameters)Authentication Parameters"/>
+		<definition display-name="xlfid(NOVLADBASE.idmresource.NOVLADBASEConnectionPrompts.gcv.shim-auth-id)Authentication ID" mandatory="true" name="shim-auth-id" type="string">
+			<description>xlfid(NOVLADBASE.idmresource.NOVLADBASEConnectionPrompts.gcv.dscr.shim-auth-id)Specify an Active Directory account with administrative privileges for Identity Manager to use. This value is used to set an initial value for the [Authentication ID] driver configuration parameter. Several name forms can be used, depending on the authentication method selected.
+
+For example: 
+
+Use these forms with Negotiate:
+- Administrator - NT Logon Name.
+- Domain/Administrator - Domain qualified NT Logon Name.
+
+Use this form with Simple:
+- CN=IDM,CN=Users,DC=domain,DC=com - LDAP Distinguished Name.</description>
+			<value/>
+		</definition>
+		<definition display-name="xlfid(NOVLADBASE.idmresource.NOVLADBASEConnectionPrompts.gcv.shim-auth-password)Password" mandatory="true" name="shim-auth-password" type="password-ref">
+			<description>xlfid(NOVLADBASE.idmresource.NOVLADBASEConnectionPrompts.gcv.dscr.shim-auth-password)Specify the password for the Active Directory account in the Authentication ID parameter. This value is used to set an initial value for the driver configuration password. A password is required for all account types, except the Local Service Account (LSA). If the Authentication ID parameter is left blank, the Local Service Account is used. If you change the account password in Active Directory you must also update the password in Identity Manager.</description>
+			<value>shim-auth-password</value>
+		</definition>
+		<definition display-name="xlfid(NOVLADBASE.idmresource.NOVLADBASEConnectionPrompts.gcv.shim-auth-server)Authentication Context" name="shim-auth-server" type="string">
+			<description>xlfid(NOVLADBASE.idmresource.NOVLADBASEConnectionPrompts.gcv.dscr.shim-auth-server)Specify the name of the Active Directory domain controller to use for synchronization. This value is used to set an initial value for the [Authentication Context] driver configuration parameter.
+			
+For example:
+- mycontroller.domain.com - DNS name. This is the preferred form of addressing and is required for Kerberos authentication.
+- 10.10.128.23 - IP address. Use only with the Simple authentication type.
+- blank - When blank, driver uses 'localhost' for local machine access.</description>
+			<value/>
+		</definition>
+	</definitions>
+</configuration-values>
