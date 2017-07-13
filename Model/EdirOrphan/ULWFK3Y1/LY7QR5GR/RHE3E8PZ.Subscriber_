@@ -8,6 +8,7 @@
   <relations name="Idm:CommandPolicies" type="Reference" key="#PWZJER69.ScriptPolicy_"/>
   <relations name="Idm:CommandPolicies" type="Reference" key="#6BP6YDB6.ScriptPolicy_"/>
   <relations name="Idm:CommandPolicies" type="Reference" key="#0H101TS4.StylesheetPolicy_"/>
+  <relations name="Idm:EventPolicies" type="Reference" key="#6HXHPAHU.ScriptPolicy_"/>
   <relations name="Idm:MatchingPolicies" type="Reference" key="#3OBFJYZO.ScriptPolicy_"/>
   <relations name="Idm:MatchingPolicies" type="Reference" key="#G2AANL36.ScriptPolicy_"/>
   <relations name="Idm:Policies" type="Child" key="#KS1I8XKH.ScriptPolicy_"/>
@@ -20,4 +21,5 @@
   <relations name="Idm:Policies" type="Child" key="#G2AANL36.ScriptPolicy_"/>
   <relations name="Idm:Policies" type="Child" key="#3OBFJYZO.ScriptPolicy_"/>
   <relations name="Idm:Policies" type="Child" key="#0H101TS4.StylesheetPolicy_"/>
+  <relations name="Idm:Policies" type="Child" key="#6HXHPAHU.ScriptPolicy_"/>
 </com.novell.designer.model:CObject>
