@@ -1,0 +1,6 @@
+[INFO]        Preparing style for rendering...
+[INFO]        Generating FO (Formatting Output)
+[INFO]        Creating FO output file '/Users/jaimoto/designer_workspace/CapacitacionMicroFocus/Designer/Documents/Generated/CapacitacionMicroFocus.fo.xml'
+[INFO]        Rendering style to... pdf ...
+[INFO]        Created '/Users/jaimoto/designer_workspace/CapacitacionMicroFocus/Designer/Documents/Generated/CapacitacionMicroFocus.pdf'
+[INFO]        Time taken to render the document was 36 seconds.

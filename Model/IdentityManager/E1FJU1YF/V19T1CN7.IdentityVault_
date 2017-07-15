@@ -6,6 +6,7 @@
   <attributes xsi:type="com.novell.designer.model:CBoolean" attrName="IdentityVaultSavePassword" value="true"/>
   <attributes xsi:type="com.novell.designer.model:CString" attrName="IdentityVaultPassword" value="^[]jBbM22xs"/>
   <attributes xsi:type="com.novell.designer.model:CBoolean" attrName="IdentityVaultPkgBuilderEnabled" value="false"/>
+  <attributes xsi:type="com.novell.designer.model:CBoolean" attrName="IdentityVaultUseLDAPSecureChannel" value="true"/>
   <relations name="Idm:DriverSets" type="ContainedReference" key="#ULWFK3Y1.DriverSet_"/>
   <relations name="Idm:InstalledPackages" type="Reference" key="#KGADSKCO.IdmPackage_"/>
   <relations name="Idm:Schema" type="Child" key="#5XXDXWI6.SchemaDef_"/>

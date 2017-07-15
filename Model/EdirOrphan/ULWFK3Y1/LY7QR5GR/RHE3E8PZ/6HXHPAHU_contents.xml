@@ -1,78 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?><policy>
 	<rule>
-		<description>Separa el nombre si contiene 2 en cambios de nombre</description>
-		<comment xml:space="preserve">Establece el Nombre por separado</comment>
+		<description>Validar OU</description>
+		<comment xml:space="preserve">Valida que los usuarios sean de la OU=Micro6</comment>
 		<conditions>
-			<and>
-				<if-class-name mode="nocase" op="equal">User</if-class-name>
-				<if-operation mode="nocase" op="equal">modify</if-operation>
-				<if-op-attr name="Given Name" op="changing"/>
-			</and>
+			<or>
+				<if-src-dn op="not-in-container">data\users\Micro6</if-src-dn>
+			</or>
 		</conditions>
 		<actions>
-			<do-set-local-variable name="lv-prepararNombre" scope="policy">
-				<arg-string>
-					<token-replace-first regex=" " replace-with="#">
-						<token-attr name="Given Name"/>
-					</token-replace-first>
-				</arg-string>
-			</do-set-local-variable>
-			<do-set-local-variable name="lv-nombreParseado" scope="policy">
-				<arg-node-set>
-					<token-split delimiter="#">
-						<token-local-variable name="lv-prepararNombre"/>
-					</token-split>
-				</arg-node-set>
-			</do-set-local-variable>
-			<do-set-local-variable name="lv-sNombre" scope="policy">
-				<arg-string>
-					<token-text xml:space="preserve">FALSE</token-text>
-				</arg-string>
-			</do-set-local-variable>
-			<do-for-each>
-				<arg-node-set>
-					<token-local-variable name="lv-nombreParseado"/>
-				</arg-node-set>
-				<arg-actions>
-					<do-if>
-						<arg-conditions>
-							<and>
-								<if-local-variable mode="nocase" name="lv-sNombre" op="equal">FALSE</if-local-variable>
-							</and>
-						</arg-conditions>
-						<arg-actions>
-							<do-set-dest-attr-value direct="true" name="Given Name">
-								<arg-value type="string">
-									<token-local-variable name="current-node"/>
-								</arg-value>
-							</do-set-dest-attr-value>
-							<do-strip-op-attr name="Given Name"/>
-							<do-clear-dest-attr-value direct="true" name="CustUserSecondName"/>
-						</arg-actions>
-						<arg-actions/>
-					</do-if>
-					<do-if>
-						<arg-conditions>
-							<and>
-								<if-local-variable mode="nocase" name="lv-sNombre" op="equal">TRUE</if-local-variable>
-							</and>
-						</arg-conditions>
-						<arg-actions>
-							<do-set-dest-attr-value direct="true" name="CustUserSecondName">
-								<arg-value type="string">
-									<token-local-variable name="current-node"/>
-								</arg-value>
-							</do-set-dest-attr-value>
-						</arg-actions>
-						<arg-actions/>
-					</do-if>
-					<do-set-local-variable name="lv-sNombre" scope="policy">
-						<arg-string>
-							<token-text xml:space="preserve">TRUE</token-text>
-						</arg-string>
-					</do-set-local-variable>
-				</arg-actions>
-			</do-for-each>
+			<do-veto/>
 		</actions>
 	</rule>
 </policy>

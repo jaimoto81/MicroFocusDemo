@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.novell.designer.model:CObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:com.novell.designer.model="http://com.novell.designer.model" name="NOVLJDBCPGBS-DefaultConfig" type="GlobalConfig">
+  <associatedAttrSets objectURI="EdirOrphan/VEV1C4KW.Server_">
+    <attributes xsi:type="com.novell.designer.model:CHeavyData" attrName="DirXML-ConfigValues"/>
+  </associatedAttrSets>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:PackageAssocGuid" value="YHFC0I3I_201209211750060795"/>
+  <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:PackageGuid" value="8UMZJFVS_201109091540440796"/>
+  <attributes xsi:type="com.novell.designer.model:CLong" attrName="Idm:ContentChecksum" value="3442582895"/>
+</com.novell.designer.model:CObject>

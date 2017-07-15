@@ -29,7 +29,6 @@
   <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:minIdmVersion" value="4.0.0"/>
   <attributes xsi:type="com.novell.designer.model:CLong" attrName="Idm:InternalVersion" value="11"/>
   <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:InstallationDirective" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&lt;installation-directive>&#xA;&#x9;&lt;ds-attributes/>&#xA;&#x9;&lt;dependencies>&#xA;&#x9;&#x9;&lt;dependency name=&quot;Password Synchronization Notification Templates&quot; package-id=&quot;FWSFLGUH_201007271204040551&quot; type=&quot;4&quot;/>&#xA;&#x9;&lt;/dependencies>&#xA;&#x9;&lt;supported-drivers/>&#xA;&lt;/installation-directive>"/>
-  <relations name="Idm:InstalledPackageDriverRefs" type="BackReference" key="#LY7QR5GR.Driver_"/>
   <relations name="Idm:PackageFolders" type="Child" key="#MAXRE4JG.IdmPackageFolder_"/>
   <relations name="Idm:PackageFolders" type="Child" key="#3HLQ5P6O.IdmPackageFolder_"/>
   <relations name="Idm:PackageFolders" type="Child" key="#SW5KGJJO.IdmPackageFolder_"/>

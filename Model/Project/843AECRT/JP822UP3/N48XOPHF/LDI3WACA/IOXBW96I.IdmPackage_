@@ -29,7 +29,6 @@
   <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:minIdmVersion" value="4.0.0"/>
   <attributes xsi:type="com.novell.designer.model:CLong" attrName="Idm:InternalVersion" value="6"/>
   <attributes xsi:type="com.novell.designer.model:CString" attrName="Idm:InstallationDirective" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&lt;installation-directive>&#xA;&#x9;&lt;supported-drivers/>&#xA;&lt;/installation-directive>"/>
-  <relations name="Idm:InstalledPackageDriverRefs" type="BackReference" key="#LY7QR5GR.Driver_"/>
   <relations name="Idm:PackageFolders" type="Child" key="#535OVJ27.IdmPackageFolder_"/>
   <relations name="Idm:PackageFolders" type="Child" key="#0QHMAXQ5.IdmPackageFolder_"/>
   <relations name="Idm:PackageFolders" type="Child" key="#CDTQ3ZOT.IdmPackageFolder_"/>

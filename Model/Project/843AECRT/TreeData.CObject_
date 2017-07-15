@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.novell.designer.model:CObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:com.novell.designer.model="http://com.novell.designer.model" name="ubtzLt6gM0+Yj7m7cy7eoA==" type="Idm:deploydata">
-  <attributes xsi:type="com.novell.designer.model:CStructure" attrName="T81N0ICT">
-    <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedURI" value="CN=NOVLAUDTENTC-itp-SendEntitlementsEvents,CN=Micro6PostgreSQL,CN=system,o=services"/>
-    <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedGuid" value="a4R0knsMPEeq42uEdJJ7DA=="/>
-  </attributes>
   <attributes xsi:type="com.novell.designer.model:CStructure" attrName="0Y7YI8UJ">
     <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedURI" value="CN=Password Set Fail,CN=Default Notification Collection,cn=security"/>
     <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedGuid" value="JXthFEp9jk6wmCV7YRRKfQ=="/>
@@ -12,17 +8,9 @@
     <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedURI" value="CN=Password Reset Fail,CN=Default Notification Collection,cn=security"/>
     <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedGuid" value="GnPbME4NcEOAIxpz2zBODQ=="/>
   </attributes>
-  <attributes xsi:type="com.novell.designer.model:CStructure" attrName="R3WALDCW">
-    <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedURI" value="CN=NOVLPWDSYNC-itp-EmailOnFailedPwdSub,CN=Micro6PostgreSQL,CN=system,o=services"/>
-    <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedGuid" value="d50j+OtIlka77HedI/jrSA=="/>
-  </attributes>
   <attributes xsi:type="com.novell.designer.model:CStructure" attrName="G8NOYWBM">
     <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedURI" value="CN=Password Sync Fail,CN=Default Notification Collection,cn=security"/>
     <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedGuid" value="Ki600BZFAU65sioutNAWRQ=="/>
-  </attributes>
-  <attributes xsi:type="com.novell.designer.model:CStructure" attrName="KW3NO2ZS">
-    <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedURI" value="CN=NOVLPWDSYNC-otp-EmailOnFailedPwdPub,CN=Micro6PostgreSQL,CN=system,o=services"/>
-    <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedGuid" value="gK+x3Lh/lESzNICvsdy4fw=="/>
   </attributes>
   <attributes xsi:type="com.novell.designer.model:CStructure" attrName="KFO3V4E8">
     <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedURI" value="CN=NOVLPGSDISYN-otp-ReformatFax,CN=Micro6PostgreSQL,CN=system,o=services"/>
@@ -36,10 +24,6 @@
     <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedURI" value="CN=NOVLJDBCPGBS-DefaultConfig,CN=Micro6PostgreSQL,CN=system,o=services"/>
     <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedGuid" value="RfFGbj9r+E+0zEXxRm4/aw=="/>
   </attributes>
-  <attributes xsi:type="com.novell.designer.model:CStructure" attrName="9W918ZXS">
-    <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedURI" value="CN=NOVLJDBCPSYN-GCVs,CN=Micro6PostgreSQL,CN=system,o=services"/>
-    <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedGuid" value="8pLfY8lS30eFp/KS32PJUg=="/>
-  </attributes>
   <attributes xsi:type="com.novell.designer.model:CStructure" attrName="6Z9LUFD3">
     <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedURI" value="CN=NOVLJDBCCOMM-ReplicaValueGCV,CN=Micro6PostgreSQL,CN=system,o=services"/>
     <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedGuid" value="cxnItH2Hc0SPHXMZyLR9hw=="/>
@@ -47,26 +31,6 @@
   <attributes xsi:type="com.novell.designer.model:CStructure" attrName="SA26KSWH">
     <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedURI" value="CN=NOVLPGSDISYN-PubModeGCV,CN=Micro6PostgreSQL,CN=system,o=services"/>
     <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedGuid" value="fTuwKOCeK02zmn07sCjgng=="/>
-  </attributes>
-  <attributes xsi:type="com.novell.designer.model:CStructure" attrName="DL66JD67">
-    <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedURI" value="CN=NOVLPWDSYNC-pub-ctp-AddPwdPayload,CN=Publisher,CN=Micro6PostgreSQL,CN=system,o=services"/>
-    <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedGuid" value="qBAM9+o20k2hvKgQDPfqNg=="/>
-  </attributes>
-  <attributes xsi:type="com.novell.designer.model:CStructure" attrName="XB7TIP4U">
-    <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedURI" value="CN=NOVLPWDSYNC-pub-ctp-CheckPwdGCV,CN=Publisher,CN=Micro6PostgreSQL,CN=system,o=services"/>
-    <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedGuid" value="FQeGzzmxaU+lvRUHhs85sQ=="/>
-  </attributes>
-  <attributes xsi:type="com.novell.designer.model:CStructure" attrName="ICT929R6">
-    <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedURI" value="CN=NOVLPWDSYNC-pub-ctp-DefaultPwd,CN=Publisher,CN=Micro6PostgreSQL,CN=system,o=services"/>
-    <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedGuid" value="FnCyMLLGQUelHhZwsjCyxg=="/>
-  </attributes>
-  <attributes xsi:type="com.novell.designer.model:CStructure" attrName="7CEGL6ZP">
-    <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedURI" value="CN=NOVLPWDSYNC-pub-ctp-PublishDistPwd,CN=Publisher,CN=Micro6PostgreSQL,CN=system,o=services"/>
-    <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedGuid" value="xIC9WMvdG0uMj8SAvVjL3Q=="/>
-  </attributes>
-  <attributes xsi:type="com.novell.designer.model:CStructure" attrName="T36YB4QD">
-    <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedURI" value="CN=NOVLPWDSYNC-pub-ctp-PublishNDSPwd,CN=Publisher,CN=Micro6PostgreSQL,CN=system,o=services"/>
-    <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedGuid" value="FxKceWyJaU6UIRcSnHlsiQ=="/>
   </attributes>
   <attributes xsi:type="com.novell.designer.model:CStructure" attrName="AC82XPB6">
     <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedURI" value="CN=NOVLJDBCCOMM-pub-cp,CN=Publisher,CN=Micro6PostgreSQL,CN=system,o=services"/>
@@ -87,26 +51,6 @@
   <attributes xsi:type="com.novell.designer.model:CStructure" attrName="KS1I8XKH">
     <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedURI" value="CN=NOVLJDBCPGBS-sub-ctp-CheckObjectPassword,CN=Subscriber,CN=Micro6PostgreSQL,CN=system,o=services"/>
     <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedGuid" value="I3rDWUC2c0irjyN6w1lAtg=="/>
-  </attributes>
-  <attributes xsi:type="com.novell.designer.model:CStructure" attrName="MEXFO0T3">
-    <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedURI" value="CN=NOVLJDBCADEN-sub-ctp-TagEvent,CN=Subscriber,CN=Micro6PostgreSQL,CN=system,o=services"/>
-    <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedGuid" value="Jd/PSAZSdkGmRyXfz0gGUg=="/>
-  </attributes>
-  <attributes xsi:type="com.novell.designer.model:CStructure" attrName="6BP6YDB6">
-    <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedURI" value="CN=NOVLPWDSYNC-sub-ctp-AddPwdPayload,CN=Subscriber,CN=Micro6PostgreSQL,CN=system,o=services"/>
-    <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedGuid" value="xrWHAySiXUG/2Ma1hwMkog=="/>
-  </attributes>
-  <attributes xsi:type="com.novell.designer.model:CStructure" attrName="PWZJER69">
-    <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedURI" value="CN=NOVLPWDSYNC-sub-ctp-CheckPwdGCV,CN=Subscriber,CN=Micro6PostgreSQL,CN=system,o=services"/>
-    <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedGuid" value="SUbJzdZEZ0ydyUlGyc3WRA=="/>
-  </attributes>
-  <attributes xsi:type="com.novell.designer.model:CStructure" attrName="J0ZH55PL">
-    <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedURI" value="CN=NOVLPWDSYNC-sub-ctp-DefaultPwd,CN=Subscriber,CN=Micro6PostgreSQL,CN=system,o=services"/>
-    <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedGuid" value="MqnXcn6zak2/jDKp13J+sw=="/>
-  </attributes>
-  <attributes xsi:type="com.novell.designer.model:CStructure" attrName="YIJOXUT8">
-    <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedURI" value="CN=NOVLPWDSYNC-sub-ctp-TransformDistPwd,CN=Subscriber,CN=Micro6PostgreSQL,CN=system,o=services"/>
-    <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedGuid" value="yeECiemnp0Ogi8nhAonppw=="/>
   </attributes>
   <attributes xsi:type="com.novell.designer.model:CStructure" attrName="A8C3AU8C">
     <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedURI" value="CN=NOVLJDBCCOMM-sub-cts-ReplicaValue,CN=Subscriber,CN=Micro6PostgreSQL,CN=system,o=services"/>
@@ -135,5 +79,13 @@
   <attributes xsi:type="com.novell.designer.model:CStructure" attrName="KVUJ0PUC">
     <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedURI" value="CN=NOVLCOMSET-GCVs,CN=system,o=services"/>
     <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedGuid" value="FzNlCOhKkUuj6BczZQjoSg=="/>
+  </attributes>
+  <attributes xsi:type="com.novell.designer.model:CStructure" attrName="6HXHPAHU">
+    <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedURI" value="CN=subETP-01-VetoEvM6,CN=Subscriber,CN=Micro6PostgreSQL,CN=system,o=services"/>
+    <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedGuid" value="5wKfUyRY1kS8lucCn1MkWA=="/>
+  </attributes>
+  <attributes xsi:type="com.novell.designer.model:CStructure" attrName="7JH14IRC">
+    <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedURI" value="CN=NOVLJDBCPGBS-DefaultConfig,CN=Micro6PostgreSQL,CN=system,o=services"/>
+    <attributes xsi:type="com.novell.designer.model:CString" attrName="DeployedGuid" value="RfFGbj9r+E+0zEXxRm4/aw=="/>
   </attributes>
 </com.novell.designer.model:CObject>

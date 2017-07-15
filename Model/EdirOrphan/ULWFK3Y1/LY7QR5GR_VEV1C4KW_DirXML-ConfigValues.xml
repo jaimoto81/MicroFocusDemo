@@ -32,7 +32,7 @@
 			<description>Select whether you want to ignore events flowing to Identity Manager from the database.</description>
 			<enum-choice display-name="no (default)">_</enum-choice>
 			<enum-choice display-name="yes">1</enum-choice>
-			<value>_</value>
+			<value>1</value>
 		</definition>
 		<definition display-name="Data flow:" hide="true" name="jdbc.DataFlow" type="enum">
 			<description>Select the data flow that you desire. Bi-directional means that both the database and Identity Manager are authoritative sources of the data synchronized between them.  Database to Identity Manager means that the database is the authoritative source.  Identity Manager to database means that Identity Manager is the authoritative source.</description>

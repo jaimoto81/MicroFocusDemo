@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><policy xmlns:jstring="http://www.novell.com/nxsl/java/java.lang.String">
-	<rule>
+	<rule notrace="true">
 		<description>Remember relative position in hierarchy</description>
 		<conditions>
 			<and>
